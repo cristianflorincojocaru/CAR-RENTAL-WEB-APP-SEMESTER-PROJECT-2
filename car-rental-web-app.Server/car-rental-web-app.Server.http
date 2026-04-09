@@ -1,4 +1,4 @@
-@car_rental_web_app.Server_HostAddress = http://localhost:5200
+@car_rental_web_app.Server_HostAddress = http://localhost:5126
 
 GET {{car_rental_web_app.Server_HostAddress}}/weatherforecast/
 Accept: application/json
