@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="car-rental-web-app.client/car-rental-web-app.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="car-rental-web-app.Server/car-rental-web-app.Server.csproj" />
+</Solution>
