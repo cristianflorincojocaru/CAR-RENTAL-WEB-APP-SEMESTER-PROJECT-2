@@ -32,15 +32,16 @@
     "@angular/forms": "^21.1.0",
     "@angular/platform-browser": "^21.1.0",
     "@angular/router": "^21.1.0",
-    "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
     "jest-editor-support": "*",
-    "run-script-os": "*"
+    "run-script-os": "*",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@angular/build": "^21.1.5",
     "@angular/cli": "^21.1.5",
     "@angular/compiler-cli": "^21.1.0",
+    "eslint": "^10.2.0",
     "jsdom": "^27.1.0",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"
