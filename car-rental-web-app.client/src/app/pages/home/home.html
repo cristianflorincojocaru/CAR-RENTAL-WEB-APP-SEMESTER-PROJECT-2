@@ -1,0 +1,420 @@
+<!-- home.component.html -->
+
+<!-- ============================================================ -->
+<!-- PROMOTIONAL BANNER                                           -->
+<!-- ============================================================ -->
+<div class="promo-banner" *ngIf="bannerVisible">
+  <div class="container">
+    <div class="promo-banner__content">
+      <span class="promo-banner__icon">🎉</span>
+      <p>
+        <strong>Summer Special 2025:</strong>
+        30% off all weekend rentals &mdash; use code:
+        <code class="promo-banner__code">SUMMER30</code>
+      </p>
+      <a routerLink="/offers" class="promo-banner__link">
+        View offer
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+    <button class="promo-banner__close" (click)="closeBanner()" aria-label="Close banner">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.5"
+              stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- HERO SECTION                                                 -->
+<!-- ============================================================ -->
+<section class="hero">
+  <div class="hero__bg">
+    <div class="hero__bg-circle hero__bg-circle--1"></div>
+    <div class="hero__bg-circle hero__bg-circle--2"></div>
+    <div class="hero__bg-grid"></div>
+  </div>
+
+  <div class="container hero__inner">
+    <div class="hero__content animate-fadeInUp">
+      <div class="badge badge--primary hero__badge">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+          <circle cx="6" cy="6" r="4"/>
+        </svg>
+        Over 200 vehicles available
+      </div>
+
+      <h1 class="hero__title">
+        Rent the
+        <span class="hero__title-highlight">perfect</span>
+        car for you
+      </h1>
+
+      <p class="hero__description">
+        Modern fleet, transparent pricing, delivery to airport and hotel.
+        Book in 2 minutes — no hidden surprises.
+      </p>
+
+      <!-- Search Card -->
+      <div class="hero__search-card">
+        <div class="hero__search-tabs">
+          <button class="hero__search-tab" [class.active]="activeTab === 'short'"
+                  (click)="setTab('short')">Short term</button>
+          <button class="hero__search-tab" [class.active]="activeTab === 'long'"
+                  (click)="setTab('long')">Long term</button>
+        </div>
+
+        <form class="hero__search-form" (ngSubmit)="onSearch()">
+          <div class="hero__search-row">
+            <div class="hero__search-field">
+              <label>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M8 1.5A4.5 4.5 0 018 10.5a4.5 4.5 0 010-9z" fill="#1A56DB" opacity=".2"/>
+                  <path d="M8 2a3.5 3.5 0 100 7A3.5 3.5 0 008 2zM1.5 14a6.5 6.5 0 0113 0"
+                        stroke="#1A56DB" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+                Pick-up location
+              </label>
+              <select class="form-control" [(ngModel)]="searchForm.location" name="location">
+                <option value="">Select location</option>
+                <option>Henri Coandă Airport</option>
+                <option>Otopeni Airport</option>
+                <option>Bucharest — City Centre</option>
+                <option>Cluj-Napoca</option>
+                <option>Timișoara</option>
+                <option>Iași</option>
+                <option>Constanța</option>
+              </select>
+            </div>
+
+            <div class="hero__search-field">
+              <label>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <rect x="2" y="2" width="12" height="13" rx="2" stroke="#1A56DB" stroke-width="1.3"/>
+                  <path d="M5 1v2M11 1v2M2 6h12" stroke="#1A56DB" stroke-width="1.3"
+                        stroke-linecap="round"/>
+                </svg>
+                Pick-up date
+              </label>
+              <input type="date" class="form-control" [(ngModel)]="searchForm.pickupDate"
+                     name="pickupDate" [min]="today">
+            </div>
+
+            <div class="hero__search-field">
+              <label>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <rect x="2" y="2" width="12" height="13" rx="2" stroke="#1A56DB" stroke-width="1.3"/>
+                  <path d="M5 1v2M11 1v2M2 6h12" stroke="#1A56DB" stroke-width="1.3"
+                        stroke-linecap="round"/>
+                  <path d="M8 9.5l1.5 1.5L12 8" stroke="#1A56DB" stroke-width="1.3"
+                        stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Return date
+              </label>
+              <input type="date" class="form-control" [(ngModel)]="searchForm.returnDate"
+                     name="returnDate" [min]="searchForm.pickupDate || today">
+            </div>
+          </div>
+
+          <div class="hero__search-filters">
+            <div class="hero__search-filter-group">
+              <select class="form-control" [(ngModel)]="searchForm.category" name="category">
+                <option value="">All categories</option>
+                <option>Economy</option>
+                <option>Compact</option>
+                <option>SUV</option>
+                <option>Premium</option>
+                <option>Van / Minibus</option>
+              </select>
+            </div>
+            <div class="hero__search-filter-group">
+              <select class="form-control" [(ngModel)]="searchForm.transmission" name="transmission">
+                <option value="">Transmission</option>
+                <option>Automatic</option>
+                <option>Manual</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn--primary btn--lg hero__search-btn">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <circle cx="7.5" cy="7.5" r="5" stroke="white" stroke-width="1.8"/>
+                <path d="M11.5 11.5L16 16" stroke="white" stroke-width="1.8"
+                      stroke-linecap="round"/>
+              </svg>
+              Search cars
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="hero__trust">
+        <div class="hero__trust-item" *ngFor="let item of trustItems">
+          <span class="hero__trust-icon" [innerHTML]="item.icon"></span>
+          <span>{{ item.text }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__visual animate-fadeInUp delay-2">
+      <div class="hero__stat-card hero__stat-card--top">
+        <div class="hero__stat-icon">⭐</div>
+        <div>
+          <div class="hero__stat-value">4.9/5</div>
+          <div class="hero__stat-label">Customer rating</div>
+        </div>
+      </div>
+      <div class="hero__visual-placeholder">
+        <div class="hero__car-silhouette">
+          <svg viewBox="0 0 480 220" fill="none" xmlns="http://www.w3.org/2000/svg"
+               class="hero__car-svg">
+            <ellipse cx="240" cy="205" rx="180" ry="12" fill="#1A56DB" opacity="0.08"/>
+            <path d="M60 145 L80 95 Q100 65 145 58 L240 52 L335 58 Q380 65 400 95 L420 145 Z"
+                  fill="url(#carGrad)" stroke="#1A56DB" stroke-width="1.5"/>
+            <path d="M150 90 L165 65 Q175 58 200 57 L240 56 L280 57 Q305 58 315 65 L330 90 Z"
+                  fill="#DBEAFE" stroke="#1A56DB" stroke-width="1"/>
+            <path d="M240 90 L240 145" stroke="#1A56DB" stroke-width="0.8" opacity="0.4"/>
+            <circle cx="130" cy="158" r="28" fill="#1E293B" stroke="#475569" stroke-width="2"/>
+            <circle cx="130" cy="158" r="16" fill="#334155"/>
+            <circle cx="130" cy="158" r="8"  fill="#94A3B8"/>
+            <circle cx="350" cy="158" r="28" fill="#1E293B" stroke="#475569" stroke-width="2"/>
+            <circle cx="350" cy="158" r="16" fill="#334155"/>
+            <circle cx="350" cy="158" r="8"  fill="#94A3B8"/>
+            <ellipse cx="415" cy="128" rx="8" ry="5" fill="#FEF9C3" opacity="0.9"/>
+            <ellipse cx="65"  cy="128" rx="8" ry="5" fill="#FEF9C3" opacity="0.5"/>
+            <rect x="180" y="118" width="22" height="5" rx="2.5" fill="#64748B" opacity="0.6"/>
+            <rect x="280" y="118" width="22" height="5" rx="2.5" fill="#64748B" opacity="0.6"/>
+            <defs>
+              <linearGradient id="carGrad" x1="60" y1="52" x2="420" y2="190"
+                              gradientUnits="userSpaceOnUse">
+                <stop offset="0%"   stop-color="#3B82F6"/>
+                <stop offset="100%" stop-color="#1A56DB"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+      </div>
+      <div class="hero__stat-card hero__stat-card--bottom">
+        <div class="hero__stat-icon">🚗</div>
+        <div>
+          <div class="hero__stat-value">200+</div>
+          <div class="hero__stat-label">Cars available</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FEATURED CARS SECTION                                        -->
+<!-- ============================================================ -->
+<section class="section featured">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-header__label">Curated fleet</div>
+      <h2 class="section-header__title">Featured cars</h2>
+      <p class="section-header__description">
+        Choose from our most popular models, technically inspected and cleaned before every rental.
+      </p>
+    </div>
+
+    <div class="featured__filters">
+      <button class="featured__filter" *ngFor="let cat of carCategories"
+              [class.active]="activeCategory === cat"
+              (click)="setCategory(cat)">
+        {{ cat }}
+      </button>
+    </div>
+
+    <div class="featured__grid">
+      <div class="car-card" *ngFor="let car of filteredCars; let i = index"
+           [style.animation-delay]="(i * 0.1) + 's'">
+
+        <div class="car-card__image-wrap">
+          <div class="car-card__image-placeholder">
+            <svg viewBox="0 0 320 180" fill="none">
+              <rect width="320" height="180" fill="#EFF6FF" rx="12"/>
+              <path d="M60 120 L75 85 Q88 65 115 60 L160 56 L205 60 Q232 65 245 85 L260 120 Z"
+                    [attr.fill]="car.color" opacity="0.9"/>
+              <path d="M115 85 L125 65 Q133 58 155 57 L160 56 L165 57 Q187 58 195 65 L205 85 Z"
+                    fill="#DBEAFE"/>
+              <circle cx="100" cy="128" r="18" fill="#1E293B"/>
+              <circle cx="100" cy="128" r="10" fill="#334155"/>
+              <circle cx="220" cy="128" r="18" fill="#1E293B"/>
+              <circle cx="220" cy="128" r="10" fill="#334155"/>
+            </svg>
+          </div>
+          <div class="car-card__badge">{{ car.category }}</div>
+          <div class="car-card__favorite" (click)="toggleFavorite(car)">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M9 15s-6-3.8-6-7.8A3.5 3.5 0 019 4.5a3.5 3.5 0 016 2.7C15 11.2 9 15 9 15z"
+                    [attr.fill]="car.isFavorite ? '#EF4444' : 'none'"
+                    [attr.stroke]="car.isFavorite ? '#EF4444' : '#94A3B8'"
+                    stroke-width="1.5"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="car-card__body">
+          <div class="car-card__header">
+            <div>
+              <h3 class="car-card__name">{{ car.name }}</h3>
+              <p class="car-card__year">{{ car.year }} &bull; {{ car.fuel }}</p>
+            </div>
+            <div class="car-card__rating">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="#F59E0B">
+                <path d="M7 1l1.8 3.6L13 5.4l-3 2.9.7 4.1L7 10.4l-3.7 2 .7-4.1-3-2.9 4.2-.8z"/>
+              </svg>
+              <span>{{ car.rating }}</span>
+            </div>
+          </div>
+
+          <div class="car-card__specs">
+            <div class="car-card__spec" *ngFor="let spec of car.specs">
+              <span class="car-card__spec-icon" [innerHTML]="spec.icon"></span>
+              <span>{{ spec.value }}</span>
+            </div>
+          </div>
+
+          <div class="car-card__footer">
+            <div class="car-card__price">
+              <span class="car-card__price-amount">€{{ car.price }}</span>
+              <span class="car-card__price-unit">/day</span>
+            </div>
+            <a [routerLink]="['/cars', car.id]" class="btn btn--primary btn--sm">
+              Book now
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured__cta">
+      <a routerLink="/cars" class="btn btn--secondary btn--lg">
+        View all cars
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- HOW IT WORKS SECTION                                         -->
+<!-- ============================================================ -->
+<section class="section section-alt how-it-works">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-header__label">Simple & fast</div>
+      <h2 class="section-header__title">How does it work?</h2>
+      <p class="section-header__description">
+        Booking takes less than 2 minutes. No paperwork, no queues.
+      </p>
+    </div>
+
+    <div class="steps">
+      <div class="steps__connector"></div>
+      <div class="step" *ngFor="let step of steps; let i = index">
+        <div class="step__number"><span>{{ i + 1 }}</span></div>
+        <div class="step__icon" [innerHTML]="step.icon"></div>
+        <h3 class="step__title">{{ step.title }}</h3>
+        <p class="step__description">{{ step.description }}</p>
+      </div>
+    </div>
+
+    <div class="how-it-works__cta">
+      <a routerLink="/cars" class="btn btn--primary btn--xl">
+        Book now
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M4 9h10M10 5l4 4-4 4" stroke="white" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- TESTIMONIALS SECTION                                         -->
+<!-- ============================================================ -->
+<section class="section testimonials">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-header__label">Real experiences</div>
+      <h2 class="section-header__title">What our customers say</h2>
+      <p class="section-header__description">
+        Over 2,000 verified reviews. Customer satisfaction is our priority.
+      </p>
+    </div>
+
+    <div class="testimonials__summary">
+      <div class="testimonials__overall">
+        <div class="testimonials__score">4.9</div>
+        <div class="stars">★★★★★</div>
+        <div class="testimonials__total">from 2,148 reviews</div>
+      </div>
+      <div class="testimonials__bars">
+        <div class="rating-bar" *ngFor="let bar of ratingBars">
+          <span class="rating-bar__label">{{ bar.stars }} ★</span>
+          <div class="rating-bar__track">
+            <div class="rating-bar__fill" [style.width]="bar.percent + '%'"></div>
+          </div>
+          <span class="rating-bar__percent">{{ bar.percent }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-3 testimonials__grid">
+      <div class="testimonial-card" *ngFor="let t of testimonials; let i = index"
+           [style.animation-delay]="(i * 0.1) + 's'">
+        <div class="testimonial-card__header">
+          <div class="testimonial-card__avatar">{{ t.name.charAt(0) }}</div>
+          <div>
+            <div class="testimonial-card__name">{{ t.name }}</div>
+            <div class="testimonial-card__date">{{ t.date }}</div>
+          </div>
+          <div class="testimonial-card__stars">
+            <span *ngFor="let s of [1,2,3,4,5]">★</span>
+          </div>
+        </div>
+        <p class="testimonial-card__text">"{{ t.text }}"</p>
+        <div class="testimonial-card__car">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2 10L3.5 6.5Q4.2 4.8 6 4.5L7 4.3L8 4.5Q9.8 4.8 10.5 6.5L12 10"
+                  stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/>
+            <circle cx="4" cy="10.5" r="1.5" fill="#94A3B8"/>
+            <circle cx="10" cy="10.5" r="1.5" fill="#94A3B8"/>
+          </svg>
+          {{ t.car }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FOOTER CTA BANNER                                            -->
+<!-- ============================================================ -->
+<section class="footer-cta">
+  <div class="footer-cta__bg">
+    <div class="footer-cta__circle footer-cta__circle--1"></div>
+    <div class="footer-cta__circle footer-cta__circle--2"></div>
+  </div>
+  <div class="container footer-cta__inner">
+    <div class="footer-cta__content">
+      <h2 class="footer-cta__title">Ready to hit the road?</h2>
+      <p class="footer-cta__text">
+        Join over 15,000 satisfied customers.
+        Your first booking comes with a 10% discount.
+      </p>
+      <div class="footer-cta__actions">
+        <a routerLink="/cars" class="btn btn--white btn--xl">Find your car</a>
+        <a routerLink="/contact" class="btn btn--xl footer-cta__contact-btn">Contact us</a>
+      </div>
+    </div>
+  </div>
+</section>

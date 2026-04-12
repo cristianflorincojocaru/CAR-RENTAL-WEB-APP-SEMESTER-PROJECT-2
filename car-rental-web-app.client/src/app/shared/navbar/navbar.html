@@ -1,0 +1,66 @@
+<nav class="navbar" [class.scrolled]="isScrolled">
+  <div class="container navbar__inner">
+
+    <!-- Logo -->
+    <a routerLink="/" class="navbar__logo">
+      <div class="navbar__logo-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <rect width="28" height="28" rx="8" fill="#1A56DB"/>
+          <path d="M6 19L10 11L14 16L18 11L22 19" stroke="white" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="14" cy="8" r="2.5" fill="#F59E0B"/>
+        </svg>
+      </div>
+      <span class="navbar__logo-text">Wheel<strong>Deal</strong></span>
+    </a>
+
+    <!-- Desktop Nav Links -->
+    <ul class="navbar__links">
+      <li>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+           class="navbar__link">Home</a>
+      </li>
+      <li>
+        <a routerLink="/cars" routerLinkActive="active" class="navbar__link">Cars</a>
+      </li>
+      <li>
+        <a routerLink="/offers" routerLinkActive="active" class="navbar__link">Offers</a>
+      </li>
+      <li>
+        <a routerLink="/about" routerLinkActive="active" class="navbar__link">About us</a>
+      </li>
+      <li>
+        <a routerLink="/contact" routerLinkActive="active" class="navbar__link">Contact</a>
+      </li>
+    </ul>
+
+    <!-- Desktop Actions -->
+    <div class="navbar__actions">
+      <a routerLink="/auth/login" class="btn btn--ghost btn--sm">Sign in</a>
+      <a routerLink="/auth/register" class="btn btn--primary btn--sm">Register</a>
+    </div>
+
+    <!-- Mobile Toggle -->
+    <button class="navbar__hamburger" (click)="toggleMenu()" [class.open]="menuOpen"
+            aria-label="Menu" [attr.aria-expanded]="menuOpen">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="navbar__mobile" [class.open]="menuOpen">
+    <ul class="navbar__mobile-links">
+      <li><a routerLink="/"       (click)="closeMenu()">Home</a></li>
+      <li><a routerLink="/cars"   (click)="closeMenu()">Cars</a></li>
+      <li><a routerLink="/offers" (click)="closeMenu()">Offers</a></li>
+      <li><a routerLink="/about"  (click)="closeMenu()">About us</a></li>
+      <li><a routerLink="/contact"(click)="closeMenu()">Contact</a></li>
+    </ul>
+    <div class="navbar__mobile-actions">
+      <a routerLink="/auth/login"    class="btn btn--ghost btn--full" (click)="closeMenu()">Sign in</a>
+      <a routerLink="/auth/register" class="btn btn--primary btn--full" (click)="closeMenu()">Register</a>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,211 @@
+// navbar.component.scss
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-sticky);
+  height: var(--navbar-height);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid transparent;
+  transition: var(--transition-base);
+
+  &.scrolled {
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom-color: var(--color-gray-200);
+    box-shadow: var(--shadow-sm);
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: var(--space-8);
+  }
+
+  // --- Logo ---
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    text-decoration: none;
+    flex-shrink: 0;
+
+    &:hover .navbar__logo-icon {
+      transform: rotate(-6deg) scale(1.05);
+    }
+  }
+
+  &__logo-icon {
+    transition: var(--transition-spring);
+    line-height: 0;
+  }
+
+  &__logo-text {
+    font-family: var(--font-display);
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-light);
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+
+    strong {
+      font-weight: var(--fw-extrabold);
+      color: var(--color-primary);
+    }
+  }
+
+  // --- Links ---
+  &__links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    flex: 1;
+    justify-content: center;
+
+    @media (max-width: 1024px) {
+      display: none;
+    }
+  }
+
+  &__link {
+    position: relative;
+    padding: var(--space-2) var(--space-3);
+    font-family: var(--font-display);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--text-secondary);
+    border-radius: var(--radius-md);
+    transition: var(--transition-fast);
+    text-decoration: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%) scaleX(0);
+      width: 16px;
+      height: 2px;
+      background: var(--color-primary);
+      border-radius: var(--radius-full);
+      transition: transform 0.2s ease;
+    }
+
+    &:hover {
+      color: var(--text-primary);
+      background: var(--color-gray-50);
+    }
+
+    &.active {
+      color: var(--color-primary);
+      font-weight: var(--fw-semibold);
+
+      &::after {
+        transform: translateX(-50%) scaleX(1);
+      }
+    }
+  }
+
+  // --- Actions ---
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-shrink: 0;
+
+    @media (max-width: 1024px) {
+      display: none;
+    }
+  }
+
+  // --- Hamburger ---
+  &__hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: var(--space-2);
+    margin-left: auto;
+    border-radius: var(--radius-md);
+    transition: var(--transition-fast);
+
+    @media (max-width: 1024px) {
+      display: flex;
+    }
+
+    span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text-primary);
+      border-radius: var(--radius-full);
+      transition: var(--transition-base);
+      transform-origin: center;
+    }
+
+    &.open {
+      span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+      span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+    }
+
+    &:hover {
+      background: var(--color-gray-100);
+    }
+  }
+
+  // --- Mobile Menu ---
+  &__mobile {
+    display: none;
+    padding: var(--space-4) var(--space-6) var(--space-6);
+    background: var(--color-white);
+    border-top: var(--border-thin);
+    box-shadow: var(--shadow-lg);
+
+    @media (max-width: 1024px) {
+      display: none;
+
+      &.open {
+        display: block;
+        animation: fadeInUp 0.2s ease;
+      }
+    }
+  }
+
+  &__mobile-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin-bottom: var(--space-6);
+
+    a {
+      display: block;
+      padding: var(--space-3) var(--space-4);
+      font-family: var(--font-display);
+      font-size: var(--fs-base);
+      font-weight: var(--fw-medium);
+      color: var(--text-secondary);
+      border-radius: var(--radius-lg);
+      transition: var(--transition-fast);
+
+      &:hover {
+        background: var(--color-gray-50);
+        color: var(--text-primary);
+      }
+    }
+  }
+
+  &__mobile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+}
