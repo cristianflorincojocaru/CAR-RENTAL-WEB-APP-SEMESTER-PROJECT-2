@@ -54,10 +54,10 @@ export class HomeComponent implements OnInit {
   };
 
   trustItems = [
-    { icon: '✅', text: 'No hidden fees' },
-    { icon: '🚚', text: 'Hotel delivery' },
+    { icon: '✅', text: 'no hidden fees' },
+    { icon: '🚚', text: 'hotel delivery' },
     { icon: '📞', text: '24/7 support' },
-    { icon: '🔒', text: 'Secure payment' }
+    { icon: '🔒', text: 'secure payment' }
   ];
 
   // --- Cars ---
@@ -217,6 +217,10 @@ export class HomeComponent implements OnInit {
 
   setCategory(cat: string): void {
     this.activeCategory = cat;
+  }
+
+  trackByCat = (index: number, car: any): string => {
+  return this.activeCategory + '_' + car.id;
   }
 
   toggleFavorite(car: Car): void {
