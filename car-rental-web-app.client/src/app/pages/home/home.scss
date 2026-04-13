@@ -7,8 +7,10 @@
   background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
   color: var(--text-inverse);
   padding: 0.6rem 0;
+  // Fix 3 — remove z-sticky so this stays in normal flow
+  // and naturally slides under the fixed navbar on scroll
   position: relative;
-  z-index: var(--z-sticky);
+  z-index: 1;
   margin-top: var(--navbar-height);
 
   .container {
@@ -253,11 +255,11 @@
 
   &__search-row {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: var(--space-4);
     margin-bottom: var(--space-4);
 
-    @media (max-width: 768px) {
+    @media (max-width: 640px) {
       grid-template-columns: 1fr;
     }
   }
@@ -266,6 +268,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-1);
+    position: relative;
 
     label {
       display: flex;
@@ -276,6 +279,43 @@
       color: var(--text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.06em;
+    }
+
+    // Full-width location row that sits between dates and filters
+    &--location {
+      margin-bottom: var(--space-4);
+      // select stretches to match the combined width of the two date fields
+      .form-control { width: 100%; }
+    }
+  }
+
+  // Fix 4 — date format hint (MM visible)
+  &__date-hint {
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    font-size: 10px;
+    color: var(--text-muted);
+    pointer-events: none;
+    letter-spacing: 0.04em;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+
+  &__date-input {
+    // Highlight the month segment on webkit
+    &::-webkit-datetime-edit-month-field {
+      color: var(--color-primary);
+      font-weight: var(--fw-semibold);
+    }
+    &::-webkit-datetime-edit-day-field,
+    &::-webkit-datetime-edit-year-field {
+      color: var(--text-secondary);
+    }
+    // Hide the hint when user has a value
+    &:not([value=""]) ~ .hero__date-hint,
+    &:valid ~ .hero__date-hint {
+      opacity: 0;
     }
   }
 
@@ -301,13 +341,29 @@
     white-space: nowrap;
     height: 52px;
     padding-inline: var(--space-6);
+    // More reactive feedback
+    transition: background 0.15s ease, transform 0.12s ease,
+                box-shadow 0.15s ease, opacity 0.15s ease;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(26, 86, 219, 0.32);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 2px 6px rgba(26, 86, 219, 0.2);
+      transition-duration: 0.07s;
+    }
   }
 
   // Trust badges
   &__trust {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-4);
+    gap: var(--space-3) var(--space-5);
+    justify-content: center;
+    margin-top: var(--space-1);
   }
 
   &__trust-item {
@@ -429,6 +485,16 @@
     gap: var(--space-6);
     margin-bottom: var(--space-10);
 
+    // Fix 5 — ensure animation plays for EVERY filter change including All→category.
+    // Angular re-inserts DOM nodes; this forces a new compositing layer per child.
+    // For a complete fix add trackBy: (i, car) => activeCategory + '_' + car.id in TS.
+    &> .car-card {
+      // Each card individually animated so the stagger always re-triggers
+      // when Angular recreates the node (true for cross-category switches).
+      animation: fadeInUp 0.45s ease both;
+      will-change: opacity, transform;
+    }
+
     @media (max-width: 1024px) { grid-template-columns: repeat(2, 1fr); }
     @media (max-width: 640px)  { grid-template-columns: 1fr; }
   }
@@ -436,6 +502,29 @@
   &__cta {
     display: flex;
     justify-content: center;
+
+    // Fix 2 — prevent GPU compositing shadow artifact on click/hover
+    a {
+      isolation: isolate;
+      will-change: transform;
+      backface-visibility: hidden;
+      // Override any inherited animation that causes the shadow glitch
+      animation: none !important;
+      box-shadow: none;
+      transition: background 0.2s ease, color 0.2s ease,
+                  transform 0.15s ease, box-shadow 0.15s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(26, 86, 219, 0.18);
+      }
+
+      &:active {
+        transform: translateY(0) scale(0.98);
+        box-shadow: none;
+        transition-duration: 0.07s;
+      }
+    }
   }
 }
 
@@ -447,7 +536,7 @@
   box-shadow: var(--shadow-sm);
   overflow: hidden;
   transition: var(--transition-base);
-  animation: fadeInUp 0.5s ease both;
+  // animation handled by .featured__grid > .car-card
 
   &:hover {
     box-shadow: var(--shadow-xl);
@@ -566,6 +655,25 @@
     justify-content: space-between;
     padding-top: var(--space-4);
     border-top: var(--border-thin);
+
+    // Book Now button — same animation as Search Cars / View All Cars
+    .btn {
+      will-change: transform;
+      backface-visibility: hidden;
+      transition: background 0.15s ease, color 0.15s ease,
+                  transform 0.12s ease, box-shadow 0.15s ease;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(26, 86, 219, 0.32);
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(0) scale(0.98);
+        box-shadow: 0 2px 6px rgba(26, 86, 219, 0.2);
+        transition-duration: 0.07s;
+      }
+    }
   }
 
   &__price {
@@ -595,6 +703,25 @@
     display: flex;
     justify-content: center;
     margin-top: var(--space-12);
+
+    // Book Now button — same animation as Search Cars / View All Cars
+    .btn {
+      will-change: transform;
+      backface-visibility: hidden;
+      transition: background 0.15s ease, color 0.15s ease,
+                  transform 0.12s ease, box-shadow 0.15s ease;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(26, 86, 219, 0.32);
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(0) scale(0.98);
+        box-shadow: 0 2px 6px rgba(26, 86, 219, 0.2);
+        transition-duration: 0.07s;
+      }
+    }
   }
 }
 
@@ -946,5 +1073,29 @@
       background: rgba(255,255,255,0.22);
       transform: translateY(-1px);
     }
+  }
+}
+
+// ============================================================
+// REACTIVE BUTTON — shared animation (Search Cars / View All Cars / Book Now)
+// Applied via .btn--reactive class directly on the element
+// to guarantee specificity over .btn--primary / .btn--secondary
+// ============================================================
+.btn--reactive {
+  will-change: transform;
+  backface-visibility: hidden;
+  // Override any transition set by btn--primary / btn--secondary
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease,
+              transform 0.12s ease, box-shadow 0.15s ease !important;
+
+  &:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 18px rgba(26, 86, 219, 0.30) !important;
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98) !important;
+    box-shadow: 0 2px 6px rgba(26, 86, 219, 0.18) !important;
+    transition-duration: 0.07s !important;
   }
 }
