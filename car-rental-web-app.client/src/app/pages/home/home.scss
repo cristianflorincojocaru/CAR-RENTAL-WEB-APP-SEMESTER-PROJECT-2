@@ -253,6 +253,78 @@
     }
   }
 
+  // Preset selector (weeks / months)
+  &__presets {
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-4);
+    border-bottom: var(--border-thin);
+  }
+
+  &__presets-label {
+    display: block;
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-semibold);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: var(--space-2);
+  }
+
+  &__presets-row {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+
+  &__preset-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-lg);
+    border: 1.5px solid var(--color-gray-200);
+    background: var(--color-white);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease,
+                transform 0.12s ease, box-shadow 0.15s ease;
+    flex: 1;
+    min-width: 0;
+
+    &:hover {
+      border-color: var(--color-primary-mid);
+      background: var(--color-primary-soft);
+      transform: translateY(-1px);
+    }
+
+    &.active {
+      border-color: var(--color-primary);
+      background: var(--color-primary-soft);
+      box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.10);
+    }
+
+    // Month variant — fewer items, a bit taller
+    &--month {
+      padding: var(--space-3) var(--space-4);
+    }
+  }
+
+  &__preset-main {
+    font-family: var(--font-display);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    color: var(--text-primary);
+    white-space: nowrap;
+
+    .active & { color: var(--color-primary); }
+  }
+
+  &__preset-sub {
+    font-size: 10px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
   &__search-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -485,16 +557,6 @@
     gap: var(--space-6);
     margin-bottom: var(--space-10);
 
-    // Fix 5 — ensure animation plays for EVERY filter change including All→category.
-    // Angular re-inserts DOM nodes; this forces a new compositing layer per child.
-    // For a complete fix add trackBy: (i, car) => activeCategory + '_' + car.id in TS.
-    &> .car-card {
-      // Each card individually animated so the stagger always re-triggers
-      // when Angular recreates the node (true for cross-category switches).
-      animation: fadeInUp 0.45s ease both;
-      will-change: opacity, transform;
-    }
-
     @media (max-width: 1024px) { grid-template-columns: repeat(2, 1fr); }
     @media (max-width: 640px)  { grid-template-columns: 1fr; }
   }
@@ -536,7 +598,7 @@
   box-shadow: var(--shadow-sm);
   overflow: hidden;
   transition: var(--transition-base);
-  // animation handled by .featured__grid > .car-card
+  animation: fadeInUp 0.45s ease both;
 
   &:hover {
     box-shadow: var(--shadow-xl);

@@ -79,11 +79,10 @@
                 </svg>
                 Pick-up date
               </label>
-              <input type="date" class="form-control hero__date-input"
-                     [(ngModel)]="searchForm.pickupDate"
-                     name="pickupDate" [min]="today"
-                     placeholder="DD / MM / YYYY">
-              <span class="hero__date-hint">DD / MM / YYYY</span>
+               <input type="date" class="form-control" [(ngModel)]="searchForm.pickupDate"
+       name="pickupDate" [min]="today"
+       (change)="onPickupDateChange()">
+              
             </div>
 
             <div class="hero__search-field">
@@ -97,11 +96,11 @@
                 </svg>
                 Return date
               </label>
-              <input type="date" class="form-control hero__date-input"
-                     [(ngModel)]="searchForm.returnDate"
-                     name="returnDate" [min]="searchForm.pickupDate || today"
-                     placeholder="DD / MM / YYYY">
-              <span class="hero__date-hint">DD / MM / YYYY</span>
+               <input type="date" class="form-control" [(ngModel)]="searchForm.returnDate"
+       name="returnDate" 
+       [min]="searchForm.pickupDate || today"
+       [max]="maxReturnDate">
+              
             </div>
           </div>
 
@@ -226,7 +225,7 @@
         Choose from our most popular models, technically inspected and cleaned before every rental.
       </p>
     </div>
-
+ 
     <div class="featured__filters">
       <button class="featured__filter" *ngFor="let cat of carCategories"
               [class.active]="activeCategory === cat"
@@ -234,11 +233,11 @@
         {{ cat }}
       </button>
     </div>
-
+ 
     <div class="featured__grid">
-      <div class="car-card" *ngFor="let car of filteredCars; let i = index"
+      <div class="car-card" *ngFor="let car of filteredCars; let i = index; trackBy: trackByCat"
            [style.animation-delay]="(i * 0.1) + 's'">
-
+ 
         <div class="car-card__image-wrap">
           <div class="car-card__image-placeholder">
             <svg viewBox="0 0 320 180" fill="none">
@@ -263,7 +262,7 @@
             </svg>
           </div>
         </div>
-
+ 
         <div class="car-card__body">
           <div class="car-card__header">
             <div>
@@ -277,14 +276,14 @@
               <span>{{ car.rating }}</span>
             </div>
           </div>
-
+ 
           <div class="car-card__specs">
             <div class="car-card__spec" *ngFor="let spec of car.specs">
               <span class="car-card__spec-icon" [innerHTML]="spec.icon"></span>
               <span>{{ spec.value }}</span>
             </div>
           </div>
-
+ 
           <div class="car-card__footer">
             <div class="car-card__price">
               <span class="car-card__price-amount">€{{ car.price }}</span>
@@ -297,7 +296,7 @@
         </div>
       </div>
     </div>
-
+ 
     <div class="featured__cta">
       <a routerLink="/cars" class="btn btn--secondary btn--lg">
         View All Cars

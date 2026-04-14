@@ -43,7 +43,8 @@ export class HomeComponent implements OnInit {
 
   // --- Hero Search ---
   activeTab: 'short' | 'long' = 'short';
-  today = new Date().toISOString().split('T')[0];
+today: string = new Date().toISOString().split('T')[0];
+maxReturnDate: string = '';
 
   searchForm = {
     location:     '',
@@ -219,11 +220,37 @@ export class HomeComponent implements OnInit {
     this.activeCategory = cat;
   }
 
-  trackByCat = (index: number, car: any): string => {
-  return this.activeCategory + '_' + car.id;
-  }
+ trackByCat = (index: number, car: any): string => {
+  return this.activeCategory + '_' + (car.id ?? car.name);
+};
 
   toggleFavorite(car: Car): void {
     car.isFavorite = !car.isFavorite;
   }
+
+  onPickupDateChange() {
+  if (!this.searchForm.pickupDate) {
+    this.maxReturnDate = '';
+    return;
+  }
+
+  const pickup = new Date(this.searchForm.pickupDate);
+
+  if (this.activeTab === 'short') {
+    // max 7 zile
+    pickup.setDate(pickup.getDate() + 7);
+  } else {
+    // max 30 zile
+    pickup.setDate(pickup.getDate() + 30);
+  }
+
+  this.maxReturnDate = pickup.toISOString().split('T')[0];
+
+  // dacă return date depășește noul max, resetează
+  if (this.searchForm.returnDate > this.maxReturnDate) {
+    this.searchForm.returnDate = '';
+  }
+
+  
+}
 }
