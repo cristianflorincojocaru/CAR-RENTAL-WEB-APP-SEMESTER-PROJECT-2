@@ -1,0 +1,244 @@
+<!-- about.component.html -->
+
+<!-- ============================================================ -->
+<!-- ABOUT HERO                                                    -->
+<!-- ============================================================ -->
+<section class="about-hero">
+  <div class="about-hero__bg">
+    <div class="about-hero__bg-circle about-hero__bg-circle--1"></div>
+    <div class="about-hero__bg-circle about-hero__bg-circle--2"></div>
+    <div class="about-hero__bg-grid"></div>
+  </div>
+
+  <div class="container about-hero__inner">
+    <div class="about-hero__content animate-fadeInUp">
+      <div class="badge badge--primary about-hero__badge">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+          <circle cx="6" cy="6" r="4"/>
+        </svg>
+        Our story
+      </div>
+
+      <h1 class="about-hero__title">
+        Driving freedom,
+        <span class="about-hero__title-highlight">one rental</span>
+        at a time
+      </h1>
+
+      <p class="about-hero__description">
+        Founded in 2018 in Bucharest, DriveNow has grown from a small local fleet
+        into one of Romania's most trusted car rental services — built on
+        transparency, quality, and a genuine passion for the road.
+      </p>
+
+      <div class="about-hero__actions">
+        <a routerLink="/cars" class="btn btn--primary btn--lg btn--reactive">
+          Browse Our Fleet
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a routerLink="/contact" class="btn btn--secondary btn--lg">
+          Get in Touch
+        </a>
+      </div>
+    </div>
+
+    <!-- Stats strip -->
+    <div class="about-hero__stats animate-fadeInUp delay-2">
+      <div class="about-stat" *ngFor="let stat of stats">
+        <div class="about-stat__value">{{ stat.value }}</div>
+        <div class="about-stat__label">{{ stat.label }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- MISSION SECTION                                               -->
+<!-- ============================================================ -->
+<section class="section section-alt mission">
+  <div class="container">
+    <div class="mission__grid">
+      <!-- Left: visual card -->
+      <div class="mission__visual animate-fadeInUp">
+        <div class="mission__card mission__card--primary">
+          <div class="mission__card-icon">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <circle cx="18" cy="18" r="16" fill="#EFF6FF"/>
+              <path d="M10 24L12 18Q14 12 18 10Q22 12 24 18L26 24"
+                    stroke="#1A56DB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="14" cy="24" r="2.5" fill="#1A56DB"/>
+              <circle cx="22" cy="24" r="2.5" fill="#1A56DB"/>
+              <path d="M11 20h14" stroke="#1A56DB" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="mission__card-text">
+            <div class="mission__card-value">100+</div>
+            <div class="mission__card-label">vehicles in fleet</div>
+          </div>
+        </div>
+
+        <div class="mission__card mission__card--accent">
+          <div class="mission__card-icon">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <circle cx="18" cy="18" r="16" fill="#FFF7ED"/>
+              <path d="M18 8l2.5 7.5H28l-6.2 4.5 2.3 7.5L18 23l-6.1 4.5 2.3-7.5L8 15.5h7.5z"
+                    stroke="#F59E0B" stroke-width="1.8" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <div class="mission__card-text">
+            <div class="mission__card-value">4.9★</div>
+            <div class="mission__card-label">average rating</div>
+          </div>
+        </div>
+
+        <div class="mission__card mission__card--subtle">
+          <div class="mission__card-icon">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <circle cx="18" cy="18" r="16" fill="#F0FDF4"/>
+              <path d="M12 19l4 4 8-8" stroke="#22C55E" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="mission__card-text">
+            <div class="mission__card-value">0</div>
+            <div class="mission__card-label">hidden fees</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: text -->
+      <div class="mission__text animate-fadeInUp delay-1">
+        <div class="section-header section-header--left">
+          <div class="section-header__label">Why we exist</div>
+          <h2 class="section-header__title">Our mission</h2>
+        </div>
+        <p class="mission__paragraph">
+          We believe renting a car should be as easy as unlocking your phone.
+          No fine print, no surprise charges — just a clean car, a fair price,
+          and a team that actually picks up the phone.
+        </p>
+        <p class="mission__paragraph">
+          Every vehicle in our fleet is inspected before each rental, fully insured,
+          and delivered with a full tank. Whether you need an economy runaround or a
+          premium SUV for the weekend, we've got the right car at the right price.
+        </p>
+
+        <div class="mission__values">
+          <div class="mission__value" *ngFor="let v of values">
+            <div class="mission__value-icon" [innerHTML]="v.icon"></div>
+            <div>
+              <div class="mission__value-title">{{ v.title }}</div>
+              <div class="mission__value-desc">{{ v.description }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- TEAM SECTION                                                  -->
+<!-- ============================================================ -->
+<section class="section team">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-header__label">The people behind the wheel</div>
+      <h2 class="section-header__title">Meet our team</h2>
+      <p class="section-header__description">
+        A small but dedicated crew obsessed with making your rental experience
+        effortlessly smooth.
+      </p>
+    </div>
+
+    <div class="team__grid">
+      <div class="team-card" *ngFor="let member of team; let i = index"
+           [style.animation-delay]="(i * 0.1) + 's'">
+        <div class="team-card__avatar">
+          <div class="team-card__avatar-inner" [style.background]="member.avatarBg">
+            {{ member.initials }}
+          </div>
+        </div>
+        <h3 class="team-card__name">{{ member.name }}</h3>
+        <p class="team-card__role">{{ member.role }}</p>
+        <p class="team-card__bio">{{ member.bio }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- MILESTONES / TIMELINE                                         -->
+<!-- ============================================================ -->
+<section class="section section-alt milestones">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-header__label">How we got here</div>
+      <h2 class="section-header__title">Our journey</h2>
+      <p class="section-header__description">
+        Six years of growth, driven by customer trust and a love for the open road.
+      </p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline__line"></div>
+      <div class="timeline__item"
+           *ngFor="let item of milestones; let i = index"
+           [class.timeline__item--right]="i % 2 !== 0">
+        <div class="timeline__dot"></div>
+        <div class="timeline__card">
+          <div class="timeline__year">{{ item.year }}</div>
+          <h3 class="timeline__title">{{ item.title }}</h3>
+          <p class="timeline__desc">{{ item.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- WHY CHOOSE US                                                 -->
+<!-- ============================================================ -->
+<section class="section perks">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-header__label">What sets us apart</div>
+      <h2 class="section-header__title">Why DriveNow?</h2>
+    </div>
+
+    <div class="grid-3 perks__grid">
+      <div class="perk-card" *ngFor="let perk of perks; let i = index"
+           [style.animation-delay]="(i * 0.08) + 's'">
+        <div class="perk-card__icon" [innerHTML]="perk.icon"></div>
+        <h3 class="perk-card__title">{{ perk.title }}</h3>
+        <p class="perk-card__desc">{{ perk.description }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- FOOTER CTA (reused from home)                                 -->
+<!-- ============================================================ -->
+<section class="footer-cta">
+  <div class="footer-cta__bg">
+    <div class="footer-cta__circle footer-cta__circle--1"></div>
+    <div class="footer-cta__circle footer-cta__circle--2"></div>
+  </div>
+  <div class="container footer-cta__inner">
+    <div class="footer-cta__content">
+      <h2 class="footer-cta__title">Ready to hit the road?</h2>
+      <p class="footer-cta__text">
+        Join over 15,000 satisfied customers.
+        Your first booking comes with a 10% discount.
+      </p>
+      <div class="footer-cta__actions">
+        <a routerLink="/cars" class="btn btn--white btn--xl">Find Your Car</a>
+        <a routerLink="/contact" class="btn btn--xl footer-cta__contact-btn">Contact Us</a>
+      </div>
+    </div>
+  </div>
+</section>
