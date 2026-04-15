@@ -766,7 +766,6 @@
     justify-content: center;
     margin-top: var(--space-12);
 
-    // Book Now button — same animation as Search Cars / View All Cars
     .btn {
       will-change: transform;
       backface-visibility: hidden;
@@ -776,12 +775,20 @@
       &:hover:not(:disabled) {
         transform: translateY(-2px);
         box-shadow: 0 6px 18px rgba(26, 86, 219, 0.32);
+
+        svg {
+          transform: translateX(5px);
+        }
       }
 
       &:active:not(:disabled) {
         transform: translateY(0) scale(0.98);
         box-shadow: 0 2px 6px rgba(26, 86, 219, 0.2);
         transition-duration: 0.07s;
+      }
+
+      svg {
+        transition: transform 0.25s ease;
       }
     }
   }

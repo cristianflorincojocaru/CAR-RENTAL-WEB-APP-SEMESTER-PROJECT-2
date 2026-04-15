@@ -184,19 +184,19 @@ maxReturnDate: string = '';
   testimonials: Testimonial[] = [
     {
       name: 'Andrew P.',
-      date: 'March 2025',
+      date: 'October 2024',
       text: 'Flawless service! The car was clean, full of fuel and all documents in order. Will definitely come back.',
       car: 'VW Golf 8'
     },
     {
       name: 'Maria I.',
-      date: 'February 2025',
+      date: 'August 2025',
       text: 'Booked for the weekend and everything went perfectly. The price was exactly as shown — no surprises at checkout.',
       car: 'Dacia Duster 4x4'
     },
     {
       name: 'Chris D.',
-      date: 'January 2025',
+      date: 'February 2026',
       text: 'BMW X3 in perfect condition. Hotel delivery was a huge bonus. Highly recommended!',
       car: 'BMW X3 Hybrid'
     }
