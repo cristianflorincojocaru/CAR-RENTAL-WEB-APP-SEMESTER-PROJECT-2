@@ -1,13 +1,30 @@
 <div class="contact-page">
 
   <!-- ── HERO ────────────────────────────────────────────────── -->
-  <div class="contact-hero animate-fadeInUp">
-    <span class="section-header__label">We're here for you</span>
-    <h1 class="contact-hero__title">Contact Us</h1>
-    <p class="contact-hero__sub">
-      We're happy to help with any questions about bookings, vehicles, or our services.
-    </p>
-  </div>
+  <section class="contact-hero">
+    <div class="contact-hero__bg">
+      <div class="contact-hero__bg-circle contact-hero__bg-circle--1"></div>
+      <div class="contact-hero__bg-circle contact-hero__bg-circle--2"></div>
+      <div class="contact-hero__bg-grid"></div>
+    </div>
+
+    <div class="container contact-hero__inner animate-fadeInUp">
+      <div class="badge badge--primary contact-hero__badge">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+          <circle cx="6" cy="6" r="4"/>
+        </svg>
+        We're here for you
+      </div>
+      <h1 class="contact-hero__title">
+        Get in touch,
+        <span class="contact-hero__title-highlight">we'd love to hear</span>
+        from you
+      </h1>
+      <p class="contact-hero__sub">
+        We're happy to help with any questions about bookings, vehicles, or our services.
+      </p>
+    </div>
+  </section>
 
   <!-- ── TOP GRID: info + form ─────────────────────────────── -->
   <div class="contact-grid animate-fadeInUp delay-1">
@@ -112,11 +129,11 @@
             <textarea class="form-control" rows="4" placeholder="How can we help you?" [(ngModel)]="form.message"></textarea>
           </div>
         </div>
-        <button class="btn btn--primary c-form__submit" (click)="submitForm()">
+        <button class="btn btn--primary btn--lg btn--reactive c-form__submit" (click)="submitForm()">
+          Send message
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
           </svg>
-          Send message
         </button>
       </div>
 
@@ -150,8 +167,19 @@
       }
     </div>
 
-    <!-- Branch panel -->
+    <!-- Branch panel: map LEFT, info RIGHT -->
     <div class="branches__panel">
+
+      <!-- Map -->
+      <div class="branch-map">
+        <div class="branch-map__label">{{ activeBranchData.name }}</div>
+        <iframe
+          [src]="activeBranchData.mapSrc"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
 
       <!-- Info -->
       <div class="branch-info c-card">
@@ -191,17 +219,14 @@
             <span>{{ activeBranchData.fleet }}</span>
           </div>
         </div>
-      </div>
 
-      <!-- Map -->
-      <div class="branch-map">
-        <div class="branch-map__label">{{ activeBranchData.name }}</div>
-        <iframe
-          [src]="activeBranchData.mapSrc"
-          allowfullscreen
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
+        <a routerLink="/cars" class="btn btn--primary btn--reactive branch-info__cta">
+          Book at this branch
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
       </div>
 
     </div>
@@ -225,8 +250,8 @@
         Your first booking comes with a 10% discount.
       </p>
       <div class="footer-cta__actions">
-        <a routerLink="/cars" class="btn btn--white btn--xl">Find Your Car</a>
-        <a routerLink="/contact" class="btn btn--xl footer-cta__contact-btn">Contact Us</a>
+        <a routerLink="/cars" class="btn btn--white btn--xl btn--reactive">Find Your Car</a>
+        <a routerLink="/contact" class="btn btn--xl footer-cta__contact-btn btn--reactive">Contact Us</a>
       </div>
     </div>
   </div>
