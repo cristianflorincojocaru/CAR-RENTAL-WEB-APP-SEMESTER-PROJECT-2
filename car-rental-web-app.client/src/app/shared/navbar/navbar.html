@@ -36,8 +36,8 @@
 
     <!-- Desktop Actions -->
     <div class="navbar__actions">
-      <a routerLink="/auth/login" class="btn btn--ghost btn--sm">Sign In</a>
-      <a routerLink="/auth/register" class="btn btn--primary btn--sm btn--reactive">Register</a>
+      <a routerLink="/login" class="btn btn--ghost btn--sm">Sign In</a>
+      <a routerLink="/signup" class="btn btn--primary btn--sm btn--reactive">Register</a>
     </div>
 
     <!-- Mobile Toggle -->
@@ -59,8 +59,8 @@
       <li><a routerLink="/contact"(click)="closeMenu()">Contact</a></li>
     </ul>
     <div class="navbar__mobile-actions">
-      <a routerLink="/auth/login"    class="btn btn--ghost btn--full" (click)="closeMenu()">Sign in</a>
-      <a routerLink="/auth/register" class="btn btn--primary btn--full" (click)="closeMenu()">Register</a>
+      <a routerLink="/login"  class="btn btn--ghost btn--full" (click)="closeMenu()">Sign in</a>
+      <a routerLink="/signup" class="btn btn--primary btn--full" (click)="closeMenu()">Register</a>
     </div>
   </div>
 </nav>
