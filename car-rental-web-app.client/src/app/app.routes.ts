@@ -7,6 +7,8 @@ import { CarsComponent } from './pages/cars/cars';
 import { OffersComponent } from './pages/offers/offers';
 import { LoginComponent } from './pages/auth/login/login';
 import { SignupComponent } from './pages/auth/signup/signup';
+import { BookingComponent } from './pages/booking/booking';
+
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -15,7 +17,8 @@ export const routes: Routes = [
   { path: 'offers', component: OffersComponent },
   { path: 'cars', component: CarsComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent }
+  { path: 'signup', component: SignupComponent },
+  { path: 'cars/:id/book', component: BookingComponent }
 ];
 
 @NgModule({

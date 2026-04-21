@@ -14,7 +14,7 @@
     <div class="offers-hero__content animate-fadeInUp">
       <div class="badge badge--accent offers-hero__badge">
         <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
-          <path d="M6 1l1.2 3.6H11l-3 2.2 1.1 3.6L6 8.5l-3.1 1.9 1.1-3.6L1 4.6h3.8z"/>
+          <path d="M6 1l1.2 3.6H11l-3 2.2 1.1 3.6L6 8.5l-3.1 1.9 1.1-3.6L1 4.6h3.8z" />
         </svg>
         {{ totalOffersCount }} exclusive deals
       </div>
@@ -31,8 +31,8 @@
       <div class="offers-hero__actions">
         <a routerLink="/cars" class="btn btn--ghost btn--lg offers-hero__browse-btn">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5"
-                  stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
           </svg>
           Browse full fleet
         </a>
@@ -49,26 +49,24 @@
     <div class="promo-code" *ngFor="let p of promos">
       <div class="promo-code__left">
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-          <path d="M9 1.5l1.6 4.8H16L11.5 9.7l1.7 5.2L9 11.8l-4.2 3.1 1.7-5.2L2 6.3h5.4z"
-                stroke="#D97706" stroke-width="1.4" stroke-linejoin="round" fill="#FFFBEB"/>
+          <path d="M9 1.5l1.6 4.8H16L11.5 9.7l1.7 5.2L9 11.8l-4.2 3.1 1.7-5.2L2 6.3h5.4z" stroke="#D97706"
+            stroke-width="1.4" stroke-linejoin="round" fill="#FFFBEB" />
         </svg>
         <div>
           <div class="promo-code__desc">{{ p.desc }}</div>
           <div class="promo-code__expires">{{ p.expires }}</div>
         </div>
       </div>
-      <button
-        class="promo-code__copy"
-        (click)="copyCode(p.code)"
-        [class.copied]="copiedCode === p.code">
+      <button class="promo-code__copy" (click)="copyCode(p.code)" [class.copied]="copiedCode === p.code">
         <span class="promo-code__code">{{ p.code }}</span>
         <svg *ngIf="copiedCode !== p.code" width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <rect x="4" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
-          <path d="M4 3V2.5A1.5 1.5 0 015.5 1H11a1.5 1.5 0 011.5 1.5V8A1.5 1.5 0 0111 9.5H10.5"
-                stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          <rect x="4" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3" />
+          <path d="M4 3V2.5A1.5 1.5 0 015.5 1H11a1.5 1.5 0 011.5 1.5V8A1.5 1.5 0 0111 9.5H10.5" stroke="currentColor"
+            stroke-width="1.3" stroke-linecap="round" />
         </svg>
         <svg *ngIf="copiedCode === p.code" width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <path d="M2.5 7l3.5 3.5 5.5-6" stroke="#22C55E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2.5 7l3.5 3.5 5.5-6" stroke="#22C55E" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
         </svg>
         {{ copiedCode === p.code ? 'Copied!' : 'Copy' }}
       </button>
@@ -85,10 +83,7 @@
     <!-- Toolbar -->
     <div class="offers-toolbar animate-fadeInUp delay-1">
       <div class="offers-cats">
-        <button
-          *ngFor="let cat of categories"
-          class="offers-cat-btn"
-          [class.active]="activeCategory === cat"
+        <button *ngFor="let cat of categories" class="offers-cat-btn" [class.active]="activeCategory === cat"
           (click)="setCategory(cat)">
           {{ cat }}
         </button>
@@ -100,8 +95,8 @@
             <option *ngFor="let opt of sortOptions" [value]="opt.value">{{ opt.label }}</option>
           </select>
           <svg class="offers-sort__chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5"
-                  stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
           </svg>
         </div>
       </div>
@@ -114,9 +109,7 @@
 
     <!-- Offer cards grid -->
     <div class="offers-grid" *ngIf="offerCars.length > 0; else noOffers">
-      <div
-        class="offer-card"
-        *ngFor="let car of offerCars; let i = index; trackBy: trackById"
+      <div class="offer-card" *ngFor="let car of offerCars; let i = index; trackBy: trackById"
         [style.animation-delay]="(i * 0.07) + 's'">
 
         <!-- Ribbon -->
@@ -126,19 +119,18 @@
         <div class="offer-card__image-wrap">
           <div class="offer-card__image-placeholder">
             <svg viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="320" height="180" fill="#FFF7ED" rx="12"/>
-              <path d="M55 122 L72 86 Q86 64 114 58 L160 54 L206 58 Q234 64 248 86 L265 122 Z"
-                    [attr.fill]="car.color" opacity="0.88"/>
-              <path d="M112 86 L124 64 Q133 57 156 56 L164 56 Q187 57 196 64 L208 86 Z"
-                    fill="#FEF3C7" opacity="0.8"/>
-              <line x1="160" y1="86" x2="160" y2="122" stroke="white" stroke-width="1" opacity="0.4"/>
-              <circle cx="102" cy="130" r="20" fill="#1E293B"/>
-              <circle cx="102" cy="130" r="11" fill="#334155"/>
-              <circle cx="102" cy="130" r="5"  fill="#94A3B8"/>
-              <circle cx="218" cy="130" r="20" fill="#1E293B"/>
-              <circle cx="218" cy="130" r="11" fill="#334155"/>
-              <circle cx="218" cy="130" r="5"  fill="#94A3B8"/>
-              <ellipse cx="258" cy="108" rx="7" ry="4.5" fill="#FEF9C3" opacity="0.9"/>
+              <rect width="320" height="180" fill="#FFF7ED" rx="12" />
+              <path d="M55 122 L72 86 Q86 64 114 58 L160 54 L206 58 Q234 64 248 86 L265 122 Z" [attr.fill]="car.color"
+                opacity="0.88" />
+              <path d="M112 86 L124 64 Q133 57 156 56 L164 56 Q187 57 196 64 L208 86 Z" fill="#FEF3C7" opacity="0.8" />
+              <line x1="160" y1="86" x2="160" y2="122" stroke="white" stroke-width="1" opacity="0.4" />
+              <circle cx="102" cy="130" r="20" fill="#1E293B" />
+              <circle cx="102" cy="130" r="11" fill="#334155" />
+              <circle cx="102" cy="130" r="5" fill="#94A3B8" />
+              <circle cx="218" cy="130" r="20" fill="#1E293B" />
+              <circle cx="218" cy="130" r="11" fill="#334155" />
+              <circle cx="218" cy="130" r="5" fill="#94A3B8" />
+              <ellipse cx="258" cy="108" rx="7" ry="4.5" fill="#FEF9C3" opacity="0.9" />
             </svg>
           </div>
           <div class="offer-card__category-badge">{{ car.category }}</div>
@@ -154,7 +146,7 @@
             </div>
             <div class="offer-card__rating">
               <svg width="13" height="13" viewBox="0 0 14 14" fill="#F59E0B">
-                <path d="M7 1l1.8 3.6L13 5.4l-3 2.9.7 4.1L7 10.4l-3.7 2 .7-4.1-3-2.9 4.2-.8z"/>
+                <path d="M7 1l1.8 3.6L13 5.4l-3 2.9.7 4.1L7 10.4l-3.7 2 .7-4.1-3-2.9 4.2-.8z" />
               </svg>
               {{ car.rating }}
             </div>
@@ -162,9 +154,8 @@
 
           <div class="offer-card__branch">
             <svg width="11" height="13" viewBox="0 0 11 13" fill="none">
-              <path d="M5.5 1A3.5 3.5 0 015.5 8L5.5 12" stroke="#D97706" stroke-width="1.2"
-                    stroke-linecap="round"/>
-              <circle cx="5.5" cy="4" r="2" stroke="#D97706" stroke-width="1.2"/>
+              <path d="M5.5 1A3.5 3.5 0 015.5 8L5.5 12" stroke="#D97706" stroke-width="1.2" stroke-linecap="round" />
+              <circle cx="5.5" cy="4" r="2" stroke="#D97706" stroke-width="1.2" />
             </svg>
             {{ car.branch }}
           </div>
@@ -184,8 +175,8 @@
                 <span class="offer-card__now-unit">/day</span>
               </div>
             </div>
-            <a [routerLink]="['/cars', car.id]" class="btn btn--accent btn--sm btn--reactive-accent">
-              Book Offer
+            <a [routerLink]="['/cars', car.id, 'book']" class="btn btn--primary btn--sm btn--reactive">
+              Book Now
             </a>
           </div>
         </div>
@@ -199,8 +190,7 @@
         <div class="offers-empty__icon">🏷️</div>
         <h3>No offers in this category</h3>
         <p>Try a different filter or browse all our deals.</p>
-        <button class="btn btn--primary btn--reactive"
-                (click)="setCategory('All')">
+        <button class="btn btn--primary btn--reactive" (click)="setCategory('All')">
           Show all offers
         </button>
       </div>
@@ -212,8 +202,8 @@
       <a routerLink="/cars" class="btn btn--secondary btn--lg btn--reactive">
         Browse full fleet
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5"
-                stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
         </svg>
       </a>
     </div>

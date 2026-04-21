@@ -1,0 +1,678 @@
+<!-- booking.component.html -->
+<div class="booking-page">
+
+  <!-- ── STEP PROGRESS HEADER ──────────────────────────────── -->
+  <div class="booking-header" *ngIf="currentStep < 4">
+    <div class="container booking-header__inner">
+      <a routerLink="/cars" class="booking-header__back">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back to Fleet
+      </a>
+
+      <div class="booking-steps">
+        <div class="booking-step"
+             *ngFor="let i of [1,2,3,4]; let idx = index"
+             [class.active]="currentStep === i"
+             [class.completed]="currentStep > i"
+             (click)="goToStep(i)">
+          <div class="booking-step__circle">
+            <svg *ngIf="currentStep > i" width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2.5 7l3 3 6-5.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span *ngIf="currentStep <= i">{{ i }}</span>
+          </div>
+          <span class="booking-step__label">
+            {{ ['Vehicle & Dates', 'Protection', 'Driver Details', 'Confirmed'][idx] }}
+          </span>
+          <div class="booking-step__line" *ngIf="i < 4"></div>
+        </div>
+      </div>
+
+      <div class="booking-header__spacer"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- STEP 1: Vehicle + Dates                                    -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <div class="booking-body" *ngIf="currentStep === 1">
+    <div class="container booking-layout">
+
+      <!-- Main -->
+      <div class="booking-main animate-fadeInUp">
+        <div class="booking-section-title">
+          <div class="booking-section-title__num">01</div>
+          <div>
+            <h2>Select Dates & Location</h2>
+            <p>Choose when and where you'd like to pick up and return the vehicle.</p>
+          </div>
+        </div>
+
+        <!-- Date row -->
+        <div class="booking-card">
+          <div class="booking-card__label">Rental Period</div>
+          <div class="dates-grid">
+            <div class="date-field" [class.has-error]="formErrors['pickupDate']">
+              <label>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <rect x="1" y="2" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.2"/>
+                  <path d="M4 1v2M10 1v2M1 5.5h12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                </svg>
+                Pick-up Date
+              </label>
+              <input class="form-control" type="date" [min]="today"
+                     [(ngModel)]="form.pickupDate" (change)="onPickupDateChange()">
+              <span class="field-error" *ngIf="formErrors['pickupDate']">{{ formErrors['pickupDate'] }}</span>
+            </div>
+            <div class="date-field date-field--arrow">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12h14M14 7l5 5-5 5" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="date-field" [class.has-error]="formErrors['returnDate']">
+              <label>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <rect x="1" y="2" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.2"/>
+                  <path d="M4 1v2M10 1v2M1 5.5h12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                  <path d="M5 8.5l1.5 1.5L10 7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Return Date
+              </label>
+              <input class="form-control" type="date" [min]="minReturn || today"
+                     [(ngModel)]="form.returnDate" (change)="onReturnDateChange()">
+              <span class="field-error" *ngIf="formErrors['returnDate']">{{ formErrors['returnDate'] }}</span>
+            </div>
+          </div>
+
+          <div class="rental-duration" *ngIf="form.pickupDate && form.returnDate">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M7 4v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            {{ rentalDays }} day{{ rentalDays !== 1 ? 's' : '' }} rental
+          </div>
+        </div>
+
+        <!-- Location row -->
+        <div class="booking-card">
+          <div class="booking-card__label">Pick-up Location</div>
+          <div class="location-field" [class.has-error]="formErrors['pickupLocation']">
+            <svg class="location-field__icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1.5A4.5 4.5 0 018 10.5" stroke="#94A3B8" stroke-width="1.3" stroke-linecap="round"/>
+              <circle cx="8" cy="5" r="2" stroke="#94A3B8" stroke-width="1.3"/>
+              <path d="M1.5 14.5a6.5 6.5 0 0113 0" stroke="#94A3B8" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+            <select class="form-control" [(ngModel)]="form.pickupLocation" (change)="onSameReturnChange()">
+              <option value="" disabled>Select pick-up location</option>
+              <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+            </select>
+          </div>
+          <span class="field-error" *ngIf="formErrors['pickupLocation']">{{ formErrors['pickupLocation'] }}</span>
+
+          <label class="same-return-toggle">
+            <input type="checkbox" [(ngModel)]="form.sameReturn" (change)="onSameReturnChange()">
+            <span class="same-return-toggle__box"></span>
+            <span>Return to the same location</span>
+          </label>
+
+          <div *ngIf="!form.sameReturn" class="location-field mt-3" [class.has-error]="formErrors['returnLocation']">
+            <svg class="location-field__icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1.5A4.5 4.5 0 018 10.5" stroke="#94A3B8" stroke-width="1.3" stroke-linecap="round"/>
+              <circle cx="8" cy="5" r="2" stroke="#94A3B8" stroke-width="1.3"/>
+            </svg>
+            <select class="form-control" [(ngModel)]="form.returnLocation">
+              <option value="" disabled>Select return location</option>
+              <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+            </select>
+            <span class="field-error" *ngIf="formErrors['returnLocation']">{{ formErrors['returnLocation'] }}</span>
+          </div>
+        </div>
+
+        <!-- Flight number (optional) -->
+        <div class="booking-card booking-card--subtle">
+          <div class="booking-card__label">Optional Info</div>
+          <div class="form-group">
+            <label>Flight number <span class="optional-label">(optional)</span></label>
+            <div class="input-with-icon">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M14.5 3.5L9 9m0 0L6 7l-3.5 3.5L9 12l1 3 3.5-3.5L11 8m-2 1L9 6l5.5-5.5"
+                      stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <input class="form-control" type="text" placeholder="e.g. RO123"
+                     [(ngModel)]="form.flightNumber">
+            </div>
+            <span class="hint-text">We'll monitor your flight and adjust pick-up if delayed.</span>
+          </div>
+        </div>
+
+        <div class="step-actions">
+          <button class="btn btn--primary btn--lg btn--reactive" (click)="nextStep()">
+            Continue to Protection
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M4 8h8M9 5l3 3-3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="booking-sidebar animate-fadeInUp delay-1">
+        <ng-container *ngTemplateOutlet="carSummary"></ng-container>
+        <ng-container *ngTemplateOutlet="priceSummary"></ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- STEP 2: Protection                                         -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <div class="booking-body" *ngIf="currentStep === 2">
+    <div class="container booking-layout">
+      <div class="booking-main animate-fadeInUp">
+        <div class="booking-section-title">
+          <div class="booking-section-title__num">02</div>
+          <div>
+            <h2>Choose Protection</h2>
+            <p>All options meet legal requirements. We recommend Standard for most trips.</p>
+          </div>
+        </div>
+
+        <div class="protection-cards">
+          <div class="protection-card"
+               *ngFor="let p of protections"
+               [class.selected]="selectedProtection === p.id"
+               [class.recommended]="p.recommended"
+               (click)="selectedProtection = p.id">
+            <div class="protection-card__ribbon" *ngIf="p.recommended">Most Popular</div>
+            <div class="protection-card__header">
+              <div class="protection-card__radio">
+                <div class="radio-dot" [class.active]="selectedProtection === p.id"></div>
+              </div>
+              <div class="protection-card__info">
+                <div class="protection-card__name">{{ p.name }}</div>
+                <div class="protection-card__sub">{{ p.subtitle }}</div>
+              </div>
+              <div class="protection-card__price">
+                <span *ngIf="p.price === 0" class="price-free">Included</span>
+                <span *ngIf="p.price > 0" class="price-paid">+€{{ p.price }}<span>/day</span></span>
+              </div>
+            </div>
+            <ul class="protection-card__features">
+              <li *ngFor="let f of p.features">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <circle cx="7" cy="7" r="5.5" fill="#EFF6FF"/>
+                  <path d="M4 7l2.5 2.5 3.5-4" stroke="#1A56DB" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                {{ f }}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Extras -->
+        <div class="booking-section-title" style="margin-top: var(--space-10)">
+          <div class="booking-section-title__num">+</div>
+          <div>
+            <h2>Add Extras</h2>
+            <p>Enhance your rental experience with optional add-ons.</p>
+          </div>
+        </div>
+
+        <div class="extras-grid">
+          <div class="extra-card"
+               *ngFor="let extra of extras"
+               [class.selected]="extra.selected"
+               (click)="toggleExtra(extra)">
+            <div class="extra-card__check">
+              <svg *ngIf="extra.selected" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 6l3 3 5-4.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="extra-card__icon">{{ extra.icon }}</div>
+            <div class="extra-card__body">
+              <div class="extra-card__name">{{ extra.name }}</div>
+              <div class="extra-card__desc">{{ extra.description }}</div>
+            </div>
+            <div class="extra-card__price">
+              <span *ngIf="extra.price === 0">Free</span>
+              <span *ngIf="extra.price > 0">+€{{ extra.price }}/day</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-actions">
+          <button class="btn btn--ghost btn--lg" (click)="prevStep()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Back
+          </button>
+          <button class="btn btn--primary btn--lg btn--reactive" (click)="nextStep()">
+            Continue to Details
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M4 8h8M9 5l3 3-3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="booking-sidebar animate-fadeInUp delay-1">
+        <ng-container *ngTemplateOutlet="carSummary"></ng-container>
+        <ng-container *ngTemplateOutlet="priceSummary"></ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- STEP 3: Driver Details                                     -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <div class="booking-body" *ngIf="currentStep === 3">
+    <div class="container booking-layout">
+      <div class="booking-main animate-fadeInUp">
+        <div class="booking-section-title">
+          <div class="booking-section-title__num">03</div>
+          <div>
+            <h2>Driver Details</h2>
+            <p>We need a few details to complete your reservation. All data is secure.</p>
+          </div>
+        </div>
+
+        <!-- Personal info -->
+        <div class="booking-card">
+          <div class="booking-card__label">Personal Information</div>
+          <div class="form-row-2">
+            <div class="form-group" [class.has-error]="formErrors['firstName']">
+              <label>First Name</label>
+              <input class="form-control" type="text" placeholder="John" [(ngModel)]="form.firstName">
+              <span class="field-error" *ngIf="formErrors['firstName']">{{ formErrors['firstName'] }}</span>
+            </div>
+            <div class="form-group" [class.has-error]="formErrors['lastName']">
+              <label>Last Name</label>
+              <input class="form-control" type="text" placeholder="Doe" [(ngModel)]="form.lastName">
+              <span class="field-error" *ngIf="formErrors['lastName']">{{ formErrors['lastName'] }}</span>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group" [class.has-error]="formErrors['email']">
+              <label>Email Address</label>
+              <input class="form-control" type="email" placeholder="you@email.com" [(ngModel)]="form.email">
+              <span class="field-error" *ngIf="formErrors['email']">{{ formErrors['email'] }}</span>
+            </div>
+            <div class="form-group" [class.has-error]="formErrors['phone']">
+              <label>Phone Number</label>
+              <input class="form-control" type="tel" placeholder="+40 7xx xxx xxx" [(ngModel)]="form.phone">
+              <span class="field-error" *ngIf="formErrors['phone']">{{ formErrors['phone'] }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional notes -->
+        <div class="booking-card booking-card--subtle">
+          <div class="booking-card__label">Additional Requests <span class="optional-label">(optional)</span></div>
+          <textarea class="form-control" rows="3"
+                    placeholder="Child seat height, preferred car colour, late arrival time…"
+                    [(ngModel)]="form.notes"></textarea>
+        </div>
+
+        <!-- Payment preference -->
+        <div class="booking-card">
+          <div class="booking-card__label">Payment</div>
+          <div class="payment-options">
+            <label class="payment-option" [class.selected]="form.payNow">
+              <input type="radio" name="payment" [value]="true" [(ngModel)]="form.payNow">
+              <div class="payment-option__radio"><div class="radio-dot" [class.active]="form.payNow"></div></div>
+              <div>
+                <div class="payment-option__name">Pay Now</div>
+                <div class="payment-option__desc">Secure online payment — instant confirmation</div>
+              </div>
+              <div class="payment-option__badge">Recommended</div>
+            </label>
+            <label class="payment-option" [class.selected]="!form.payNow">
+              <input type="radio" name="payment" [value]="false" [(ngModel)]="form.payNow">
+              <div class="payment-option__radio"><div class="radio-dot" [class.active]="!form.payNow"></div></div>
+              <div>
+                <div class="payment-option__name">Pay at Pick-up</div>
+                <div class="payment-option__desc">Credit/debit card required as deposit</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Trust badges -->
+        <div class="trust-strip">
+          <div class="trust-strip__item">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1l1.8 1.8H13v3.2L14.8 8 13 9.8V13h-3.2L8 14.8 6.2 13H3V9.8L1.2 8 3 6.2V3h3.2z" stroke="#1A56DB" stroke-width="1.2" fill="none"/>
+              <path d="M5.5 8l2 2 3-3" stroke="#1A56DB" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            256-bit SSL encryption
+          </div>
+          <div class="trust-strip__item">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="6.5" stroke="#1A56DB" stroke-width="1.2"/>
+              <path d="M5 8l2 2 4-4" stroke="#1A56DB" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Free cancellation up to 48h
+          </div>
+          <div class="trust-strip__item">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1v14M3.5 4.5Q1 8 3.5 11.5Q6 14 8 14Q10 14 12.5 11.5Q15 8 12.5 4.5" stroke="#1A56DB" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+            </svg>
+            No hidden charges
+          </div>
+        </div>
+
+        <div class="step-actions">
+          <button class="btn btn--ghost btn--lg" (click)="prevStep()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Back
+          </button>
+          <button class="btn btn--primary btn--lg btn--reactive" (click)="confirmBooking()"
+                  [class.loading]="isLoading" [disabled]="isLoading">
+            <span class="btn-spinner" *ngIf="isLoading"></span>
+            <span *ngIf="!isLoading">
+              Confirm Booking · €{{ grandTotal }}
+            </span>
+            <span *ngIf="isLoading">Processing…</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="booking-sidebar animate-fadeInUp delay-1">
+        <ng-container *ngTemplateOutlet="carSummary"></ng-container>
+        <ng-container *ngTemplateOutlet="priceSummary"></ng-container>
+        <ng-container *ngTemplateOutlet="datesSummary"></ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- STEP 4: Confirmation                                       -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <div class="booking-confirmation animate-fadeInUp" *ngIf="currentStep === 4">
+    <div class="container">
+
+      <div class="confirmation-hero">
+        <div class="confirmation-hero__icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <circle cx="24" cy="24" r="22" fill="#EFF6FF" stroke="#1A56DB" stroke-width="1.5"/>
+            <path d="M14 24l7 7 13-14" stroke="#1A56DB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="confirmation-hero__ref">{{ bookingRef }}</div>
+        <h1 class="confirmation-hero__title">Your booking is confirmed!</h1>
+        <p class="confirmation-hero__sub">
+          A confirmation email has been sent to <strong>{{ form.email }}</strong>.
+          Check your inbox (and spam folder just in case).
+        </p>
+      </div>
+
+      <div class="confirmation-grid">
+
+        <!-- Left: booking details -->
+        <div class="confirmation-details">
+          <!-- Vehicle -->
+          <div class="conf-card" *ngIf="car">
+            <div class="conf-card__label">Your Vehicle</div>
+            <div class="conf-vehicle">
+              <div class="conf-vehicle__image">
+                <svg viewBox="0 0 260 140" fill="none">
+                  <rect width="260" height="140" fill="#EFF6FF" rx="10"/>
+                  <path d="M40 100L55 68Q65 50 88 45L130 42L172 45Q195 50 205 68L220 100Z"
+                        [attr.fill]="car.color" opacity="0.88"/>
+                  <path d="M88 68L98 50Q106 44 124 43L130 42L136 43Q154 44 162 50L172 68Z"
+                        fill="#DBEAFE" opacity="0.85"/>
+                  <circle cx="82" cy="107" r="17" fill="#1E293B"/>
+                  <circle cx="82" cy="107" r="9" fill="#334155"/>
+                  <circle cx="82" cy="107" r="4.5" fill="#94A3B8"/>
+                  <circle cx="178" cy="107" r="17" fill="#1E293B"/>
+                  <circle cx="178" cy="107" r="9" fill="#334155"/>
+                  <circle cx="178" cy="107" r="4.5" fill="#94A3B8"/>
+                  <ellipse cx="214" cy="88" rx="6" ry="4" fill="#FEF9C3" opacity="0.85"/>
+                </svg>
+              </div>
+              <div class="conf-vehicle__info">
+                <div class="conf-vehicle__name">{{ car.name }}</div>
+                <div class="conf-vehicle__meta">{{ car.year }} · {{ car.fuel }} · {{ car.category }}</div>
+                <div class="conf-vehicle__specs">
+                  <span *ngFor="let s of car.specs">{{ s.icon }} {{ s.value }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trip info -->
+          <div class="conf-card">
+            <div class="conf-card__label">Trip Details</div>
+            <div class="conf-rows">
+              <div class="conf-row">
+                <div class="conf-row__key">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <rect x="1" y="2" width="12" height="10" rx="1.5" stroke="#1A56DB" stroke-width="1.1"/>
+                    <path d="M4 1v2M10 1v2M1 5h12" stroke="#1A56DB" stroke-width="1.1" stroke-linecap="round"/>
+                  </svg>
+                  Pick-up
+                </div>
+                <div class="conf-row__val">{{ form.pickupDate | date:'EEE, d MMM yyyy' }}<br><span>{{ form.pickupLocation }}</span></div>
+              </div>
+              <div class="conf-row">
+                <div class="conf-row__key">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <rect x="1" y="2" width="12" height="10" rx="1.5" stroke="#1A56DB" stroke-width="1.1"/>
+                    <path d="M4 1v2M10 1v2M1 5h12" stroke="#1A56DB" stroke-width="1.1" stroke-linecap="round"/>
+                    <path d="M4.5 8.5l1.5 1.5 3.5-3" stroke="#1A56DB" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Return
+                </div>
+                <div class="conf-row__val">{{ form.returnDate | date:'EEE, d MMM yyyy' }}<br><span>{{ form.sameReturn ? form.pickupLocation : form.returnLocation }}</span></div>
+              </div>
+              <div class="conf-row">
+                <div class="conf-row__key">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <circle cx="7" cy="7" r="5.5" stroke="#1A56DB" stroke-width="1.1"/>
+                    <path d="M7 4v3l2 1.5" stroke="#1A56DB" stroke-width="1.1" stroke-linecap="round"/>
+                  </svg>
+                  Duration
+                </div>
+                <div class="conf-row__val">{{ rentalDays }} day{{ rentalDays !== 1 ? 's' : '' }}</div>
+              </div>
+              <div class="conf-row">
+                <div class="conf-row__key">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <circle cx="6" cy="5.5" r="3" stroke="#1A56DB" stroke-width="1.1"/>
+                    <path d="M1 13a5 5 0 0110 0" stroke="#1A56DB" stroke-width="1.1" stroke-linecap="round"/>
+                  </svg>
+                  Driver
+                </div>
+                <div class="conf-row__val">{{ form.firstName }} {{ form.lastName }}</div>
+              </div>
+              <div class="conf-row" *ngIf="form.flightNumber">
+                <div class="conf-row__key">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M12.5 2.5L8 8m0 0L5.5 6 2.5 9 8 11l.8 2.5 3-3L10 8m-2 0L8 5l4.5-4.5" stroke="#1A56DB" stroke-width="1.1" stroke-linecap="round"/>
+                  </svg>
+                  Flight
+                </div>
+                <div class="conf-row__val">{{ form.flightNumber }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Protection & extras -->
+          <div class="conf-card">
+            <div class="conf-card__label">Protection & Extras</div>
+            <div class="conf-rows">
+              <div class="conf-row">
+                <div class="conf-row__key">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M7 1.5L11.5 3V7c0 2.5-2 4.5-4.5 5.5C4.5 11.5 2.5 9.5 2.5 7V3z" stroke="#1A56DB" stroke-width="1.1" stroke-linejoin="round"/>
+                  </svg>
+                  Protection
+                </div>
+                <div class="conf-row__val">{{ selectedProtectionData.name }}</div>
+              </div>
+              <div class="conf-row" *ngFor="let e of extras">
+                <div class="conf-row__key" *ngIf="e.selected">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <circle cx="7" cy="7" r="5.5" fill="#EFF6FF"/>
+                    <path d="M4 7l2.5 2.5 3.5-4" stroke="#1A56DB" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  {{ e.icon }}
+                </div>
+                <div class="conf-row__val" *ngIf="e.selected">{{ e.name }}</div>
+              </div>
+              <div class="conf-row" *ngIf="extras.every(e => !e.selected)">
+                <div class="conf-row__key">No extras added</div>
+                <div class="conf-row__val"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: price + actions -->
+        <div class="confirmation-sidebar">
+          <div class="conf-card conf-price-card">
+            <div class="conf-card__label">Price Breakdown</div>
+            <div class="conf-price-rows">
+              <div class="conf-price-row">
+                <span>Base rate ({{ rentalDays }}d × €{{ discountedBasePrice }})</span>
+                <span>€{{ discountedBasePrice * rentalDays }}</span>
+              </div>
+              <div class="conf-price-row" *ngIf="protectionPrice > 0">
+                <span>{{ selectedProtectionData.name }}</span>
+                <span>€{{ protectionPrice * rentalDays }}</span>
+              </div>
+              <div class="conf-price-row" *ngFor="let e of extras">
+                <ng-container *ngIf="e.selected">
+                  <span>{{ e.name }}</span>
+                  <span>€{{ e.price * rentalDays }}</span>
+                </ng-container>
+              </div>
+              <div class="conf-price-total">
+                <span>Total</span>
+                <span>€{{ grandTotal }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- What's next -->
+          <div class="conf-card conf-next-card">
+            <div class="conf-card__label">What's next?</div>
+            <div class="conf-next-steps">
+              <div class="conf-next-step">
+                <div class="conf-next-step__num">1</div>
+                <div>Check your email for booking confirmation and voucher PDF.</div>
+              </div>
+              <div class="conf-next-step">
+                <div class="conf-next-step__num">2</div>
+                <div>Bring your <strong>driving licence</strong> + <strong>passport/ID</strong> to pick-up.</div>
+              </div>
+              <div class="conf-next-step">
+                <div class="conf-next-step__num">3</div>
+                <div>Our agent will meet you at <strong>{{ form.pickupLocation }}</strong>.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="conf-actions">
+            <a routerLink="/cars" class="btn btn--secondary btn--full btn--reactive">
+              Rent Another Car
+            </a>
+            <a routerLink="/" class="btn btn--ghost btn--full">
+              Go to Home
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── SHARED TEMPLATES ──────────────────────────────────────── -->
+<ng-template #carSummary>
+  <div class="sidebar-card" *ngIf="car">
+    <div class="sidebar-card__label">Your Vehicle</div>
+    <div class="sidebar-vehicle">
+      <div class="sidebar-vehicle__img">
+        <svg viewBox="0 0 220 120" fill="none">
+          <rect width="220" height="120" fill="#EFF6FF" rx="8"/>
+          <path d="M30 88L44 60Q55 44 75 40L110 37L145 40Q165 44 176 60L190 88Z"
+                [attr.fill]="car.color" opacity="0.88"/>
+          <path d="M75 60L83 44Q90 38L106 37L114 37Q130 38 137 44L145 60Z"
+                fill="#DBEAFE" opacity="0.85"/>
+          <circle cx="68" cy="95" r="14" fill="#1E293B"/>
+          <circle cx="68" cy="95" r="8" fill="#334155"/>
+          <circle cx="68" cy="95" r="4" fill="#94A3B8"/>
+          <circle cx="152" cy="95" r="14" fill="#1E293B"/>
+          <circle cx="152" cy="95" r="8" fill="#334155"/>
+          <circle cx="152" cy="95" r="4" fill="#94A3B8"/>
+          <ellipse cx="183" cy="76" rx="5.5" ry="3.5" fill="#FEF9C3" opacity="0.85"/>
+        </svg>
+      </div>
+      <div class="sidebar-vehicle__info">
+        <div class="sidebar-vehicle__name">{{ car.name }}</div>
+        <div class="sidebar-vehicle__meta">{{ car.year }} · {{ car.fuel }}</div>
+        <div class="sidebar-vehicle__badge">{{ car.category }}</div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #priceSummary>
+  <div class="sidebar-card sidebar-card--price">
+    <div class="sidebar-card__label">Price Summary</div>
+    <div class="sidebar-price-row">
+      <span>Base rate</span>
+      <span>€{{ discountedBasePrice }}/day</span>
+    </div>
+    <div class="sidebar-price-row" *ngIf="protectionPrice > 0">
+      <span>Protection</span>
+      <span>+€{{ protectionPrice }}/day</span>
+    </div>
+    <div class="sidebar-price-row" *ngFor="let e of extras">
+      <ng-container *ngIf="e.selected">
+        <span>{{ e.name }}</span>
+        <span>+€{{ e.price }}/day</span>
+      </ng-container>
+    </div>
+    <div class="sidebar-price-divider"></div>
+    <div class="sidebar-price-row sidebar-price-row--daily">
+      <span>Daily total</span>
+      <span>€{{ dailyTotal }}/day</span>
+    </div>
+    <div class="sidebar-price-total" *ngIf="rentalDays > 1">
+      <span>{{ rentalDays }} days total</span>
+      <span>€{{ grandTotal }}</span>
+    </div>
+    <div class="sidebar-discount-badge" *ngIf="car?.isOffer">
+      🏷️ {{ car?.discountPercent }}% offer applied
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #datesSummary>
+  <div class="sidebar-card" *ngIf="form.pickupDate && form.returnDate">
+    <div class="sidebar-card__label">Trip Summary</div>
+    <div class="sidebar-dates">
+      <div class="sidebar-date">
+        <div class="sidebar-date__label">Pick-up</div>
+        <div class="sidebar-date__val">{{ form.pickupDate | date:'d MMM' }}</div>
+        <div class="sidebar-date__loc">{{ form.pickupLocation }}</div>
+      </div>
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M4 10h12M11 6l4 4-4 4" stroke="#94A3B8" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="sidebar-date">
+        <div class="sidebar-date__label">Return</div>
+        <div class="sidebar-date__val">{{ form.returnDate | date:'d MMM' }}</div>
+        <div class="sidebar-date__loc">{{ form.sameReturn ? form.pickupLocation : form.returnLocation }}</div>
+      </div>
+    </div>
+  </div>
+</ng-template>

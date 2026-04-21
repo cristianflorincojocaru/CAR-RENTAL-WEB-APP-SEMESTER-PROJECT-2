@@ -14,7 +14,7 @@
     <div class="cars-hero__content animate-fadeInUp">
       <div class="badge badge--primary cars-hero__badge">
         <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
-          <circle cx="6" cy="6" r="4"/>
+          <circle cx="6" cy="6" r="4" />
         </svg>
         {{ allCars.length }} vehicles available
       </div>
@@ -49,22 +49,18 @@
 
     <!-- ── Branch Tabs ── -->
     <div class="fleet__branch-wrap animate-fadeInUp">
-      <button
-        *ngFor="let b of branches"
-        class="fleet__branch-tab"
-        [class.active]="activeBranch === b.key"
+      <button *ngFor="let b of branches" class="fleet__branch-tab" [class.active]="activeBranch === b.key"
         (click)="setBranch(b.key)">
         <!-- Globe icon for All -->
         <svg *ngIf="b.key === 'All'" width="15" height="15" viewBox="0 0 15 15" fill="none">
-          <circle cx="7.5" cy="7.5" r="6" stroke="currentColor" stroke-width="1.3"/>
-          <path d="M7.5 1.5v12M1.5 7.5h12M2.5 4Q7.5 6.5 12.5 4M2.5 11Q7.5 8.5 12.5 11"
-                stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+          <circle cx="7.5" cy="7.5" r="6" stroke="currentColor" stroke-width="1.3" />
+          <path d="M7.5 1.5v12M1.5 7.5h12M2.5 4Q7.5 6.5 12.5 4M2.5 11Q7.5 8.5 12.5 11" stroke="currentColor"
+            stroke-width="1.1" stroke-linecap="round" />
         </svg>
         <!-- Pin icon for branches -->
         <svg *ngIf="b.key !== 'All'" width="13" height="15" viewBox="0 0 13 15" fill="none">
-          <path d="M6.5 1A4.5 4.5 0 016.5 10L6.5 14" stroke="currentColor" stroke-width="1.3"
-                stroke-linecap="round"/>
-          <circle cx="6.5" cy="5" r="2.5" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M6.5 1A4.5 4.5 0 016.5 10L6.5 14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+          <circle cx="6.5" cy="5" r="2.5" stroke="currentColor" stroke-width="1.3" />
         </svg>
         {{ b.label }}
       </button>
@@ -73,10 +69,7 @@
     <!-- ── Category + Sort Toolbar ── -->
     <div class="fleet__toolbar animate-fadeInUp delay-1">
       <div class="fleet__categories">
-        <button
-          *ngFor="let cat of categories"
-          class="fleet__category-btn"
-          [class.active]="activeCategory === cat"
+        <button *ngFor="let cat of categories" class="fleet__category-btn" [class.active]="activeCategory === cat"
           (click)="setCategory(cat)">
           {{ cat }}
         </button>
@@ -88,7 +81,8 @@
             <option *ngFor="let opt of sortOptions" [value]="opt.value">{{ opt.label }}</option>
           </select>
           <svg class="fleet__sort-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
           </svg>
         </div>
       </div>
@@ -109,35 +103,32 @@
 
     <!-- ── Cars Grid ── -->
     <div class="fleet__grid" *ngIf="filteredCars.length > 0; else noResults">
-      <div
-        class="car-card"
-        *ngFor="let car of filteredCars; let i = index; trackBy: trackById"
+      <div class="car-card" *ngFor="let car of filteredCars; let i = index; trackBy: trackById"
         [style.animation-delay]="(i * 0.055) + 's'">
 
         <!-- Image wrapper -->
         <div class="car-card__image-wrap">
           <div class="car-card__image-placeholder">
             <svg viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="320" height="180" fill="#EFF6FF" rx="12"/>
+              <rect width="320" height="180" fill="#EFF6FF" rx="12" />
               <!-- Car body -->
-              <path d="M55 122 L72 86 Q86 64 114 58 L160 54 L206 58 Q234 64 248 86 L265 122 Z"
-                    [attr.fill]="car.color" opacity="0.88"/>
+              <path d="M55 122 L72 86 Q86 64 114 58 L160 54 L206 58 Q234 64 248 86 L265 122 Z" [attr.fill]="car.color"
+                opacity="0.88" />
               <!-- Windscreen -->
-              <path d="M112 86 L124 64 Q133 57 156 56 L164 56 Q187 57 196 64 L208 86 Z"
-                    fill="#DBEAFE" opacity="0.85"/>
+              <path d="M112 86 L124 64 Q133 57 156 56 L164 56 Q187 57 196 64 L208 86 Z" fill="#DBEAFE" opacity="0.85" />
               <!-- Door line -->
-              <line x1="160" y1="86" x2="160" y2="122" stroke="white" stroke-width="1" opacity="0.4"/>
+              <line x1="160" y1="86" x2="160" y2="122" stroke="white" stroke-width="1" opacity="0.4" />
               <!-- Front wheel -->
-              <circle cx="102" cy="130" r="20" fill="#1E293B"/>
-              <circle cx="102" cy="130" r="11" fill="#334155"/>
-              <circle cx="102" cy="130" r="5"  fill="#94A3B8"/>
+              <circle cx="102" cy="130" r="20" fill="#1E293B" />
+              <circle cx="102" cy="130" r="11" fill="#334155" />
+              <circle cx="102" cy="130" r="5" fill="#94A3B8" />
               <!-- Rear wheel -->
-              <circle cx="218" cy="130" r="20" fill="#1E293B"/>
-              <circle cx="218" cy="130" r="11" fill="#334155"/>
-              <circle cx="218" cy="130" r="5"  fill="#94A3B8"/>
+              <circle cx="218" cy="130" r="20" fill="#1E293B" />
+              <circle cx="218" cy="130" r="11" fill="#334155" />
+              <circle cx="218" cy="130" r="5" fill="#94A3B8" />
               <!-- Headlights -->
-              <ellipse cx="258" cy="108" rx="7" ry="4.5" fill="#FEF9C3" opacity="0.9"/>
-              <ellipse cx="62"  cy="108" rx="7" ry="4.5" fill="#FEF9C3" opacity="0.55"/>
+              <ellipse cx="258" cy="108" rx="7" ry="4.5" fill="#FEF9C3" opacity="0.9" />
+              <ellipse cx="62" cy="108" rx="7" ry="4.5" fill="#FEF9C3" opacity="0.55" />
             </svg>
           </div>
 
@@ -147,7 +138,7 @@
           <!-- Offer badge -->
           <div class="car-card__offer-badge" *ngIf="car.isOffer">
             <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
-              <path d="M5 1l1 3h3l-2.5 2 1 3L5 7.5 2.5 9l1-3L1 4h3z"/>
+              <path d="M5 1l1 3h3l-2.5 2 1 3L5 7.5 2.5 9l1-3L1 4h3z" />
             </svg>
             -{{ car.discountPercent }}%
           </div>
@@ -156,9 +147,8 @@
           <button class="car-card__favorite" (click)="toggleFavorite(car)" aria-label="Toggle favourite">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
               <path d="M9 15s-6-3.8-6-7.8A3.5 3.5 0 019 4.5a3.5 3.5 0 016 2.7C15 11.2 9 15 9 15z"
-                    [attr.fill]="car.isFavorite ? '#EF4444' : 'none'"
-                    [attr.stroke]="car.isFavorite ? '#EF4444' : '#94A3B8'"
-                    stroke-width="1.5"/>
+                [attr.fill]="car.isFavorite ? '#EF4444' : 'none'" [attr.stroke]="car.isFavorite ? '#EF4444' : '#94A3B8'"
+                stroke-width="1.5" />
             </svg>
           </button>
         </div>
@@ -172,7 +162,7 @@
             </div>
             <div class="car-card__rating">
               <svg width="13" height="13" viewBox="0 0 14 14" fill="#F59E0B">
-                <path d="M7 1l1.8 3.6L13 5.4l-3 2.9.7 4.1L7 10.4l-3.7 2 .7-4.1-3-2.9 4.2-.8z"/>
+                <path d="M7 1l1.8 3.6L13 5.4l-3 2.9.7 4.1L7 10.4l-3.7 2 .7-4.1-3-2.9 4.2-.8z" />
               </svg>
               {{ car.rating }}
             </div>
@@ -180,9 +170,8 @@
 
           <div class="car-card__branch">
             <svg width="11" height="13" viewBox="0 0 11 13" fill="none">
-              <path d="M5.5 1A3.5 3.5 0 015.5 8L5.5 12" stroke="#1A56DB" stroke-width="1.2"
-                    stroke-linecap="round"/>
-              <circle cx="5.5" cy="4" r="2" stroke="#1A56DB" stroke-width="1.2"/>
+              <path d="M5.5 1A3.5 3.5 0 015.5 8L5.5 12" stroke="#1A56DB" stroke-width="1.2" stroke-linecap="round" />
+              <circle cx="5.5" cy="4" r="2" stroke="#1A56DB" stroke-width="1.2" />
             </svg>
             {{ car.branch }}
           </div>
@@ -200,14 +189,13 @@
                 €{{ car.price }}/day
               </div>
               <div class="car-card__price">
-                <span class="car-card__price-amount"
-                      [class.car-card__price-amount--offer]="car.isOffer">
+                <span class="car-card__price-amount" [class.car-card__price-amount--offer]="car.isOffer">
                   €{{ getDiscountedPrice(car) }}
                 </span>
                 <span class="car-card__price-unit">/day</span>
               </div>
             </div>
-            <a [routerLink]="['/cars', car.id]" class="btn btn--primary btn--sm btn--reactive">
+            <a [routerLink]="['/cars', car.id, 'book']" class="btn btn--primary btn--sm btn--reactive">
               Book Now
             </a>
           </div>
@@ -222,8 +210,7 @@
         <div class="fleet__empty-icon">🔍</div>
         <h3 class="fleet__empty-title">No cars found</h3>
         <p class="fleet__empty-sub">Try a different branch or category.</p>
-        <button class="btn btn--primary btn--reactive"
-                (click)="setBranch('All'); setCategory('All')">
+        <button class="btn btn--primary btn--reactive" (click)="setBranch('All'); setCategory('All')">
           Reset filters
         </button>
       </div>
