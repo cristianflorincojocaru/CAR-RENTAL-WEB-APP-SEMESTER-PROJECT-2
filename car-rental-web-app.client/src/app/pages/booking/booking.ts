@@ -52,10 +52,21 @@ export class BookingComponent implements OnInit {
   bookingConfirmed = false;
   bookingRef = '';
 
+  stepDefs = [
+    { num: 1, label: 'Vehicle & Dates' },
+    { num: 2, label: 'Protection' },
+    { num: 3, label: 'Driver Details' },
+    { num: 4, label: 'Confirmed' },
+  ];
+
   car: Car | null = null;
   today: string = new Date().toISOString().split('T')[0];
   minReturn: string = '';
+  maxReturn: string = '';   // 4 weeks cap when no search context
   rentalDays = 1;
+
+  /** True when user arrived via Home search — location select is locked */
+  locationLocked = false;
 
   form: BookingForm = {
     firstName: '', lastName: '', email: '', phone: '',
@@ -137,7 +148,10 @@ export class BookingComponent implements OnInit {
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    const source = new CarsComponent();
+    // !!! DANGEROUS !!! 
+    // Temporary instance to access the cars data 
+    // But avoids circular dependency for now; ideally we'd refactor to a shared service for the car data
+    const source = new CarsComponent({} as ActivatedRoute, {} as Router); 
     this.car = source.allCars.find(c => c.id === id) || null;
 
     if (!this.car) {
@@ -145,9 +159,49 @@ export class BookingComponent implements OnInit {
       return;
     }
 
-    // Pre-fill location from car branch
-    this.form.pickupLocation = this.mapBranchToLocation(this.car.branch);
-    this.form.returnLocation = this.form.pickupLocation;
+    const params = this.route.snapshot.queryParamMap;
+
+    // ── Case 1: arriving from Home search ──────────────────────
+    if (params.get('locationLocked') === '1') {
+      this.locationLocked = true;
+
+      // Pre-fill dates from search params
+      this.form.pickupDate      = params.get('pickupDate')  || '';
+      this.form.returnDate      = params.get('returnDate')  || '';
+
+      // Map home location string to one of our booking locations
+      const rawLoc = params.get('location') || '';
+      this.form.pickupLocation  = this.mapHomeLocation(rawLoc);
+      this.form.returnLocation  = this.form.pickupLocation;
+
+      if (this.form.pickupDate) {
+        this.calcMinReturn();
+        this.calcDays();
+      }
+    } else {
+      // ── Case 2: direct navigation — default from car branch ──
+      this.form.pickupLocation = this.mapBranchToLocation(this.car.branch);
+      this.form.returnLocation = this.form.pickupLocation;
+    }
+  }
+
+  // ── Location mapping helpers ────────────────────────────────
+
+  /** Maps the display labels used on Home → booking location dropdown values */
+  private mapHomeLocation(loc: string): string {
+    const map: Record<string, string> = {
+      'Henri Coandă Airport':       'Henri Coandă Airport (OTP), Bucharest',
+      'Otopeni Airport':             'Henri Coandă Airport (OTP), Bucharest',
+      'Bucharest — City Centre':     'Otopeni — City Centre',
+      'Cluj-Napoca':                 'Cluj-Napoca',
+      'Timișoara':                   'Timișoara',
+      'Iași':                        'Iași',
+      'Constanța':                   'Constanța',
+    };
+    // Try exact match first; fall back to partial match; then return as-is
+    if (map[loc]) return map[loc];
+    const found = this.locations.find(l => l.toLowerCase().includes(loc.toLowerCase()));
+    return found || loc;
   }
 
   private mapBranchToLocation(branch: string): string {
@@ -157,6 +211,8 @@ export class BookingComponent implements OnInit {
     if (branch.includes('Timișoara')) return 'Timișoara';
     return branch;
   }
+
+  // ── Price helpers ───────────────────────────────────────────
 
   get selectedProtectionData(): Protection {
     return this.protections.find(p => p.id === this.selectedProtection)!;
@@ -186,11 +242,11 @@ export class BookingComponent implements OnInit {
     return this.dailyTotal * Math.max(this.rentalDays, 1);
   }
 
+  // ── Date handlers ───────────────────────────────────────────
+
   onPickupDateChange(): void {
-    if (!this.form.pickupDate) { this.minReturn = ''; return; }
-    const d = new Date(this.form.pickupDate);
-    d.setDate(d.getDate() + 1);
-    this.minReturn = d.toISOString().split('T')[0];
+    if (!this.form.pickupDate) { this.minReturn = ''; this.maxReturn = ''; return; }
+    this.calcMinReturn();
     if (this.form.returnDate && this.form.returnDate <= this.form.pickupDate) {
       this.form.returnDate = '';
     }
@@ -198,6 +254,18 @@ export class BookingComponent implements OnInit {
   }
 
   onReturnDateChange(): void { this.calcDays(); }
+
+  private calcMinReturn(): void {
+    if (!this.form.pickupDate) return;
+    const d = new Date(this.form.pickupDate);
+    d.setDate(d.getDate() + 1);
+    this.minReturn = d.toISOString().split('T')[0];
+
+    // Cap at 28 days (4 weeks)
+    const max = new Date(this.form.pickupDate);
+    max.setDate(max.getDate() + 28);
+    this.maxReturn = max.toISOString().split('T')[0];
+  }
 
   private calcDays(): void {
     if (!this.form.pickupDate || !this.form.returnDate) { this.rentalDays = 1; return; }
@@ -212,7 +280,6 @@ export class BookingComponent implements OnInit {
   }
 
   toggleExtra(extra: Extra): void {
-    // If full insurance selected, deselect roadside (already included)
     if (extra.id === 'full_insurance' && !extra.selected) {
       const roadside = this.extras.find(e => e.id === 'roadside');
       if (roadside) roadside.selected = false;
@@ -221,6 +288,7 @@ export class BookingComponent implements OnInit {
   }
 
   // ── Navigation ──────────────────────────────────────────────
+
   nextStep(): void {
     if (!this.validateStep()) return;
     if (this.currentStep < this.totalSteps) this.currentStep++;
@@ -246,9 +314,9 @@ export class BookingComponent implements OnInit {
     if (this.currentStep === 3) {
       const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!this.form.firstName.trim()) this.formErrors.firstName = 'Required';
-      if (!this.form.lastName.trim()) this.formErrors.lastName = 'Required';
+      if (!this.form.lastName.trim())  this.formErrors.lastName  = 'Required';
       if (!this.form.email || !emailRx.test(this.form.email)) this.formErrors.email = 'Valid email required';
-      if (!this.form.phone.trim()) this.formErrors.phone = 'Required';
+      if (!this.form.phone.trim())     this.formErrors.phone     = 'Required';
     }
     return Object.keys(this.formErrors).length === 0;
   }

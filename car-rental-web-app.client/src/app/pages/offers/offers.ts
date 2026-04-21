@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Car } from '../cars/cars';   // re-use the interface & data
+import { Car, CarsComponent } from '../cars/cars';   // re-use the interface & data
 
-// We import the full car list directly so Offers stays in sync
-import { CarsComponent } from '../cars/cars';
 
 @Component({
   selector: 'app-offers',
@@ -17,7 +15,10 @@ import { CarsComponent } from '../cars/cars';
 export class OffersComponent implements OnInit {
 
   // ── All cars (sourced from CarsComponent) ───────────────────
-  private readonly source = new CarsComponent();
+  // !!! DANGEROUS !!! 
+  // Temporary instance to access the cars data 
+  // But avoids circular dependency for now; ideally we'd refactor to a shared service for the car data
+  private readonly source = new CarsComponent({} as ActivatedRoute, {} as Router);
 
   categories = ['All', 'Economy', 'Compact', 'SUV', 'Premium'];
   activeCategory = 'All';

@@ -54,27 +54,28 @@
 // Step indicators
 .booking-steps {
   display: flex;
-  align-items: center;
+  align-items: flex-start;   // align to top so labels don't shift circles
   gap: 0;
   flex: 1;
   justify-content: center;
   max-width: 640px;
-
+ 
   @media (max-width: 768px) {
     max-width: 100%;
   }
 }
-
+ 
 .booking-step {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0;
   flex: 1;
   position: relative;
   cursor: default;
-
+  padding-bottom: var(--space-5);   // ← breathing room below labels
+ 
   &.completed { cursor: pointer; }
-
+ 
   &__circle {
     width: 32px;
     height: 32px;
@@ -92,60 +93,61 @@
     transition: all 0.25s ease;
     z-index: 1;
     position: relative;
+    flex-shrink: 0;
   }
-
+ 
   &.active &__circle {
     background: var(--color-primary);
     border-color: var(--color-primary);
     color: white;
     box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.15);
   }
-
+ 
   &.completed &__circle {
     background: var(--color-primary);
     border-color: var(--color-primary);
     color: white;
   }
-
+ 
   &__label {
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-50%);
+    margin-top: var(--space-2);
     white-space: nowrap;
     font-size: 10px;
     font-weight: var(--fw-semibold);
     color: var(--text-muted);
     letter-spacing: 0.04em;
     text-transform: uppercase;
-
+    text-align: center;
+ 
     @media (max-width: 600px) { display: none; }
   }
-
-  &.active &__label { color: var(--color-primary); }
+ 
+  &.active &__label  { color: var(--color-primary); }
   &.completed &__label { color: var(--text-secondary); }
-
+ 
+  // The connector line sits between steps, horizontally
   &__line {
-    flex: 1;
+    position: absolute;
+    top: 15px;          // vertically centred on the circle (32px / 2 - 1px)
+    left: calc(50% + 16px);   // starts right after circle
+    right: calc(-50% + 16px); // ends at the start of next circle
     height: 2px;
     background: var(--color-gray-200);
     transition: background 0.25s ease;
-    margin: 0 -1px;
+    z-index: 0;
   }
-
+ 
   &.completed &__line { background: var(--color-primary); }
 }
-
-// ============================================================
-// BODY LAYOUT
-// ============================================================
+ 
+// ── Fix: booking-body bottom padding ─────────────────────────
 .booking-body {
   padding-top: var(--space-10);
-  padding-bottom: var(--space-20);
-
+  padding-bottom: var(--space-24);  // was var(--space-20), gives more room
+ 
   @media (max-width: 768px) {
     padding-top: var(--space-6);
-    padding-bottom: var(--space-12);
+    padding-bottom: var(--space-16);
   }
 }
 
@@ -1233,4 +1235,45 @@
   flex-direction: column;
   gap: var(--space-3);
   margin-top: var(--space-4);
+}
+
+// ============================================================
+// BOOKING — ADDITIONS 
+// ============================================================
+ 
+// ── Fix: step labels positioned correctly below circles ───────
+// The original used position:absolute which could overlap content.
+// We use the flex column approach here.
+
+ 
+// ── Location locked display ────────────────────────────────────
+.location-locked-display {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0.75rem var(--space-4);
+  background: var(--color-primary-soft);
+  border: 1.5px solid var(--color-primary-mid);
+  border-radius: var(--radius-lg);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+  color: var(--text-primary);
+ 
+  svg { flex-shrink: 0; }
+}
+ 
+// ── "From your search" badge on location card label ───────────
+.location-from-search-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: var(--color-primary-mid);
+  color: var(--color-primary-dark);
+  border-radius: var(--radius-full);
+  font-size: 10px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.03em;
+  margin-left: var(--space-2);
+  vertical-align: middle;
 }

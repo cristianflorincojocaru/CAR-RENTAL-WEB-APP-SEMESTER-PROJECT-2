@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 
 export interface CarSpec {
   icon: string;
@@ -52,6 +52,13 @@ export class CarsComponent implements OnInit {
     { value: 'name',       label: 'Name A–Z' },
   ];
   activeSort = 'price-asc';
+
+  // ── Search params coming from Home ──────────────────────────
+  fromSearch = false;
+  searchPickupDate   = '';
+  searchReturnDate   = '';
+  searchLocation     = '';
+  searchTransmission = '';
 
   allCars: Car[] = [
     // ── Craiova Central ──────────────────────────────────────
@@ -203,6 +210,54 @@ export class CarsComponent implements OnInit {
     },
   ];
 
+  // ── Map Home location label → branch key ────────────────────
+  private locationToBranch: Record<string, string> = {
+    'Henri Coandă Airport':       'Bucharest — Otopeni',
+    'Otopeni Airport':             'Bucharest — Otopeni',
+    'Bucharest — City Centre':     'Bucharest — Otopeni',
+    'Cluj-Napoca':                 'All',
+    'Timișoara':                   'Timișoara',
+    'Iași':                        'All',
+    'Constanța':                   'All',
+  };
+
+  constructor(private route: ActivatedRoute, private router: Router) {}
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.fromSearch        = params['fromSearch'] === '1';
+      this.searchPickupDate  = params['pickupDate']   || '';
+      this.searchReturnDate  = params['returnDate']   || '';
+      this.searchLocation    = params['location']     || '';
+      this.searchTransmission = params['transmission'] || '';
+
+      // Apply category filter from search
+      if (params['category'] && params['category'] !== '') {
+        this.activeCategory = params['category'];
+      }
+
+      // Apply branch filter from location
+      if (params['location']) {
+        const mapped = this.locationToBranch[params['location']];
+        if (mapped && mapped !== 'All') {
+          this.activeBranch = mapped;
+        }
+      }
+    });
+  }
+
+  /** Build queryParams for Book Now links */
+  bookingParams(car: Car): Record<string, string> {
+    const p: Record<string, string> = {};
+    if (this.fromSearch) {
+      if (this.searchPickupDate)  p['pickupDate']  = this.searchPickupDate;
+      if (this.searchReturnDate)  p['returnDate']  = this.searchReturnDate;
+      if (this.searchLocation)    p['location']    = this.searchLocation;
+      p['locationLocked'] = '1';
+    }
+    return p;
+  }
+
   get filteredCars(): Car[] {
     let cars = [...this.allCars];
 
@@ -211,6 +266,14 @@ export class CarsComponent implements OnInit {
     }
     if (this.activeCategory !== 'All') {
       cars = cars.filter(c => c.category === this.activeCategory);
+    }
+
+    // Silent transmission filter (only when coming from search)
+    if (this.fromSearch && this.searchTransmission) {
+      const tx = this.searchTransmission.toLowerCase();
+      cars = cars.filter(c =>
+        c.specs.some(s => s.value.toLowerCase() === tx)
+      );
     }
 
     switch (this.activeSort) {
@@ -241,7 +304,17 @@ export class CarsComponent implements OnInit {
     return car.price;
   }
 
-  ngOnInit(): void {}
+  clearSearch(): void {
+    this.fromSearch         = false;
+    this.searchPickupDate   = '';
+    this.searchReturnDate   = '';
+    this.searchLocation     = '';
+    this.searchTransmission = '';
+    this.activeCategory     = 'All';
+    this.activeBranch       = 'All';
+    // Remove query params from URL
+    this.router.navigate([], { queryParams: {} });
+  }
 
   setBranch(key: string): void {
     this.activeBranch = key;

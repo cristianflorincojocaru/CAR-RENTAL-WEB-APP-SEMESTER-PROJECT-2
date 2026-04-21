@@ -13,20 +13,18 @@
 
       <div class="booking-steps">
         <div class="booking-step"
-             *ngFor="let i of [1,2,3,4]; let idx = index"
-             [class.active]="currentStep === i"
-             [class.completed]="currentStep > i"
-             (click)="goToStep(i)">
+             *ngFor="let step of stepDefs; let idx = index"
+             [class.active]="currentStep === step.num"
+             [class.completed]="currentStep > step.num"
+             (click)="goToStep(step.num)">
           <div class="booking-step__circle">
-            <svg *ngIf="currentStep > i" width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <svg *ngIf="currentStep > step.num" width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M2.5 7l3 3 6-5.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <span *ngIf="currentStep <= i">{{ i }}</span>
+            <span *ngIf="currentStep <= step.num">{{ step.num }}</span>
           </div>
-          <span class="booking-step__label">
-            {{ ['Vehicle & Dates', 'Protection', 'Driver Details', 'Confirmed'][idx] }}
-          </span>
-          <div class="booking-step__line" *ngIf="i < 4"></div>
+          <span class="booking-step__label">{{ step.label }}</span>
+          <div class="booking-step__line" *ngIf="idx < stepDefs.length - 1"></div>
         </div>
       </div>
 
@@ -45,7 +43,7 @@
         <div class="booking-section-title">
           <div class="booking-section-title__num">01</div>
           <div>
-            <h2>Select Dates & Location</h2>
+            <h2>Select Dates &amp; Location</h2>
             <p>Choose when and where you'd like to pick up and return the vehicle.</p>
           </div>
         </div>
@@ -63,7 +61,9 @@
                 Pick-up Date
               </label>
               <input class="form-control" type="date" [min]="today"
-                     [(ngModel)]="form.pickupDate" (change)="onPickupDateChange()">
+                     [(ngModel)]="form.pickupDate"
+                     [readonly]="locationLocked && !!form.pickupDate"
+                     (change)="onPickupDateChange()">
               <span class="field-error" *ngIf="formErrors['pickupDate']">{{ formErrors['pickupDate'] }}</span>
             </div>
             <div class="date-field date-field--arrow">
@@ -80,8 +80,11 @@
                 </svg>
                 Return Date
               </label>
-              <input class="form-control" type="date" [min]="minReturn || today"
-                     [(ngModel)]="form.returnDate" (change)="onReturnDateChange()">
+              <input class="form-control" type="date"
+                     [min]="minReturn || today"
+                     [max]="maxReturn"
+                     [(ngModel)]="form.returnDate"
+                     (change)="onReturnDateChange()">
               <span class="field-error" *ngIf="formErrors['returnDate']">{{ formErrors['returnDate'] }}</span>
             </div>
           </div>
@@ -97,8 +100,30 @@
 
         <!-- Location row -->
         <div class="booking-card">
-          <div class="booking-card__label">Pick-up Location</div>
-          <div class="location-field" [class.has-error]="formErrors['pickupLocation']">
+          <div class="booking-card__label">
+            Pick-up Location
+            <!-- Badge shown when locked from search -->
+            <span class="location-from-search-badge" *ngIf="locationLocked">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                <circle cx="4.5" cy="4.5" r="3.5" stroke="currentColor" stroke-width="1.1"/>
+                <path d="M7 7L10 10" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+              </svg>
+              From your search
+            </span>
+          </div>
+
+          <!-- Locked: show as styled read-only display -->
+          <div *ngIf="locationLocked" class="location-locked-display">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1.5A4.5 4.5 0 018 10.5" stroke="#1A56DB" stroke-width="1.3" stroke-linecap="round"/>
+              <circle cx="8" cy="5" r="2" stroke="#1A56DB" stroke-width="1.3"/>
+              <path d="M1.5 14.5a6.5 6.5 0 0113 0" stroke="#1A56DB" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+            <span>{{ form.pickupLocation }}</span>
+          </div>
+
+          <!-- Unlocked: normal dropdown -->
+          <div *ngIf="!locationLocked" class="location-field" [class.has-error]="formErrors['pickupLocation']">
             <svg class="location-field__icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M8 1.5A4.5 4.5 0 018 10.5" stroke="#94A3B8" stroke-width="1.3" stroke-linecap="round"/>
               <circle cx="8" cy="5" r="2" stroke="#94A3B8" stroke-width="1.3"/>
@@ -504,7 +529,7 @@
 
           <!-- Protection & extras -->
           <div class="conf-card">
-            <div class="conf-card__label">Protection & Extras</div>
+            <div class="conf-card__label">Protection &amp; Extras</div>
             <div class="conf-rows">
               <div class="conf-row">
                 <div class="conf-row__key">
@@ -515,16 +540,18 @@
                 </div>
                 <div class="conf-row__val">{{ selectedProtectionData.name }}</div>
               </div>
-              <div class="conf-row" *ngFor="let e of extras">
-                <div class="conf-row__key" *ngIf="e.selected">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <circle cx="7" cy="7" r="5.5" fill="#EFF6FF"/>
-                    <path d="M4 7l2.5 2.5 3.5-4" stroke="#1A56DB" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  {{ e.icon }}
+              <ng-container *ngFor="let e of extras">
+                <div class="conf-row" *ngIf="e.selected">
+                  <div class="conf-row__key">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                      <circle cx="7" cy="7" r="5.5" fill="#EFF6FF"/>
+                      <path d="M4 7l2.5 2.5 3.5-4" stroke="#1A56DB" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    {{ e.icon }}
+                  </div>
+                  <div class="conf-row__val">{{ e.name }}</div>
                 </div>
-                <div class="conf-row__val" *ngIf="e.selected">{{ e.name }}</div>
-              </div>
+              </ng-container>
               <div class="conf-row" *ngIf="extras.every(e => !e.selected)">
                 <div class="conf-row__key">No extras added</div>
                 <div class="conf-row__val"></div>
@@ -546,12 +573,12 @@
                 <span>{{ selectedProtectionData.name }}</span>
                 <span>€{{ protectionPrice * rentalDays }}</span>
               </div>
-              <div class="conf-price-row" *ngFor="let e of extras">
-                <ng-container *ngIf="e.selected">
+              <ng-container *ngFor="let e of extras">
+                <div class="conf-price-row" *ngIf="e.selected">
                   <span>{{ e.name }}</span>
                   <span>€{{ e.price * rentalDays }}</span>
-                </ng-container>
-              </div>
+                </div>
+              </ng-container>
               <div class="conf-price-total">
                 <span>Total</span>
                 <span>€{{ grandTotal }}</span>
@@ -635,12 +662,12 @@
       <span>Protection</span>
       <span>+€{{ protectionPrice }}/day</span>
     </div>
-    <div class="sidebar-price-row" *ngFor="let e of extras">
-      <ng-container *ngIf="e.selected">
+    <ng-container *ngFor="let e of extras">
+      <div class="sidebar-price-row" *ngIf="e.selected">
         <span>{{ e.name }}</span>
         <span>+€{{ e.price }}/day</span>
-      </ng-container>
-    </div>
+      </div>
+    </ng-container>
     <div class="sidebar-price-divider"></div>
     <div class="sidebar-price-row sidebar-price-row--daily">
       <span>Daily total</span>

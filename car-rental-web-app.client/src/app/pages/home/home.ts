@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 
 interface Car {
   id: number;
@@ -43,8 +43,8 @@ export class HomeComponent implements OnInit {
 
   // --- Hero Search ---
   activeTab: 'short' | 'long' = 'short';
-today: string = new Date().toISOString().split('T')[0];
-maxReturnDate: string = '';
+  today: string = new Date().toISOString().split('T')[0];
+  maxReturnDate: string = '';
 
   searchForm = {
     location:     '',
@@ -202,6 +202,8 @@ maxReturnDate: string = '';
     }
   ];
 
+  constructor(private router: Router) {}
+
   ngOnInit(): void {}
 
   closeBanner(): void {
@@ -210,47 +212,60 @@ maxReturnDate: string = '';
 
   setTab(tab: 'short' | 'long'): void {
     this.activeTab = tab;
+    // Recalculate maxReturnDate when tab changes
+    if (this.searchForm.pickupDate) {
+      this.onPickupDateChange();
+    }
   }
 
   onSearch(): void {
-    console.log('Search:', this.searchForm);
+    const params: Record<string, string> = {};
+
+    if (this.searchForm.pickupDate)   params['pickupDate']   = this.searchForm.pickupDate;
+    if (this.searchForm.returnDate)   params['returnDate']   = this.searchForm.returnDate;
+    if (this.searchForm.location)     params['location']     = this.searchForm.location;
+    if (this.searchForm.category && this.searchForm.category !== '')
+                                      params['category']     = this.searchForm.category;
+    if (this.searchForm.transmission && this.searchForm.transmission !== '')
+                                      params['transmission'] = this.searchForm.transmission;
+    params['fromSearch'] = '1';
+
+    this.router.navigate(['/cars'], { queryParams: params });
   }
 
   setCategory(cat: string): void {
     this.activeCategory = cat;
   }
 
- trackByCat = (index: number, car: any): string => {
-  return this.activeCategory + '_' + (car.id ?? car.name);
-};
+  trackByCat = (index: number, car: any): string => {
+    return this.activeCategory + '_' + (car.id ?? car.name);
+  };
 
   toggleFavorite(car: Car): void {
     car.isFavorite = !car.isFavorite;
   }
 
   onPickupDateChange() {
-  if (!this.searchForm.pickupDate) {
-    this.maxReturnDate = '';
-    return;
+    if (!this.searchForm.pickupDate) {
+      this.maxReturnDate = '';
+      return;
+    }
+
+    const pickup = new Date(this.searchForm.pickupDate);
+
+    if (this.activeTab === 'short') {
+      // max 7 zile
+      pickup.setDate(pickup.getDate() + 7);
+    } else {
+      // max 28 zile (4 săptămâni)
+      pickup.setDate(pickup.getDate() + 28);
+    }
+
+    this.maxReturnDate = pickup.toISOString().split('T')[0];
+
+    // dacă return date depășește noul max, resetează
+    if (this.searchForm.returnDate > this.maxReturnDate) {
+      this.searchForm.returnDate = '';
+    }
   }
-
-  const pickup = new Date(this.searchForm.pickupDate);
-
-  if (this.activeTab === 'short') {
-    // max 7 zile
-    pickup.setDate(pickup.getDate() + 7);
-  } else {
-    // max 30 zile
-    pickup.setDate(pickup.getDate() + 30);
-  }
-
-  this.maxReturnDate = pickup.toISOString().split('T')[0];
-
-  // dacă return date depășește noul max, resetează
-  if (this.searchForm.returnDate > this.maxReturnDate) {
-    this.searchForm.returnDate = '';
-  }
-
-  
-}
 }
