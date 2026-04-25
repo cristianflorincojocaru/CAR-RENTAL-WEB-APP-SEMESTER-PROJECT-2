@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+
+import { AuthService } from '../../../services/auth.service';
+import { SignupRequest } from '../../../models/auth.models';
 
 interface SignupForm {
   fullName: string;
@@ -55,9 +59,13 @@ export class SignupComponent {
     'Full rental history & easy re-booking',
   ];
 
-  constructor(private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   // ── Password strength ──────────────────────────────────────
+
   get passwordStrength(): number {
     const p = this.form.password;
     if (!p) return 0;
@@ -74,7 +82,7 @@ export class SignupComponent {
     return labels[this.passwordStrength] ?? '';
   }
 
-  strengthColor(bar: number): string {
+  strengthColor(_bar: number): string {
     const s = this.passwordStrength;
     if (s === 0) return 'empty';
     if (s === 1) return 'weak';
@@ -83,7 +91,8 @@ export class SignupComponent {
     return 'strong';
   }
 
-  // ── Field-level validation ─────────────────────────────────
+  // ── Validare câmpuri ─────────────────────────────────────────
+
   validateField(field: keyof SignupForm): void {
     switch (field) {
       case 'fullName':
@@ -136,7 +145,6 @@ export class SignupComponent {
         } else {
           delete this.errors.password;
         }
-        // Re-validate confirm if already touched
         if (this.form.confirmPassword) {
           this.validateField('confirmPassword');
         }
@@ -167,22 +175,59 @@ export class SignupComponent {
     return Object.keys(this.errors).length === 0;
   }
 
+  // ── Submit ────────────────────────────────────────────────────
+
   onSignup(): void {
     this.signupError = '';
     if (!this.validateAll()) return;
 
     this.isLoading = true;
 
-    // TODO: replace with real auth service call
-    setTimeout(() => {
-      this.isLoading = false;
-      // On success: navigate or show confirmation
-      // this.router.navigate(['/']);
-    }, 1600);
+    const request: SignupRequest = {
+      fullName: this.form.fullName.trim(),
+      username: this.form.username.trim(),
+      email: this.form.email.trim(),
+      phone: this.form.phone.trim(),
+      password: this.form.password
+    };
+
+    this.authService.signup(request).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.router.navigate(['/']);
+      },
+      error: (err: HttpErrorResponse) => {
+        this.isLoading = false;
+        if (err.status === 409) {
+          // Email sau username deja înregistrat
+          const detail: string = err.error?.detail ?? '';
+          if (detail.toLowerCase().includes('email')) {
+            this.errors.email = 'This email is already registered.';
+          } else if (detail.toLowerCase().includes('username')) {
+            this.errors.username = 'This username is already taken.';
+          } else {
+            this.signupError = 'An account with these details already exists.';
+          }
+        } else if (err.status === 400 && err.error?.errors) {
+          // Erori de validare de la server
+          const serverErrors = err.error.errors as Record<string, string[]>;
+          Object.entries(serverErrors).forEach(([key, messages]) => {
+            const fieldKey = key.charAt(0).toLowerCase() + key.slice(1) as keyof SignupErrors;
+            (this.errors as Record<string, string>)[fieldKey] = messages[0];
+          });
+        } else if (err.status === 0) {
+          this.signupError = 'Cannot connect to server. Please try again later.';
+        } else {
+          this.signupError = err.error?.detail || 'Registration failed. Please try again.';
+        }
+      }
+    });
   }
 
+  // ── Google OAuth ──────────────────────────────────────────────
+
   signupWithGoogle(): void {
-    // TODO: integrate Google OAuth
-    console.log('Google OAuth signup initiated');
+    // TODO: implementare Google OAuth
+    console.log('Google OAuth — not yet implemented');
   }
 }

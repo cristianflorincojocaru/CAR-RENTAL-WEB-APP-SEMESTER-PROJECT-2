@@ -215,7 +215,7 @@
           <div class="car-card__footer">
             <div class="car-card__price-block">
               <div class="car-card__price-original" *ngIf="car.isOffer">
-                €{{ car.price }}/day
+                €{{ car.dailyRate }}/day
               </div>
               <div class="car-card__price">
                 <span class="car-card__price-amount" [class.car-card__price-amount--offer]="car.isOffer">

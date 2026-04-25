@@ -246,3 +246,186 @@
   }
 
 }
+
+// ============================================================
+// NAVBAR USER MENU 
+// ============================================================
+
+// ── User Menu (autentificat) ──────────────────────────────────
+.navbar__user-menu {
+  position: relative;
+}
+
+.navbar__user-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px var(--space-3) 6px 6px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--color-gray-200);
+  background: var(--color-white);
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    border-color: var(--color-primary-mid);
+    box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.08);
+  }
+}
+
+.navbar__user-avatar {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.02em;
+}
+
+.navbar__user-name {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+}
+
+.navbar__user-chevron {
+  color: var(--text-muted);
+  transition: transform 0.2s ease;
+
+  &.open {
+    transform: rotate(180deg);
+  }
+}
+
+// ── Dropdown ──────────────────────────────────────────────────
+.navbar__user-dropdown {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  min-width: 220px;
+  background: var(--color-white);
+  border: var(--border-thin);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  z-index: var(--z-dropdown);
+  overflow: hidden;
+
+  // Ascuns implicit
+  opacity: 0;
+  transform: translateY(-6px) scale(0.97);
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+
+  &.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+}
+
+.navbar__user-dropdown-header {
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-gray-50);
+}
+
+.navbar__user-dropdown-name {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.navbar__user-dropdown-email {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.navbar__user-role-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--color-primary-mid);
+  color: var(--color-primary-dark);
+  border-radius: var(--radius-full);
+  font-size: 10px;
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.navbar__user-dropdown-divider {
+  height: 1px;
+  background: var(--color-gray-200);
+}
+
+.navbar__user-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+  text-align: left;
+
+  &:hover {
+    background: var(--color-gray-50);
+    color: var(--text-primary);
+  }
+
+  &--danger {
+    color: var(--color-error);
+
+    &:hover {
+      background: var(--color-error-soft);
+      color: var(--color-error);
+    }
+  }
+
+  svg { flex-shrink: 0; }
+}
+
+// ── Mobile user info ──────────────────────────────────────────
+.navbar__mobile-user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--color-gray-50);
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-3);
+
+  .navbar__user-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: var(--fs-sm);
+  }
+}
+
+.navbar__mobile-user-name {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+}
+
+.navbar__mobile-user-email {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  margin-top: 2px;
+}

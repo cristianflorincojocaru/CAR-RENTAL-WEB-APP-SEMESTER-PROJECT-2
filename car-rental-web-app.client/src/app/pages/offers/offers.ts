@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Car, CarsComponent } from '../cars/cars';   // re-use the interface & data
 
+import { CarService } from '../../services/car.service';
+import { Car } from '../../models/car.models';
 
 @Component({
   selector: 'app-offers',
@@ -14,11 +15,12 @@ import { Car, CarsComponent } from '../cars/cars';   // re-use the interface & d
 })
 export class OffersComponent implements OnInit {
 
-  // ── All cars (sourced from CarsComponent) ───────────────────
-  // !!! DANGEROUS !!! 
-  // Temporary instance to access the cars data 
-  // But avoids circular dependency for now; ideally we'd refactor to a shared service for the car data
-  private readonly source = new CarsComponent({} as ActivatedRoute, {} as Router);
+  // ── State ─────────────────────────────────────────────────────
+
+  offerCars: Car[] = [];
+  isLoading = false;
+  loadError = false;
+  totalOffersCount = 0;
 
   categories = ['All', 'Economy', 'Compact', 'SUV', 'Premium'];
   activeCategory = 'All';
@@ -33,50 +35,86 @@ export class OffersComponent implements OnInit {
 
   promos = [
     { code: 'SUMMER30', desc: '30% off all weekend rentals', expires: 'Valid until 31 Aug 2026' },
-    { code: 'FLEET10',  desc: '10% off all Premium models',   expires: 'Valid until 30 Jun 2026' },
-    { code: 'DRIVE25',  desc: '25% off Dacia Duster 4x4',     expires: 'Valid until 15 Jul 2026' },
+    { code: 'FLEET10',  desc: '10% off all Premium models',  expires: 'Valid until 30 Jun 2026' },
+    { code: 'DRIVE25',  desc: '25% off Dacia Duster 4x4',    expires: 'Valid until 15 Jul 2026' },
   ];
   copiedCode: string | null = null;
 
-  get offerCars(): Car[] {
-    let cars = this.source.allCars.filter(c => c.isOffer);
+  constructor(private carService: CarService) {}
 
-    if (this.activeCategory !== 'All') {
-      cars = cars.filter(c => c.category === this.activeCategory);
-    }
+  ngOnInit(): void {
+    this.loadOffers();
+    this.loadTotalCount();
+  }
 
+  // ── Data loading ──────────────────────────────────────────────
+
+  private loadOffers(): void {
+    this.isLoading = true;
+    this.loadError = false;
+
+    this.carService.getOffers(this.activeCategory).subscribe({
+      next: cars => {
+        this.offerCars = this.sortCars(cars);
+        this.isLoading = false;
+      },
+      error: () => {
+        this.loadError = true;
+        this.isLoading = false;
+      }
+    });
+  }
+
+  private loadTotalCount(): void {
+    this.carService.getOffers().subscribe({
+      next: cars => this.totalOffersCount = cars.length,
+      error: () => { /* ignorăm */ }
+    });
+  }
+
+  // ── Sortare locală ────────────────────────────────────────────
+
+  private sortCars(cars: Car[]): Car[] {
+    const sorted = [...cars];
     switch (this.activeSort) {
       case 'discount-desc':
-        cars.sort((a, b) => (b.discountPercent ?? 0) - (a.discountPercent ?? 0));
+        sorted.sort((a, b) => (b.discountPercent ?? 0) - (a.discountPercent ?? 0));
         break;
       case 'price-asc':
-        cars.sort((a, b) => this.discounted(a) - this.discounted(b));
+        sorted.sort((a, b) => this.discounted(a) - this.discounted(b));
         break;
       case 'price-desc':
-        cars.sort((a, b) => this.discounted(b) - this.discounted(a));
+        sorted.sort((a, b) => this.discounted(b) - this.discounted(a));
         break;
       case 'rating':
-        cars.sort((a, b) => b.rating - a.rating);
+        sorted.sort((a, b) => b.rating - a.rating);
         break;
     }
-    return cars;
+    return sorted;
   }
 
-  get totalOffersCount(): number {
-    return this.source.allCars.filter(c => c.isOffer).length;
-  }
+  // ── Helpers preț ──────────────────────────────────────────────
 
   discounted(car: Car): number {
     return car.discountPercent
-      ? Math.round(car.price * (1 - car.discountPercent / 100))
-      : car.price;
+      ? Math.round(car.dailyRate * (1 - car.discountPercent / 100))
+      : car.dailyRate;
   }
 
   savings(car: Car): number {
-    return car.price - this.discounted(car);
+    return car.dailyRate - this.discounted(car);
   }
 
-  setCategory(cat: string): void { this.activeCategory = cat; }
+  // ── Acțiuni ───────────────────────────────────────────────────
+
+  setCategory(cat: string): void {
+    this.activeCategory = cat;
+    this.loadOffers();
+  }
+
+  onSortChange(): void {
+    this.offerCars = this.sortCars(this.offerCars);
+  }
 
   copyCode(code: string): void {
     navigator.clipboard.writeText(code).then(() => {
@@ -86,6 +124,4 @@ export class OffersComponent implements OnInit {
   }
 
   trackById = (_: number, car: Car): number => car.id;
-
-  ngOnInit(): void {}
 }

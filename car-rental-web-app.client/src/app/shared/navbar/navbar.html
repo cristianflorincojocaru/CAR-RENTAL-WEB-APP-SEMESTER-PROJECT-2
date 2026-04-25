@@ -36,8 +36,60 @@
 
     <!-- Desktop Actions -->
     <div class="navbar__actions">
-      <a routerLink="/login" class="btn btn--ghost btn--sm">Sign In</a>
-      <a routerLink="/signup" class="btn btn--primary btn--sm btn--reactive">Register</a>
+
+      <!-- Neautentificat -->
+      <ng-container *ngIf="!isLoggedIn">
+        <a routerLink="/login"  class="btn btn--ghost btn--sm">Sign In</a>
+        <a routerLink="/signup" class="btn btn--primary btn--sm btn--reactive">Register</a>
+      </ng-container>
+
+      <!-- Autentificat -->
+      <ng-container *ngIf="isLoggedIn">
+        <div class="navbar__user-menu">
+          <button class="navbar__user-btn" (click)="toggleUserDropdown()">
+            <div class="navbar__user-avatar">{{ userInitials }}</div>
+            <span class="navbar__user-name">{{ currentUser?.fullName?.split(' ')?.[0] ?? '' }}</span>
+            <svg class="navbar__user-chevron" [class.open]="userDropdownOpen"
+                 width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <!-- Dropdown -->
+          <div class="navbar__user-dropdown" [class.open]="userDropdownOpen" (clickOutside)="closeUserDropdown()">
+            <div class="navbar__user-dropdown-header">
+              <div class="navbar__user-dropdown-name">{{ currentUser?.fullName }}</div>
+              <div class="navbar__user-dropdown-email">{{ currentUser?.email }}</div>
+              <span class="navbar__user-role-badge">{{ currentUser?.role }}</span>
+            </div>
+            <div class="navbar__user-dropdown-divider"></div>
+            <a routerLink="/my-bookings" class="navbar__user-dropdown-item" (click)="closeUserDropdown()">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <rect x="1" y="2" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M4 1v2M10 1v2M1 5h12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+              My Bookings
+            </a>
+            <a routerLink="/profile" class="navbar__user-dropdown-item" (click)="closeUserDropdown()">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <circle cx="7" cy="5" r="3" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M1.5 13a5.5 5.5 0 0111 0" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+              My Profile
+            </a>
+            <div class="navbar__user-dropdown-divider"></div>
+            <button class="navbar__user-dropdown-item navbar__user-dropdown-item--danger" (click)="logout()">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M5 2H2.5A1.5 1.5 0 001 3.5v7A1.5 1.5 0 002.5 12H5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                <path d="M9.5 10L13 7l-3.5-3M13 7H5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </ng-container>
+
     </div>
 
     <!-- Mobile Toggle -->
@@ -52,15 +104,32 @@
   <!-- Mobile Menu -->
   <div class="navbar__mobile" [class.open]="menuOpen">
     <ul class="navbar__mobile-links">
-      <li><a routerLink="/"       (click)="closeMenu()">Home</a></li>
-      <li><a routerLink="/cars"   (click)="closeMenu()">Cars</a></li>
-      <li><a routerLink="/offers" (click)="closeMenu()">Offers</a></li>
-      <li><a routerLink="/about"  (click)="closeMenu()">About us</a></li>
-      <li><a routerLink="/contact"(click)="closeMenu()">Contact</a></li>
+      <li><a routerLink="/"        (click)="closeMenu()">Home</a></li>
+      <li><a routerLink="/cars"    (click)="closeMenu()">Cars</a></li>
+      <li><a routerLink="/offers"  (click)="closeMenu()">Offers</a></li>
+      <li><a routerLink="/about"   (click)="closeMenu()">About us</a></li>
+      <li><a routerLink="/contact" (click)="closeMenu()">Contact</a></li>
+      <!-- Linkuri extra pentru utilizatori autentificați -->
+      <ng-container *ngIf="isLoggedIn">
+        <li><a routerLink="/my-bookings" (click)="closeMenu()">My Bookings</a></li>
+        <li><a routerLink="/profile"     (click)="closeMenu()">My Profile</a></li>
+      </ng-container>
     </ul>
     <div class="navbar__mobile-actions">
-      <a routerLink="/login"  class="btn btn--ghost btn--full" (click)="closeMenu()">Sign in</a>
-      <a routerLink="/signup" class="btn btn--primary btn--full" (click)="closeMenu()">Register</a>
+      <ng-container *ngIf="!isLoggedIn">
+        <a routerLink="/login"  class="btn btn--ghost btn--full"    (click)="closeMenu()">Sign in</a>
+        <a routerLink="/signup" class="btn btn--primary btn--full"  (click)="closeMenu()">Register</a>
+      </ng-container>
+      <ng-container *ngIf="isLoggedIn">
+        <div class="navbar__mobile-user">
+          <div class="navbar__user-avatar">{{ userInitials }}</div>
+          <div>
+            <div class="navbar__mobile-user-name">{{ currentUser?.fullName }}</div>
+            <div class="navbar__mobile-user-email">{{ currentUser?.email }}</div>
+          </div>
+        </div>
+        <button class="btn btn--ghost btn--full" (click)="logout()">Sign Out</button>
+      </ng-container>
     </div>
   </div>
 </nav>

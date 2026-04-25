@@ -3,6 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { HttpErrorResponse } from '@angular/common/http';
+
+import { ContactService } from '../../services/contact.service';
+import { ContactMessageRequest } from '../../models/contact.models';
 
 interface Branch {
   id: number;
@@ -37,9 +41,13 @@ interface ContactForm {
   styleUrl: './contact.scss',
 })
 export class Contact implements OnInit, OnDestroy {
-  formSent = false;
-  formCooldown = false;
+
+  // ── State formular ────────────────────────────────────────────
+  formSent      = false;
+  formError     = '';
+  formCooldown  = false;
   cooldownSeconds = 0;
+  isSubmitting  = false;
   private cooldownInterval: ReturnType<typeof setInterval> | null = null;
 
   form: ContactForm = {
@@ -51,10 +59,14 @@ export class Contact implements OnInit, OnDestroy {
     message: '',
   };
 
+  // ── Branch-uri ────────────────────────────────────────────────
   activeBranch = 0;
   branches: Branch[];
 
-  constructor(private sanitizer: DomSanitizer) {
+  constructor(
+    private sanitizer: DomSanitizer,
+    private contactService: ContactService
+  ) {
     this.branches = [
       {
         id: 0,
@@ -130,12 +142,12 @@ export class Contact implements OnInit, OnDestroy {
   }
 
   getOpenStatus(branch: Branch): 'Open now' | 'Closed' {
-    const now = new Date();
+    const now   = new Date();
     const roStr = now.toLocaleString('en-US', { timeZone: 'Europe/Bucharest' });
-    const ro = new Date(roStr);
-    const day = ro.getDay(); // 0=Sun, 1=Mon, …, 6=Sat
-    const mins = ro.getHours() * 60 + ro.getMinutes();
-    const openMins = branch.openHour * 60 + branch.openMinute;
+    const ro    = new Date(roStr);
+    const day   = ro.getDay();
+    const mins  = ro.getHours() * 60 + ro.getMinutes();
+    const openMins  = branch.openHour  * 60 + branch.openMinute;
     const closeMins = branch.closeHour * 60 + branch.closeMinute;
 
     if (branch.weekdaysOnly && (day === 0 || day === 6)) return 'Closed';
@@ -146,19 +158,57 @@ export class Contact implements OnInit, OnDestroy {
     return this.getOpenStatus(branch) === 'Open now';
   }
 
+  // ── Submit formular → API ─────────────────────────────────────
+
   submitForm(): void {
-    if (this.formCooldown) return;
+    if (this.formCooldown || this.isSubmitting) return;
 
-    this.formSent = true;
-    this.formCooldown = true;
-    this.cooldownSeconds = 10;
+    // Validare minimă client-side
+    if (!this.form.firstName || !this.form.email || !this.form.message) {
+      this.formError = 'Please fill in your name, email and message.';
+      return;
+    }
 
+    this.isSubmitting = true;
+    this.formError    = '';
+
+    const request: ContactMessageRequest = {
+      firstName: this.form.firstName.trim(),
+      lastName:  this.form.lastName.trim(),
+      email:     this.form.email.trim(),
+      phone:     this.form.phone?.trim() || undefined,
+      subject:   this.form.subject  || 'General inquiry',
+      message:   this.form.message.trim(),
+    };
+
+    this.contactService.sendMessage(request).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        this.formSent     = true;
+        this.formCooldown = true;
+        this.cooldownSeconds = 10;
+        this.startCooldown();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.isSubmitting = false;
+        if (err.status === 429) {
+          this.formError = 'Too many messages sent. Please wait a moment before trying again.';
+        } else if (err.status === 0) {
+          this.formError = 'Cannot connect to server. Please try again later.';
+        } else {
+          this.formError = 'Failed to send message. Please try again.';
+        }
+      }
+    });
+  }
+
+  private startCooldown(): void {
     this.cooldownInterval = setInterval(() => {
       this.cooldownSeconds--;
       if (this.cooldownSeconds <= 0) {
         clearInterval(this.cooldownInterval!);
         this.cooldownInterval = null;
-        this.formSent = false;
+        this.formSent     = false;
         this.formCooldown = false;
         this.form = {
           firstName: '', lastName: '', email: '',
