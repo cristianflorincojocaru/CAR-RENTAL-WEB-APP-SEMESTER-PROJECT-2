@@ -43,11 +43,11 @@ interface ContactForm {
 export class Contact implements OnInit, OnDestroy {
 
   // ── State formular ────────────────────────────────────────────
-  formSent      = false;
-  formError     = '';
-  formCooldown  = false;
+  formSent        = false;
+  formError       = '';
+  formCooldown    = false;
   cooldownSeconds = 0;
-  isSubmitting  = false;
+  isSubmitting    = false;
   private cooldownInterval: ReturnType<typeof setInterval> | null = null;
 
   form: ContactForm = {
@@ -141,6 +141,11 @@ export class Contact implements OnInit, OnDestroy {
     this.activeBranch = index;
   }
 
+  /** Scroll smooth to top of page — used by footer Contact Us link */
+  scrollToTop(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   getOpenStatus(branch: Branch): 'Open now' | 'Closed' {
     const now   = new Date();
     const roStr = now.toLocaleString('en-US', { timeZone: 'Europe/Bucharest' });
@@ -163,7 +168,6 @@ export class Contact implements OnInit, OnDestroy {
   submitForm(): void {
     if (this.formCooldown || this.isSubmitting) return;
 
-    // Validare minimă client-side
     if (!this.form.firstName || !this.form.email || !this.form.message) {
       this.formError = 'Please fill in your name, email and message.';
       return;
@@ -183,9 +187,9 @@ export class Contact implements OnInit, OnDestroy {
 
     this.contactService.sendMessage(request).subscribe({
       next: () => {
-        this.isSubmitting = false;
-        this.formSent     = true;
-        this.formCooldown = true;
+        this.isSubmitting    = false;
+        this.formSent        = true;
+        this.formCooldown    = true;
         this.cooldownSeconds = 10;
         this.startCooldown();
       },
@@ -208,8 +212,8 @@ export class Contact implements OnInit, OnDestroy {
       if (this.cooldownSeconds <= 0) {
         clearInterval(this.cooldownInterval!);
         this.cooldownInterval = null;
-        this.formSent     = false;
-        this.formCooldown = false;
+        this.formSent         = false;
+        this.formCooldown     = false;
         this.form = {
           firstName: '', lastName: '', email: '',
           phone: '', subject: '', message: '',
