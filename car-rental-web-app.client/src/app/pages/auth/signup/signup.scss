@@ -151,8 +151,6 @@
   gap: var(--space-8);
   padding: var(--space-8) 0;
 
-  &__headline { /* no extra margin needed — gap handles it */ }
-
   &__title {
     font-family: var(--font-display);
     font-size: var(--fs-4xl);

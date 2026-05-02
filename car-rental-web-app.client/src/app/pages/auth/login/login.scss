@@ -1,5 +1,4 @@
 // login.component.scss
-// Shares auth-page layout with signup.component.scss
 
 // ============================================================
 // AUTH PAGE SHELL
@@ -48,19 +47,23 @@
     }
   }
 
-  // Footer on left panel
+  // Footer on left panel — larger and more prominent
   &__footer {
     position: relative;
     z-index: 1;
-    font-size: var(--fs-sm);
-    color: rgba(255, 255, 255, 0.65);
+    font-size: var(--fs-base);     // ← increased from fs-sm
+    color: rgba(255, 255, 255, 0.80);
+    text-align: center;
 
     &-link {
       color: white;
-      font-weight: var(--fw-semibold);
+      font-weight: var(--fw-bold);  // ← increased from semibold
+      font-size: var(--fs-md);      // ← larger than surrounding text
       transition: opacity 0.15s ease;
+      text-decoration: underline;
+      text-underline-offset: 3px;
 
-      &:hover { opacity: 0.8; }
+      &:hover { opacity: 0.85; }
     }
   }
 }
@@ -148,7 +151,7 @@
 }
 
 // ============================================================
-// VISUAL CONTENT (headline + floating cards)
+// VISUAL CONTENT (headline + stacked stat cards)
 // ============================================================
 .auth-visual {
   position: relative;
@@ -181,16 +184,18 @@
     line-height: var(--lh-relaxed);
   }
 
+  // ── Stacked stat cards — no horizontal offsets ─────────────
   &__cards {
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
+    width: 100%;
   }
 }
 
-// Floating stat cards
+// Floating stat cards — full-width stacked
 .auth-stat-card {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: var(--space-4);
   padding: var(--space-4) var(--space-5);
@@ -198,7 +203,7 @@
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: var(--radius-xl);
   backdrop-filter: blur(10px);
-  width: fit-content;
+  width: 100%;              // ← full width, no offset
   transition: background 0.2s ease, transform 0.2s ease;
 
   &:hover {
@@ -206,12 +211,10 @@
     transform: translateX(4px);
   }
 
-  &--offset {
-    margin-left: var(--space-8);
-  }
-
+  // Remove old offset/bottom variants (no longer needed)
+  &--offset,
   &--bottom {
-    margin-left: var(--space-4);
+    margin-left: 0;
   }
 
   &__icon {
@@ -282,7 +285,7 @@
 }
 
 // ============================================================
-// GOOGLE BUTTON
+// GOOGLE BUTTON — ghost animation matching navbar Sign In
 // ============================================================
 .btn-google {
   width: 100%;
@@ -299,21 +302,27 @@
   font-weight: var(--fw-semibold);
   color: var(--text-primary);
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease,
-              box-shadow 0.15s ease, transform 0.12s ease;
   box-shadow: var(--shadow-xs);
   margin-bottom: var(--space-6);
 
+  // Ghost animation — identical to navbar Sign In button
+  transition: background 0.2s ease, color 0.2s ease,
+              box-shadow 0.2s ease, border-color 0.2s ease !important;
+
   &:hover {
-    background: var(--color-gray-50);
-    border-color: var(--color-gray-300);
-    box-shadow: var(--shadow-sm);
-    transform: translateY(-1px);
+    background: var(--color-gray-100) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--color-gray-200) !important;
+    box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.08) !important;
+    transform: none !important; // ghost buttons don't lift
   }
 
   &:active {
-    transform: translateY(0) scale(0.99);
-    transition-duration: 0.07s;
+    background: var(--color-gray-200) !important;
+    border-color: var(--color-gray-300) !important;
+    box-shadow: none !important;
+    transform: scale(0.99) !important;
+    transition-duration: 0.07s !important;
   }
 }
 
@@ -453,7 +462,7 @@
 }
 
 // ============================================================
-// REMEMBER ME CHECKBOX
+// REMEMBER ME CHECKBOX — with proper checkmark draw animation
 // ============================================================
 .auth-checkbox {
   display: flex;
@@ -474,7 +483,7 @@
 
       &::after {
         opacity: 1;
-        transform: scale(1) rotate(0deg);
+        transform: scale(1) rotate(45deg);  // ← draws in with rotation
       }
     }
 
@@ -502,9 +511,11 @@
       height: 9px;
       border-right: 2px solid white;
       border-bottom: 2px solid white;
-      transform: scale(0) rotate(45deg);
+      // Start collapsed at 0 rotation — rotates to 45deg on check
+      transform: scale(0) rotate(0deg);
       opacity: 0;
-      transition: transform 0.15s ease, opacity 0.15s ease;
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  opacity 0.15s ease;
       transform-origin: center;
     }
   }
@@ -534,26 +545,30 @@
 }
 
 // ============================================================
-// SUBMIT BUTTON
+// SUBMIT BUTTON — reactive animation matching navbar Register
 // ============================================================
 .auth-submit {
   height: 52px;
   font-size: var(--fs-base);
   border-radius: var(--radius-xl);
   margin-top: var(--space-2);
-  transition: background 0.15s ease, transform 0.12s ease,
-              box-shadow 0.15s ease, opacity 0.15s ease;
   position: relative;
 
+  // Reactive animation — identical to navbar Register button
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: background 0.15s ease, transform 0.12s ease,
+              box-shadow 0.15s ease, opacity 0.15s ease !important;
+
   &:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(26, 86, 219, 0.36);
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(26, 86, 219, 0.36) !important;
   }
 
   &:active:not(:disabled) {
-    transform: translateY(0) scale(0.99);
-    box-shadow: var(--shadow-primary);
-    transition-duration: 0.07s;
+    transform: translateY(0) scale(0.98) !important;
+    box-shadow: 0 3px 8px rgba(26, 86, 219, 0.20) !important;
+    transition-duration: 0.07s !important;
   }
 
   &--loading {

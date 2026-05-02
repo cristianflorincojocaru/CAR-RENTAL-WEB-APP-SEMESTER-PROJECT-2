@@ -82,7 +82,6 @@
                <input type="date" class="form-control" [(ngModel)]="searchForm.pickupDate"
        name="pickupDate" [min]="today"
        (change)="onPickupDateChange()">
-              
             </div>
 
             <div class="hero__search-field">
@@ -97,10 +96,9 @@
                 Return date
               </label>
                <input type="date" class="form-control" [(ngModel)]="searchForm.returnDate"
-       name="returnDate" 
+       name="returnDate"
        [min]="searchForm.pickupDate || today"
        [max]="maxReturnDate">
-              
             </div>
           </div>
 
@@ -114,15 +112,13 @@
               </svg>
               Pick-up location
             </label>
+            <!-- ← updated to match contact page branches -->
             <select class="form-control" [(ngModel)]="searchForm.location" name="location">
               <option value="" disabled selected>Select your location</option>
-              <option>Henri Coandă Airport</option>
-              <option>Otopeni Airport</option>
-              <option>Bucharest — City Centre</option>
-              <option>Cluj-Napoca</option>
-              <option>Timișoara</option>
-              <option>Iași</option>
-              <option>Constanța</option>
+              <option>Bucharest — Central</option>
+              <option>Bucharest — Otopeni (Henri Coandă Airport)</option>
+              <option>Cluj — Airport</option>
+              <option>Timișoara — Airport</option>
             </select>
           </div>
 
@@ -225,7 +221,7 @@
         Choose from our most popular models, technically inspected and cleaned before every rental.
       </p>
     </div>
- 
+
     <div class="featured__filters">
       <button class="featured__filter" *ngFor="let cat of carCategories"
               [class.active]="activeCategory === cat"
@@ -233,11 +229,11 @@
         {{ cat }}
       </button>
     </div>
- 
+
     <div class="featured__grid">
       <div class="car-card" *ngFor="let car of filteredCars; let i = index; trackBy: trackByCat"
            [style.animation-delay]="(i * 0.1) + 's'">
- 
+
         <div class="car-card__image-wrap">
           <div class="car-card__image-placeholder">
             <svg viewBox="0 0 320 180" fill="none">
@@ -262,7 +258,7 @@
             </svg>
           </div>
         </div>
- 
+
         <div class="car-card__body">
           <div class="car-card__header">
             <div>
@@ -276,14 +272,14 @@
               <span>{{ car.rating }}</span>
             </div>
           </div>
- 
+
           <div class="car-card__specs">
             <div class="car-card__spec" *ngFor="let spec of car.specs">
               <span class="car-card__spec-icon" [innerHTML]="spec.icon"></span>
               <span>{{ spec.value }}</span>
             </div>
           </div>
- 
+
           <div class="car-card__footer">
             <div class="car-card__price">
               <span class="car-card__price-amount">€{{ car.price }}</span>
@@ -296,7 +292,7 @@
         </div>
       </div>
     </div>
- 
+
     <div class="featured__cta">
       <a routerLink="/cars" class="btn btn--secondary btn--lg">
         View All Cars
@@ -414,8 +410,7 @@
     <div class="footer-cta__content">
       <h2 class="footer-cta__title">Ready to hit the road?</h2>
       <p class="footer-cta__text">
-        Join over 15,000 satisfied customers.
-        Your first booking comes with a 10% discount.
+        Join over 15,000 satisfied customers. Your first booking comes with a 10% discount.
       </p>
       <div class="footer-cta__actions">
         <a routerLink="/cars" class="btn btn--white btn--xl">Find Your Car</a>
