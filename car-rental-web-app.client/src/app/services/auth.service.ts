@@ -11,6 +11,8 @@ import {
   SignupRequest,
   RefreshTokenRequest,
   ChangePasswordRequest,
+  ForgotPasswordRequest,
+  ResetPasswordRequest,
   UserInfo
 } from '../models/auth.models';
 
@@ -50,7 +52,6 @@ export class AuthService {
 
   logout(): void {
     const refreshToken = this.tokenService.getRefreshToken();
-    // Trimitem revocarea token-ului către server (fire and forget)
     if (refreshToken) {
       this.http.post(`${this.apiUrl}/logout`, { refreshToken }).subscribe({
         error: () => { /* ignorăm eroarea — curățăm local oricum */ }
@@ -75,6 +76,21 @@ export class AuthService {
 
   changePassword(request: ChangePasswordRequest): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/change-password`, request);
+  }
+
+  // ── Forgot Password ──────────────────────────────────────────
+  // Trimite un email cu link de resetare. Backend-ul returnează 200 OK
+  // indiferent dacă emailul există (protecție anti-enumeration).
+
+  forgotPassword(request: ForgotPasswordRequest): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/forgot-password`, request);
+  }
+
+  // ── Reset Password ───────────────────────────────────────────
+  // Apelat din pagina de reset (link din email) cu token-ul și parola nouă.
+
+  resetPassword(request: ResetPasswordRequest): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/reset-password`, request);
   }
 
   // ── Stare autentificare ──────────────────────────────────────

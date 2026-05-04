@@ -188,6 +188,13 @@ ul, ol {
 
 button {
   cursor: pointer;
+}
+
+// Reset border/background doar pentru butoane fără clasă proprie.
+// Clasele .btn--primary, .btn-google, .input-wrap__toggle etc.
+// își păstrează stilurile — resetul global nu le mai suprascrie.
+button:not([class]),
+button[class=""] {
   border: none;
   background: none;
 }

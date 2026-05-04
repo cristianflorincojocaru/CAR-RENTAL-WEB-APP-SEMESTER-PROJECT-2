@@ -38,11 +38,62 @@ export class LoginComponent {
   isLoading = false;
   showPassword = false;
 
+  // ── Forgot password modal ─────────────────────────────────────
+  forgotModal = false;
+  forgotEmail = '';
+  forgotSent = false;
+  forgotLoading = false;
+  forgotError = '';
+
   constructor(
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
+
+  // ── Forgot password ───────────────────────────────────────────
+
+  openForgotModal(): void {
+    this.forgotModal = true;
+    this.forgotEmail = this.form.email;
+    this.forgotSent = false;
+    this.forgotError = '';
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeForgotModal(): void {
+    this.forgotModal = false;
+    this.forgotEmail = '';
+    this.forgotSent = false;
+    this.forgotError = '';
+    document.body.style.overflow = '';
+  }
+
+  submitForgot(): void {
+    const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!this.forgotEmail || !emailRx.test(this.forgotEmail)) {
+      this.forgotError = 'Please enter a valid email address.';
+      return;
+    }
+
+    this.forgotError = '';
+    this.forgotLoading = true;
+
+    this.authService.forgotPassword({ email: this.forgotEmail }).subscribe({
+      next: () => {
+        this.forgotLoading = false;
+        this.forgotSent = true;
+      },
+      error: (err: HttpErrorResponse) => {
+        this.forgotLoading = false;
+        if (err.status === 0) {
+          this.forgotError = 'Cannot connect to server. Please try again later.';
+        } else {
+          this.forgotError = 'Something went wrong. Please try again.';
+        }
+      }
+    });
+  }
 
   // ── Validare câmpuri ──────────────────────────────────────────
 
@@ -90,7 +141,6 @@ export class LoginComponent {
     this.authService.login(request).subscribe({
       next: () => {
         this.isLoading = false;
-        // Redirecționăm la returnUrl dacă există, altfel la pagina principală
         const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/';
         this.router.navigateByUrl(returnUrl);
       },
@@ -109,11 +159,7 @@ export class LoginComponent {
     });
   }
 
-  // ── Google OAuth ──────────────────────────────────────────────
-
   loginWithGoogle(): void {
-    // TODO: implementare Google OAuth
-    // window.location.href = `${environment.apiUrl}/auth/google`;
     console.log('Google OAuth — not yet implemented');
   }
 }
