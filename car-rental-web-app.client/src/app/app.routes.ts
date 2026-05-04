@@ -21,8 +21,8 @@ export const routes: Routes = [
   { path: 'cars',    component: CarsComponent },
 
   // ── Rute de autentificare ─────────────────────────────────────
-  { path: 'login',  component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
+{ path: 'login',  component: LoginComponent,  data: { animation: 'login'  } },
+{ path: 'signup', component: SignupComponent, data: { animation: 'signup' } },
 
   // ── Rute protejate (necesită autentificare) ───────────────────
   {
