@@ -52,6 +52,8 @@ export class SignupComponent {
   showPassword = false;
   showConfirmPassword = false;
 
+  legalModal: 'terms' | 'privacy' | null = null;
+
   perks = [
     'Free account — no credit card needed',
     '10% discount on your first rental',
@@ -64,7 +66,15 @@ export class SignupComponent {
     private router: Router
   ) {}
 
-  // ── Password strength ──────────────────────────────────────
+  openLegalModal(type: 'terms' | 'privacy'): void {
+    this.legalModal = type;
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeLegalModal(): void {
+    this.legalModal = null;
+    document.body.style.overflow = '';
+  }
 
   get passwordStrength(): number {
     const p = this.form.password;
@@ -90,8 +100,6 @@ export class SignupComponent {
     if (s === 3) return 'good';
     return 'strong';
   }
-
-  // ── Validare câmpuri ─────────────────────────────────────────
 
   validateField(field: keyof SignupForm): void {
     switch (field) {
@@ -175,8 +183,6 @@ export class SignupComponent {
     return Object.keys(this.errors).length === 0;
   }
 
-  // ── Submit ────────────────────────────────────────────────────
-
   onSignup(): void {
     this.signupError = '';
     if (!this.validateAll()) return;
@@ -199,7 +205,6 @@ export class SignupComponent {
       error: (err: HttpErrorResponse) => {
         this.isLoading = false;
         if (err.status === 409) {
-          // Email sau username deja înregistrat
           const detail: string = err.error?.detail ?? '';
           if (detail.toLowerCase().includes('email')) {
             this.errors.email = 'This email is already registered.';
@@ -209,7 +214,6 @@ export class SignupComponent {
             this.signupError = 'An account with these details already exists.';
           }
         } else if (err.status === 400 && err.error?.errors) {
-          // Erori de validare de la server
           const serverErrors = err.error.errors as Record<string, string[]>;
           Object.entries(serverErrors).forEach(([key, messages]) => {
             const fieldKey = key.charAt(0).toLowerCase() + key.slice(1) as keyof SignupErrors;
@@ -224,10 +228,7 @@ export class SignupComponent {
     });
   }
 
-  // ── Google OAuth ──────────────────────────────────────────────
-
   signupWithGoogle(): void {
-    // TODO: implementare Google OAuth
     console.log('Google OAuth — not yet implemented');
   }
 }

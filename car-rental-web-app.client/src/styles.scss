@@ -5,6 +5,7 @@
 // --- Google Fonts Import ---
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
 
+
 // ============================================================
 // CSS CUSTOM PROPERTIES (Design Tokens)
 // ============================================================
@@ -187,6 +188,13 @@ ul, ol {
 
 button {
   cursor: pointer;
+}
+
+// Reset border/background doar pentru butoane fără clasă proprie.
+// Clasele .btn--primary, .btn-google, .input-wrap__toggle etc.
+// își păstrează stilurile — resetul global nu le mai suprascrie.
+button:not([class]),
+button[class=""] {
   border: none;
   background: none;
 }
@@ -704,3 +712,114 @@ select.form-control {
 .gap-6  { gap: var(--space-6); }
 .gap-8  { gap: var(--space-8); }
 .flex-wrap { flex-wrap: wrap; }
+
+
+
+
+
+// ============================================================
+//
+// ============================================================
+// PAGE TRANSITIONS — _page-transitions.scss
+//
+// INSTRUCTIONS:
+// @use or @import this partial in your global styles.scss so
+// every page picks up the animation automatically.
+// ============================================================
+
+// ── Core keyframes ────────────────────────────────────────────
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pageEnterFast {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ── Apply to every top-level page wrapper ─────────────────────
+// Each component's outermost element gets a short fade-up on
+// mount. The animation-fill-mode: both ensures there's no flash
+// before the animation runs.
+
+.contact-page,
+.about-hero,          // About page
+.cars-hero,           // Cars page
+.offers-hero,         // Offers page
+.booking-page,        // Booking page
+.booking-confirmation {
+  animation: pageEnter 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+// Auth pages enter a little faster (user is actively waiting)
+.auth-page {
+  animation: pageEnterFast 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+// Hero sections that are the page's first child already animate
+// with animate-fadeInUp — we just need the overall page shell.
+// Using a tiny delay so page shell fades first, then content follows.
+
+.hero {
+  animation: pageEnter 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+// ── Stagger children inside sections ─────────────────────────
+// animate-fadeInUp is already defined globally. These delays add
+// a pleasant cascade on initial load without re-defining keyframes.
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.5s ease both;
+}
+
+.delay-1 { animation-delay: 0.10s !important; }
+.delay-2 { animation-delay: 0.20s !important; }
+.delay-3 { animation-delay: 0.30s !important; }
+.delay-4 { animation-delay: 0.40s !important; }
+
+// ── Router outlet transition (Angular Animations alternative) ─
+// If you want Angular route animations instead of CSS-only,
+// add the following to your app.component.ts:
+//
+//  import { trigger, transition, style, animate, query } from '@angular/animations';
+//
+//  export const routeAnimation = trigger('routeAnimation', [
+//    transition('* <=> *', [
+//      query(':enter', [
+//        style({ opacity: 0, transform: 'translateY(10px)' }),
+//        animate('380ms cubic-bezier(0.22, 1, 0.36, 1)',
+//          style({ opacity: 1, transform: 'translateY(0)' }))
+//      ], { optional: true }),
+//    ])
+//  ]);
+//
+// Then in app.component.html wrap your router-outlet:
+//
+//  <div [@routeAnimation]="getRouteAnimationData()">
+//    <router-outlet></router-outlet>
+//  </div>
+//
+// And add to AppComponent class:
+//
+//  getRouteAnimationData() {
+//    return this.router.url;
+//  }
+//
+// And in app.component.ts add to @Component decorator:
+//  animations: [routeAnimation]
+//
+// Make sure BrowserAnimationsModule (or provideAnimations()) is
+// in your app.config.ts / app.module.ts.

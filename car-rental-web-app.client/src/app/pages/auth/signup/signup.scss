@@ -1,25 +1,34 @@
 // signup.component.scss
-// Imports the shared auth-page layout defined in login.scss.
-// Only signup-specific overrides and additions are listed here.
-// In Angular, each component's styleUrls is scoped — duplicate the
-// shared block or extract it to a _auth-shared.scss partial and
-// @use it from both files.  Below is the full self-contained version.
 
 // ============================================================
-// AUTH PAGE SHELL  (identical to login.scss)
+// AUTH PAGE SHELL
 // ============================================================
 .auth-page {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 100vh;
+  min-height: calc(100vh - var(--navbar-height));
+  margin-top: var(--navbar-height);
+  width: 100%;
+  animation: authFadeIn 0.25s ease both;
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
   }
 }
 
+@keyframes authFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 // ============================================================
-// PANELS
+// LEFT PANEL — VISUAL
 // ============================================================
 .auth-panel {
 
@@ -29,43 +38,56 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: var(--space-8) var(--space-10);
+    padding: var(--space-6) var(--space-10);
     overflow: hidden;
-    min-height: 100vh;
+    min-height: calc(100vh - var(--navbar-height));
 
-    @media (max-width: 900px) { display: none; }
+    @media (max-width: 900px) {
+      display: none;
+    }
   }
 
   &--form {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--space-10) var(--space-8);
+    padding: var(--space-6) var(--space-8);
     background: var(--bg-body);
-    min-height: 100vh;
+    min-height: calc(100vh - var(--navbar-height));
     overflow-y: auto;
 
     @media (max-width: 900px) {
-      padding: var(--space-8) var(--space-4);
+      padding: var(--space-6) var(--space-4);
     }
   }
 
+  // Footer on left panel — larger and more prominent
   &__footer {
     position: relative;
     z-index: 1;
-    font-size: var(--fs-sm);
-    color: rgba(255, 255, 255, 0.65);
+    font-size: var(--fs-base);     // ← increased from fs-sm
+    color: rgba(255, 255, 255, 0.80);
+    text-align: center;
 
     &-link {
       color: white;
-      font-weight: var(--fw-semibold);
+      font-weight: var(--fw-bold);  // ← increased from semibold
+      font-size: var(--fs-md);      // ← larger than surrounding text
       transition: opacity 0.15s ease;
-      &:hover { opacity: 0.8; }
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      
+      &--sm {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+}
+
+      &:hover { opacity: 0.85; }
     }
   }
 }
 
-// Background decorations (same as login)
+// Background decorations
 .auth-panel__bg {
   position: absolute;
   inset: 0;
@@ -78,18 +100,26 @@
   border-radius: 50%;
 
   &--1 {
-    width: 480px; height: 480px;
-    top: -160px; right: -140px;
+    width: 480px;
+    height: 480px;
+    top: -160px;
+    right: -140px;
     background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%);
   }
+
   &--2 {
-    width: 320px; height: 320px;
-    bottom: -100px; left: -80px;
+    width: 320px;
+    height: 320px;
+    bottom: -100px;
+    left: -80px;
     background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
   }
+
   &--3 {
-    width: 200px; height: 200px;
-    top: 50%; left: 40%;
+    width: 200px;
+    height: 200px;
+    top: 50%;
+    left: 40%;
     transform: translate(-50%, -50%);
     background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%);
   }
@@ -118,15 +148,16 @@
   &__icon {
     width: 40px;
     height: 40px;
-    background: rgba(255,255,255,0.15);
+    background: rgba(255, 255, 255, 0.15);
     border-radius: var(--radius-lg);
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(4px);
     transition: background 0.2s ease;
-    &:hover { background: rgba(255,255,255,0.22); }
+
+    &:hover { background: rgba(255, 255, 255, 0.22); }
   }
 
   &__name {
@@ -139,7 +170,7 @@
 }
 
 // ============================================================
-// VISUAL CONTENT
+// VISUAL CONTENT (headline, perks, review)
 // ============================================================
 .auth-visual {
   position: relative;
@@ -148,35 +179,48 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: var(--space-8);
   padding: var(--space-8) 0;
 
-  &__headline { /* no extra margin needed — gap handles it */ }
+  &__headline {
+    margin-bottom: var(--space-5);
+  }
 
   &__title {
     font-family: var(--font-display);
-    font-size: var(--fs-4xl);
+    font-size: var(--fs-3xl);
     font-weight: var(--fw-extrabold);
     color: white;
     line-height: var(--lh-tight);
     letter-spacing: -0.03em;
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-3);
 
-    @media (max-width: 1200px) { font-size: var(--fs-3xl); }
+    @media (max-width: 1200px) { font-size: var(--fs-2xl); }
   }
 
   &__subtitle {
     font-size: var(--fs-base);
-    color: rgba(255,255,255,0.72);
+    color: rgba(255, 255, 255, 0.72);
     line-height: var(--lh-relaxed);
   }
 }
 
-// ── Perks list ───────────────────────────────────────────────
+// Perks list
 .auth-perks {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+
+  // Staggered animation on each individual perk
+  .auth-perk {
+    opacity: 0;
+    animation: fadeInUp 0.45s ease forwards;
+
+    &:nth-child(1) { animation-delay: 0.15s; }
+    &:nth-child(2) { animation-delay: 0.25s; }
+    &:nth-child(3) { animation-delay: 0.35s; }
+    &:nth-child(4) { animation-delay: 0.45s; }
+  }
 }
 
 .auth-perk {
@@ -185,82 +229,98 @@
   gap: var(--space-3);
 
   &__icon {
-    width: 24px;
-    height: 24px;
-    min-width: 24px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(255, 255, 255, 0.25);
   }
 
   &__text {
     font-size: var(--fs-sm);
-    color: rgba(255,255,255,0.88);
+    color: rgba(255, 255, 255, 0.85);
     font-weight: var(--fw-medium);
   }
 }
 
-// ── Review badge ─────────────────────────────────────────────
+// Review card — floating card similar to stat cards
 .auth-review {
-  padding: var(--space-5) var(--space-6);
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
+  padding: var(--space-4);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: var(--radius-xl);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
+  transition: background 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.16);
+    transform: translateY(-2px);
+  }
 
   &__stars {
-    color: var(--color-accent);
-    font-size: var(--fs-sm);
+    font-size: var(--fs-md);
+    color: #FCD34D;
+    margin-bottom: var(--space-3);
     letter-spacing: 2px;
-    margin-bottom: var(--space-2);
   }
 
   &__text {
-    font-size: var(--fs-sm);
-    color: rgba(255,255,255,0.88);
-    line-height: var(--lh-relaxed);
-    font-style: italic;
-    margin-bottom: var(--space-2);
+  font-size: var(--fs-sm);
+  color: white;
+  line-height: var(--lh-relaxed);
+  font-style: italic;
+  margin-bottom: var(--space-3);
+
+  &--lg {
+    font-size: var(--fs-base);
   }
+}
 
   &__author {
     font-size: var(--fs-xs);
-    color: rgba(255,255,255,0.55);
+    color: rgba(255, 255, 255, 0.65);
     font-weight: var(--fw-medium);
   }
 }
 
 // ============================================================
-// FORM WRAPPER — wider for signup (more fields)
+// FORM WRAPPER
 // ============================================================
 .auth-form-wrap {
   width: 100%;
-  max-width: 520px;
+  max-width: 420px;
 }
 
 // ============================================================
 // FORM HEADER
 // ============================================================
 .auth-form-header {
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-4);
 
   &__badge {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: 4px 12px;
-    background: var(--color-accent-soft);
-    border: 1px solid #FDE68A;
-    border-radius: var(--radius-full);
-    font-size: var(--fs-xs);
-    font-weight: var(--fw-semibold);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 4px 12px;
+  background: var(--color-primary-mid);
+  border-radius: var(--radius-full);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-4);
+  letter-spacing: 0.02em;
+
+  &--gold {
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 50%, #FCD34D 100%);
     color: #92400E;
-    margin-bottom: var(--space-4);
-    letter-spacing: 0.02em;
+    border: 1px solid #F59E0B;
+    margin-top: var(--space-4);
   }
+}
 
   &__title {
     font-family: var(--font-display);
@@ -281,7 +341,7 @@
 }
 
 // ============================================================
-// GOOGLE BUTTON
+// GOOGLE BUTTON — ghost animation matching navbar Sign In
 // ============================================================
 .btn-google {
   width: 100%;
@@ -298,21 +358,27 @@
   font-weight: var(--fw-semibold);
   color: var(--text-primary);
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease,
-              box-shadow 0.15s ease, transform 0.12s ease;
   box-shadow: var(--shadow-xs);
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-4);
+
+  // Ghost animation — identical to navbar Sign In button
+  transition: background 0.2s ease, color 0.2s ease,
+              box-shadow 0.2s ease, border-color 0.2s ease !important;
 
   &:hover {
-    background: var(--color-gray-50);
-    border-color: var(--color-gray-300);
-    box-shadow: var(--shadow-sm);
-    transform: translateY(-1px);
+    background: var(--color-gray-100) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--color-gray-200) !important;
+    box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.08) !important;
+    transform: none !important; // ghost buttons don't lift
   }
 
   &:active {
-    transform: translateY(0) scale(0.99);
-    transition-duration: 0.07s;
+    background: var(--color-gray-200) !important;
+    border-color: var(--color-gray-300) !important;
+    box-shadow: none !important;
+    transform: scale(0.99) !important;
+    transition-duration: 0.07s !important;
   }
 }
 
@@ -323,7 +389,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-4);
 
   &__line {
     flex: 1;
@@ -341,20 +407,20 @@
 }
 
 // ============================================================
-// FORM
+// FORM FIELDS
 // ============================================================
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-3);
 
-  // Two-column row for paired fields
+  // Two-column row for name/username and passwords
   &__row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-4);
+    gap: var(--space-3);
 
-    @media (max-width: 560px) {
+    @media (max-width: 640px) {
       grid-template-columns: 1fr;
     }
   }
@@ -364,6 +430,21 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__link {
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    transition: opacity 0.15s ease;
+
+    &:hover { opacity: 0.75; }
+  }
 
   label {
     font-size: var(--fs-sm);
@@ -376,10 +457,16 @@
       border-color: var(--color-error) !important;
       box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.10) !important;
     }
+
+    .input-wrap__icon path,
+    .input-wrap__icon circle,
+    .input-wrap__icon rect {
+      stroke: var(--color-error);
+    }
   }
 }
 
-// Input icon wrapper
+// Input with icon wrapper
 .input-wrap {
   position: relative;
   display: flex;
@@ -395,6 +482,12 @@
 
   &__input {
     padding-left: 2.75rem !important;
+
+    &:focus ~ .input-wrap__icon path,
+    &:focus ~ .input-wrap__icon circle,
+    &:focus ~ .input-wrap__icon rect {
+      stroke: var(--color-primary);
+    }
   }
 
   &__toggle {
@@ -412,7 +505,15 @@
     transition: background 0.15s ease;
     padding: 0;
 
-    &:hover { background: var(--color-gray-100); }
+    &--hidden {
+  display: none;
+}
+
+    &:hover {
+      background: var(--color-gray-100);
+
+      path { stroke: var(--text-primary); }
+    }
   }
 }
 
@@ -432,51 +533,49 @@
 }
 
 // ============================================================
-// PASSWORD STRENGTH METER
+// PASSWORD STRENGTH INDICATOR
 // ============================================================
 .password-strength {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  margin-top: calc(-1 * var(--space-2));
+  margin-top: calc(var(--space-5) * -1 + var(--space-2));
 
   &__bars {
     display: flex;
-    gap: 4px;
+    gap: var(--space-1);
     flex: 1;
   }
 
   &__bar {
-    flex: 1;
     height: 4px;
-    border-radius: var(--radius-full);
+    flex: 1;
     background: var(--color-gray-200);
-    transition: background 0.25s ease;
+    border-radius: var(--radius-full);
+    transition: background 0.2s ease;
 
     &.active {
-      &.password-strength__bar--weak   { background: var(--color-error); }
-      &.password-strength__bar--fair   { background: var(--color-warning); }
-      &.password-strength__bar--good   { background: #84CC16; }
-      &.password-strength__bar--strong { background: var(--color-success); }
+      &.password-strength__bar--weak { background: #EF4444; }
+      &.password-strength__bar--fair { background: #F59E0B; }
+      &.password-strength__bar--good { background: #10B981; }
+      &.password-strength__bar--strong { background: #059669; }
     }
   }
 
   &__label {
     font-size: var(--fs-xs);
     font-weight: var(--fw-semibold);
-    min-width: 40px;
-    color: var(--text-muted);
+    white-space: nowrap;
   }
 }
 
-// Strength label colors
-.text-strength-weak   { color: var(--color-error) !important; }
-.text-strength-fair   { color: var(--color-warning) !important; }
-.text-strength-good   { color: #84CC16 !important; }
-.text-strength-strong { color: var(--color-success) !important; }
+.text-strength-weak { color: #EF4444; }
+.text-strength-fair { color: #F59E0B; }
+.text-strength-good { color: #10B981; }
+.text-strength-strong { color: #059669; }
 
 // ============================================================
-// CHECKBOX
+// CHECKBOX (for terms agreement)
 // ============================================================
 .auth-checkbox {
   display: flex;
@@ -488,7 +587,8 @@
   input[type="checkbox"] {
     position: absolute;
     opacity: 0;
-    width: 0; height: 0;
+    width: 0;
+    height: 0;
 
     &:checked + .auth-checkbox__box {
       background: var(--color-primary);
@@ -496,12 +596,12 @@
 
       &::after {
         opacity: 1;
-        transform: scale(1) rotate(45deg);
+        transform: scale(1) rotate(45deg);  // ← draws in with rotation
       }
     }
 
     &:focus-visible + .auth-checkbox__box {
-      box-shadow: 0 0 0 3px rgba(26,86,219,0.2);
+      box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.2);
     }
   }
 
@@ -519,39 +619,51 @@
     &::after {
       content: '';
       position: absolute;
-      top: 2px; left: 5px;
-      width: 5px; height: 9px;
+      top: 2px;
+      left: 5px;
+      width: 5px;
+      height: 9px;
       border-right: 2px solid white;
       border-bottom: 2px solid white;
+      // Start collapsed at 0 rotation — rotates to 45deg on check
       transform: scale(0) rotate(0deg);
       opacity: 0;
-      transition: transform 0.15s ease, opacity 0.15s ease;
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  opacity 0.15s ease;
       transform-origin: center;
     }
-  }
-
-  &--error .auth-checkbox__box {
-    border-color: var(--color-error);
-    box-shadow: 0 0 0 3px rgba(239,68,68,0.10);
   }
 
   &__label {
     font-size: var(--fs-sm);
     color: var(--text-secondary);
     font-weight: var(--fw-medium);
-    line-height: var(--lh-normal);
+    line-height: 1.5;
+  }
+
+  &--error {
+    .auth-checkbox__box {
+      border-color: var(--color-error);
+    }
   }
 }
 
+// Clickable terms links within checkbox label
 .auth-terms-link {
   color: var(--color-primary);
   font-weight: var(--fw-semibold);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
   transition: opacity 0.15s ease;
-  &:hover { opacity: 0.75; }
+
+  &:hover {
+    opacity: 0.75;
+  }
 }
 
 // ============================================================
-// ALERT
+// AUTH ALERT (error banner)
 // ============================================================
 .auth-alert {
   display: flex;
@@ -559,7 +671,7 @@
   gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
   background: var(--color-error-soft);
-  border: 1px solid rgba(239,68,68,0.25);
+  border: 1px solid rgba(239, 68, 68, 0.25);
   border-radius: var(--radius-lg);
   font-size: var(--fs-sm);
   color: #B91C1C;
@@ -568,26 +680,32 @@
 }
 
 // ============================================================
-// SUBMIT BUTTON
+// SUBMIT BUTTON — reactive animation matching navbar Register
 // ============================================================
 .auth-submit {
   height: 52px;
   font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  color: white;
   border-radius: var(--radius-xl);
-  margin-top: var(--space-1);
-  transition: background 0.15s ease, transform 0.12s ease,
-              box-shadow 0.15s ease, opacity 0.15s ease;
+  margin-top: var(--space-2);
   position: relative;
 
+  // Reactive animation — identical to navbar Register button
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: background 0.15s ease, transform 0.12s ease,
+              box-shadow 0.15s ease, opacity 0.15s ease !important;
+
   &:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(26,86,219,0.36);
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(26, 86, 219, 0.36) !important;
   }
 
   &:active:not(:disabled) {
-    transform: translateY(0) scale(0.99);
-    box-shadow: var(--shadow-primary);
-    transition-duration: 0.07s;
+    transform: translateY(0) scale(0.98) !important;
+    box-shadow: 0 3px 8px rgba(26, 86, 219, 0.20) !important;
+    transition-duration: 0.07s !important;
   }
 
   &--loading {
@@ -598,7 +716,7 @@
   &__spinner {
     width: 18px;
     height: 18px;
-    border: 2px solid rgba(255,255,255,0.4);
+    border: 2px solid rgba(255, 255, 255, 0.4);
     border-top-color: white;
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
@@ -611,7 +729,7 @@
 }
 
 // ============================================================
-// MOBILE LINK
+// MOBILE FOOTER LINK
 // ============================================================
 .auth-mobile-link {
   display: none;
@@ -623,10 +741,1147 @@
   a {
     color: var(--color-primary);
     font-weight: var(--fw-semibold);
-    margin-left: var(--space-1);
     transition: opacity 0.15s ease;
+    margin-left: var(--space-1);
+
     &:hover { opacity: 0.75; }
   }
 
-  @media (max-width: 900px) { display: block; }
+  @media (max-width: 900px) {
+    display: block;
+  }
 }
+
+// ============================================================
+// LEGAL MODALS — overlay + modal card
+// ============================================================
+
+// Overlay backdrop
+.legal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  opacity: 0;
+  pointer-events: none;
+  // Durata sincronizată cu .legal-modal (0.25s) — elimină flash-ul la închidere
+  transition: opacity 0.25s ease;
+
+  &--visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+// Modal card
+.legal-modal {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  max-height: 85vh;
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(20px) scale(0.96);
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  &--visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  // Header
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-6);
+    border-bottom: 1px solid var(--color-gray-200);
+  }
+
+  &__title-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  &__icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    background: var(--color-primary-mid);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-bold);
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  &__close {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      background: var(--color-gray-100);
+      color: var(--text-primary);
+    }
+  }
+
+  // Body (scrollable)
+  &__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-6);
+  }
+
+  &__updated {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    font-weight: var(--fw-medium);
+    margin-bottom: var(--space-6);
+    letter-spacing: 0.02em;
+  }
+
+  &__section {
+    margin-bottom: var(--space-6);
+
+    h3 {
+      font-family: var(--font-display);
+      font-size: var(--fs-base);
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+
+    p {
+      font-size: var(--fs-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-relaxed);
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  // Footer
+  &__footer {
+    padding: var(--space-5) var(--space-6);
+    border-top: 1px solid var(--color-gray-200);
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__accept {
+    min-width: 120px;
+    height: 44px;
+    font-size: var(--fs-sm);
+    // Animație Register din navbar
+    will-change: transform;
+    backface-visibility: hidden;
+    transition: background 0.15s ease, transform 0.12s ease,
+                box-shadow 0.15s ease, opacity 0.15s ease !important;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px) !important;
+      box-shadow: 0 8px 24px rgba(26, 86, 219, 0.36) !important;
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0) scale(0.98) !important;
+      box-shadow: 0 3px 8px rgba(26, 86, 219, 0.20) !important;
+      transition-duration: 0.07s !important;
+    }
+  }
+}
+
+// ============================================================
+// ANIMATIONS
+// ============================================================
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.delay-2 { animation-delay: 0.1s; }
+.delay-3 { animation-delay: 0.2s; }
+.delay-4 { animation-delay: 0.3s; }// signup.component.scss
+
+// ============================================================
+// AUTH PAGE SHELL
+// ============================================================
+.auth-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - var(--navbar-height));
+  margin-top: var(--navbar-height);
+  width: 100%;
+  animation: authFadeIn 0.25s ease both;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+@keyframes authFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ============================================================
+// LEFT PANEL — VISUAL
+// ============================================================
+.auth-panel {
+
+  &--visual {
+    position: relative;
+    background: var(--color-primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--space-6) var(--space-10);
+    overflow: hidden;
+    min-height: calc(100vh - var(--navbar-height));
+
+    @media (max-width: 900px) {
+      display: none;
+    }
+  }
+
+  &--form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-6) var(--space-8);
+    background: var(--bg-body);
+    min-height: calc(100vh - var(--navbar-height));
+    overflow-y: auto;
+
+    @media (max-width: 900px) {
+      padding: var(--space-6) var(--space-4);
+    }
+  }
+
+  // Footer on left panel — larger and more prominent
+  &__footer {
+    position: relative;
+    z-index: 1;
+    font-size: var(--fs-base);     // ← increased from fs-sm
+    color: rgba(255, 255, 255, 0.80);
+    text-align: center;
+
+    &-link {
+      color: white;
+      font-weight: var(--fw-bold);  // ← increased from semibold
+      font-size: var(--fs-md);      // ← larger than surrounding text
+      transition: opacity 0.15s ease;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      
+      &--sm {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+}
+
+      &:hover { opacity: 0.85; }
+    }
+  }
+}
+
+// Background decorations
+.auth-panel__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.auth-panel__bg-circle {
+  position: absolute;
+  border-radius: 50%;
+
+  &--1 {
+    width: 480px;
+    height: 480px;
+    top: -160px;
+    right: -140px;
+    background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%);
+  }
+
+  &--2 {
+    width: 320px;
+    height: 320px;
+    bottom: -100px;
+    left: -80px;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+  }
+
+  &--3 {
+    width: 200px;
+    height: 200px;
+    top: 50%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%);
+  }
+}
+
+.auth-panel__bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+// ============================================================
+// BRAND LOGO
+// ============================================================
+.auth-brand {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+
+  &__icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    transition: background 0.2s ease;
+
+    &:hover { background: rgba(255, 255, 255, 0.22); }
+  }
+
+  &__name {
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-bold);
+    color: white;
+    letter-spacing: -0.02em;
+  }
+}
+
+// ============================================================
+// VISUAL CONTENT (headline, perks, review)
+// ============================================================
+.auth-visual {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--space-8) 0;
+
+  &__headline {
+    margin-bottom: var(--space-5);
+  }
+
+  &__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-3xl);
+    font-weight: var(--fw-extrabold);
+    color: white;
+    line-height: var(--lh-tight);
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-3);
+
+    @media (max-width: 1200px) { font-size: var(--fs-2xl); }
+  }
+
+  &__subtitle {
+    font-size: var(--fs-base);
+    color: rgba(255, 255, 255, 0.72);
+    line-height: var(--lh-relaxed);
+  }
+}
+
+// Perks list
+.auth-perks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+
+  // Staggered animation on each individual perk
+  .auth-perk {
+    opacity: 0;
+    animation: fadeInUp 0.45s ease forwards;
+
+    &:nth-child(1) { animation-delay: 0.15s; }
+    &:nth-child(2) { animation-delay: 0.25s; }
+    &:nth-child(3) { animation-delay: 0.35s; }
+    &:nth-child(4) { animation-delay: 0.45s; }
+  }
+}
+
+.auth-perk {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+
+  &__icon {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
+
+  &__text {
+    font-size: var(--fs-sm);
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: var(--fw-medium);
+  }
+}
+
+// Review card — floating card similar to stat cards
+.auth-review {
+  padding: var(--space-4);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(10px);
+  transition: background 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.16);
+    transform: translateY(-2px);
+  }
+
+  &__stars {
+    font-size: var(--fs-md);
+    color: #FCD34D;
+    margin-bottom: var(--space-3);
+    letter-spacing: 2px;
+  }
+
+  &__text {
+  font-size: var(--fs-sm);
+  color: white;
+  line-height: var(--lh-relaxed);
+  font-style: italic;
+  margin-bottom: var(--space-3);
+
+  &--lg {
+    font-size: var(--fs-base);
+  }
+}
+
+  &__author {
+    font-size: var(--fs-xs);
+    color: rgba(255, 255, 255, 0.65);
+    font-weight: var(--fw-medium);
+  }
+}
+
+// ============================================================
+// FORM WRAPPER
+// ============================================================
+.auth-form-wrap {
+  width: 100%;
+  max-width: 420px;
+}
+
+// ============================================================
+// FORM HEADER
+// ============================================================
+.auth-form-header {
+  margin-bottom: var(--space-4);
+
+  &__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 4px 12px;
+  background: var(--color-primary-mid);
+  border-radius: var(--radius-full);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-4);
+  letter-spacing: 0.02em;
+
+  &--gold {
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 50%, #FCD34D 100%);
+    color: #92400E;
+    border: 1px solid #F59E0B;
+    margin-top: var(--space-4);
+  }
+}
+
+  &__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-3xl);
+    font-weight: var(--fw-extrabold);
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    line-height: var(--lh-tight);
+    margin-bottom: var(--space-2);
+
+    @media (max-width: 768px) { font-size: var(--fs-2xl); }
+  }
+
+  &__sub {
+    font-size: var(--fs-base);
+    color: var(--text-secondary);
+  }
+}
+
+// ============================================================
+// GOOGLE BUTTON — ghost animation matching navbar Sign In
+// ============================================================
+.btn-google {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: 0.875rem var(--space-6);
+  background: var(--color-white);
+  border: 1.5px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+  cursor: pointer;
+  box-shadow: var(--shadow-xs);
+  margin-bottom: var(--space-4);
+
+  // Ghost animation — identical to navbar Sign In button
+  transition: background 0.2s ease, color 0.2s ease,
+              box-shadow 0.2s ease, border-color 0.2s ease !important;
+
+  &:hover {
+    background: var(--color-gray-100) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--color-gray-200) !important;
+    box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.08) !important;
+    transform: none !important; // ghost buttons don't lift
+  }
+
+  &:active {
+    background: var(--color-gray-200) !important;
+    border-color: var(--color-gray-300) !important;
+    box-shadow: none !important;
+    transform: scale(0.99) !important;
+    transition-duration: 0.07s !important;
+  }
+}
+
+// ============================================================
+// DIVIDER
+// ============================================================
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+
+  &__line {
+    flex: 1;
+    height: 1px;
+    background: var(--color-gray-200);
+  }
+
+  &__text {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+}
+
+// ============================================================
+// FORM FIELDS
+// ============================================================
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+
+  // Two-column row for name/username and passwords
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__link {
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    transition: opacity 0.15s ease;
+
+    &:hover { opacity: 0.75; }
+  }
+
+  label {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--text-secondary);
+  }
+
+  &--error {
+    .input-wrap__input {
+      border-color: var(--color-error) !important;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.10) !important;
+    }
+
+    .input-wrap__icon path,
+    .input-wrap__icon circle,
+    .input-wrap__icon rect {
+      stroke: var(--color-error);
+    }
+  }
+}
+
+// Input with icon wrapper
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &__icon {
+    position: absolute;
+    left: var(--space-4);
+    pointer-events: none;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  &__input {
+    padding-left: 2.75rem !important;
+
+    &:focus ~ .input-wrap__icon path,
+    &:focus ~ .input-wrap__icon circle,
+    &:focus ~ .input-wrap__icon rect {
+      stroke: var(--color-primary);
+    }
+  }
+
+  &__toggle {
+    position: absolute;
+    right: var(--space-4);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: var(--radius-md);
+    transition: background 0.15s ease;
+    padding: 0;
+
+    &--hidden {
+  display: none;
+}
+
+    &:hover {
+      background: var(--color-gray-100);
+
+      path { stroke: var(--text-primary); }
+    }
+  }
+}
+
+.form-error {
+  font-size: var(--fs-xs);
+  color: var(--color-error);
+  font-weight: var(--fw-medium);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+
+  &::before {
+    content: '⚠';
+    font-size: 10px;
+  }
+}
+
+// ============================================================
+// PASSWORD STRENGTH INDICATOR
+// ============================================================
+.password-strength {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: calc(var(--space-5) * -1 + var(--space-2));
+
+  &__bars {
+    display: flex;
+    gap: var(--space-1);
+    flex: 1;
+  }
+
+  &__bar {
+    height: 4px;
+    flex: 1;
+    background: var(--color-gray-200);
+    border-radius: var(--radius-full);
+    transition: background 0.2s ease;
+
+    &.active {
+      &.password-strength__bar--weak { background: #EF4444; }
+      &.password-strength__bar--fair { background: #F59E0B; }
+      &.password-strength__bar--good { background: #10B981; }
+      &.password-strength__bar--strong { background: #059669; }
+    }
+  }
+
+  &__label {
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-semibold);
+    white-space: nowrap;
+  }
+}
+
+.text-strength-weak { color: #EF4444; }
+.text-strength-fair { color: #F59E0B; }
+.text-strength-good { color: #10B981; }
+.text-strength-strong { color: #059669; }
+
+// ============================================================
+// CHECKBOX (for terms agreement)
+// ============================================================
+.auth-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  cursor: pointer;
+  user-select: none;
+
+  input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+
+    &:checked + .auth-checkbox__box {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+
+      &::after {
+        opacity: 1;
+        transform: scale(1) rotate(45deg);  // ← draws in with rotation
+      }
+    }
+
+    &:focus-visible + .auth-checkbox__box {
+      box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.2);
+    }
+  }
+
+  &__box {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    margin-top: 2px;
+    border: 1.5px solid var(--color-gray-300);
+    border-radius: var(--radius-sm);
+    background: var(--color-white);
+    transition: background 0.15s ease, border-color 0.15s ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 5px;
+      width: 5px;
+      height: 9px;
+      border-right: 2px solid white;
+      border-bottom: 2px solid white;
+      // Start collapsed at 0 rotation — rotates to 45deg on check
+      transform: scale(0) rotate(0deg);
+      opacity: 0;
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  opacity 0.15s ease;
+      transform-origin: center;
+    }
+  }
+
+  &__label {
+    font-size: var(--fs-sm);
+    color: var(--text-secondary);
+    font-weight: var(--fw-medium);
+    line-height: 1.5;
+  }
+
+  &--error {
+    .auth-checkbox__box {
+      border-color: var(--color-error);
+    }
+  }
+}
+
+// Clickable terms links within checkbox label
+.auth-terms-link {
+  color: var(--color-primary);
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: opacity 0.15s ease;
+
+  &:hover {
+    opacity: 0.75;
+  }
+}
+
+// ============================================================
+// AUTH ALERT (error banner)
+// ============================================================
+.auth-alert {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-error-soft);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: var(--radius-lg);
+  font-size: var(--fs-sm);
+  color: #B91C1C;
+  font-weight: var(--fw-medium);
+  animation: fadeInUp 0.3s ease;
+}
+
+// ============================================================
+// SUBMIT BUTTON — reactive animation matching navbar Register
+// ============================================================
+.auth-submit {
+  height: 52px;
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  color: white;
+  border-radius: var(--radius-xl);
+  margin-top: var(--space-2);
+  position: relative;
+
+  // Reactive animation — identical to navbar Register button
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: background 0.15s ease, transform 0.12s ease,
+              box-shadow 0.15s ease, opacity 0.15s ease !important;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(26, 86, 219, 0.36) !important;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.98) !important;
+    box-shadow: 0 3px 8px rgba(26, 86, 219, 0.20) !important;
+    transition-duration: 0.07s !important;
+  }
+
+  &--loading {
+    pointer-events: none;
+    opacity: 0.85;
+  }
+
+  &__spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: inline-block;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// ============================================================
+// MOBILE FOOTER LINK
+// ============================================================
+.auth-mobile-link {
+  display: none;
+  text-align: center;
+  margin-top: var(--space-8);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+
+  a {
+    color: var(--color-primary);
+    font-weight: var(--fw-semibold);
+    transition: opacity 0.15s ease;
+    margin-left: var(--space-1);
+
+    &:hover { opacity: 0.75; }
+  }
+
+  @media (max-width: 900px) {
+    display: block;
+  }
+}
+
+// ============================================================
+// LEGAL MODALS — overlay + modal card
+// ============================================================
+
+// Overlay backdrop
+.legal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  opacity: 0;
+  pointer-events: none;
+  // Durata sincronizată cu .legal-modal (0.25s) — elimină flash-ul la închidere
+  transition: opacity 0.25s ease;
+
+  &--visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+// Modal card
+.legal-modal {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  max-height: 85vh;
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(20px) scale(0.96);
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  &--visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  // Header
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-6);
+    border-bottom: 1px solid var(--color-gray-200);
+  }
+
+  &__title-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  &__icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    background: var(--color-primary-mid);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-bold);
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  &__close {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      background: var(--color-gray-100);
+      color: var(--text-primary);
+    }
+  }
+
+  // Body (scrollable)
+  &__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-6);
+  }
+
+  &__updated {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    font-weight: var(--fw-medium);
+    margin-bottom: var(--space-6);
+    letter-spacing: 0.02em;
+  }
+
+  &__section {
+    margin-bottom: var(--space-6);
+
+    h3 {
+      font-family: var(--font-display);
+      font-size: var(--fs-base);
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+
+    p {
+      font-size: var(--fs-sm);
+      color: var(--text-secondary);
+      line-height: var(--lh-relaxed);
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  // Footer
+  &__footer {
+    padding: var(--space-5) var(--space-6);
+    border-top: 1px solid var(--color-gray-200);
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__accept {
+    min-width: 120px;
+    height: 44px;
+    font-size: var(--fs-sm);
+    // Animație Register din navbar
+    will-change: transform;
+    backface-visibility: hidden;
+    transition: background 0.15s ease, transform 0.12s ease,
+                box-shadow 0.15s ease, opacity 0.15s ease !important;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px) !important;
+      box-shadow: 0 8px 24px rgba(26, 86, 219, 0.36) !important;
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0) scale(0.98) !important;
+      box-shadow: 0 3px 8px rgba(26, 86, 219, 0.20) !important;
+      transition-duration: 0.07s !important;
+    }
+  }
+}
+
+// ============================================================
+// ANIMATIONS
+// ============================================================
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.delay-2 { animation-delay: 0.1s; }
+.delay-3 { animation-delay: 0.2s; }
+.delay-4 { animation-delay: 0.3s; }

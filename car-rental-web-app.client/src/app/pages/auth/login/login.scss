@@ -1,5 +1,4 @@
 // login.component.scss
-// Shares auth-page layout with signup.component.scss
 
 // ============================================================
 // AUTH PAGE SHELL
@@ -7,10 +6,24 @@
 .auth-page {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 100vh;
+  min-height: calc(100vh - var(--navbar-height));
+  margin-top: var(--navbar-height);
+  width: 100%;
+  animation: authFadeIn 0.25s ease both;
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
+  }
+}
+
+@keyframes authFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -25,9 +38,9 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: var(--space-8) var(--space-10);
+    padding: var(--space-6) var(--space-10);
     overflow: hidden;
-    min-height: 100vh;
+    min-height: calc(100vh - var(--navbar-height));
 
     @media (max-width: 900px) {
       display: none;
@@ -38,30 +51,39 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--space-12) var(--space-8);
+    padding: var(--space-8) var(--space-8);
     background: var(--bg-body);
-    min-height: 100vh;
+    min-height: calc(100vh - var(--navbar-height));
     overflow-y: auto;
 
     @media (max-width: 900px) {
-      padding: var(--space-8) var(--space-4);
+      padding: var(--space-6) var(--space-4);
     }
   }
 
-  // Footer on left panel
+  // Footer on left panel — larger and more prominent
   &__footer {
     position: relative;
     z-index: 1;
-    font-size: var(--fs-sm);
-    color: rgba(255, 255, 255, 0.65);
+    font-size: var(--fs-base);     // ← increased from fs-sm
+    color: rgba(255, 255, 255, 0.80);
+    text-align: center;
 
     &-link {
-      color: white;
-      font-weight: var(--fw-semibold);
-      transition: opacity 0.15s ease;
+  color: white;
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-md);
+  transition: opacity 0.15s ease;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 
-      &:hover { opacity: 0.8; }
-    }
+  &:hover { opacity: 0.85; }
+
+  &--sm {
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-semibold);
+  }
+}
   }
 }
 
@@ -148,7 +170,7 @@
 }
 
 // ============================================================
-// VISUAL CONTENT (headline + floating cards)
+// VISUAL CONTENT (headline + stacked stat cards)
 // ============================================================
 .auth-visual {
   position: relative;
@@ -160,19 +182,19 @@
   padding: var(--space-8) 0;
 
   &__headline {
-    margin-bottom: var(--space-12);
+    margin-bottom: var(--space-8);
   }
 
   &__title {
     font-family: var(--font-display);
-    font-size: var(--fs-4xl);
+    font-size: var(--fs-3xl);
     font-weight: var(--fw-extrabold);
     color: white;
     line-height: var(--lh-tight);
     letter-spacing: -0.03em;
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-3);
 
-    @media (max-width: 1200px) { font-size: var(--fs-3xl); }
+    @media (max-width: 1200px) { font-size: var(--fs-2xl); }
   }
 
   &__subtitle {
@@ -181,16 +203,25 @@
     line-height: var(--lh-relaxed);
   }
 
+  // ── Stacked stat cards — no horizontal offsets ─────────────
   &__cards {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+
+  &--row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
   }
 }
+}
 
-// Floating stat cards
+// Floating stat cards — full-width stacked
 .auth-stat-card {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: var(--space-4);
   padding: var(--space-4) var(--space-5);
@@ -198,20 +229,23 @@
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: var(--radius-xl);
   backdrop-filter: blur(10px);
-  width: fit-content;
+  width: 100%;
   transition: background 0.2s ease, transform 0.2s ease;
+
+  .auth-visual__cards--row & {
+    width: auto;
+    flex-shrink: 0;
+  }
 
   &:hover {
     background: rgba(255, 255, 255, 0.16);
     transform: translateX(4px);
   }
 
-  &--offset {
-    margin-left: var(--space-8);
-  }
-
+  // Remove old offset/bottom variants (no longer needed)
+  &--offset,
   &--bottom {
-    margin-left: var(--space-4);
+    margin-left: 0;
   }
 
   &__icon {
@@ -247,7 +281,7 @@
 // FORM HEADER
 // ============================================================
 .auth-form-header {
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-5);
 
   &__badge {
     display: inline-flex;
@@ -282,7 +316,7 @@
 }
 
 // ============================================================
-// GOOGLE BUTTON
+// GOOGLE BUTTON — ghost animation matching navbar Sign In
 // ============================================================
 .btn-google {
   width: 100%;
@@ -299,21 +333,27 @@
   font-weight: var(--fw-semibold);
   color: var(--text-primary);
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease,
-              box-shadow 0.15s ease, transform 0.12s ease;
   box-shadow: var(--shadow-xs);
   margin-bottom: var(--space-6);
 
+  // Ghost animation — identical to navbar Sign In button
+  transition: background 0.2s ease, color 0.2s ease,
+              box-shadow 0.2s ease, border-color 0.2s ease !important;
+
   &:hover {
-    background: var(--color-gray-50);
-    border-color: var(--color-gray-300);
-    box-shadow: var(--shadow-sm);
-    transform: translateY(-1px);
+    background: var(--color-gray-100) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--color-gray-200) !important;
+    box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.08) !important;
+    transform: none !important; // ghost buttons don't lift
   }
 
   &:active {
-    transform: translateY(0) scale(0.99);
-    transition-duration: 0.07s;
+    background: var(--color-gray-200) !important;
+    border-color: var(--color-gray-300) !important;
+    box-shadow: none !important;
+    transform: scale(0.99) !important;
+    transition-duration: 0.07s !important;
   }
 }
 
@@ -453,7 +493,7 @@
 }
 
 // ============================================================
-// REMEMBER ME CHECKBOX
+// REMEMBER ME CHECKBOX — with proper checkmark draw animation
 // ============================================================
 .auth-checkbox {
   display: flex;
@@ -474,7 +514,7 @@
 
       &::after {
         opacity: 1;
-        transform: scale(1) rotate(0deg);
+        transform: scale(1) rotate(45deg);  // ← draws in with rotation
       }
     }
 
@@ -502,9 +542,11 @@
       height: 9px;
       border-right: 2px solid white;
       border-bottom: 2px solid white;
-      transform: scale(0) rotate(45deg);
+      // Start collapsed at 0 rotation — rotates to 45deg on check
+      transform: scale(0) rotate(0deg);
       opacity: 0;
-      transition: transform 0.15s ease, opacity 0.15s ease;
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  opacity 0.15s ease;
       transform-origin: center;
     }
   }
@@ -534,26 +576,32 @@
 }
 
 // ============================================================
-// SUBMIT BUTTON
+// SUBMIT BUTTON — reactive animation matching navbar Register
 // ============================================================
 .auth-submit {
   height: 52px;
   font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  color: white;
   border-radius: var(--radius-xl);
   margin-top: var(--space-2);
-  transition: background 0.15s ease, transform 0.12s ease,
-              box-shadow 0.15s ease, opacity 0.15s ease;
   position: relative;
 
+  // Reactive animation — identical to navbar Register button
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: background 0.15s ease, transform 0.12s ease,
+              box-shadow 0.15s ease, opacity 0.15s ease !important;
+
   &:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(26, 86, 219, 0.36);
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(26, 86, 219, 0.36) !important;
   }
 
   &:active:not(:disabled) {
-    transform: translateY(0) scale(0.99);
-    box-shadow: var(--shadow-primary);
-    transition-duration: 0.07s;
+    transform: translateY(0) scale(0.98) !important;
+    box-shadow: 0 3px 8px rgba(26, 86, 219, 0.20) !important;
+    transition-duration: 0.07s !important;
   }
 
   &--loading {
@@ -598,4 +646,311 @@
   @media (max-width: 900px) {
     display: block;
   }
+}
+
+// ============================================================
+// FORGOT PASSWORD MODAL
+// ============================================================
+
+.legal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+
+  &--visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+.legal-modal {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  max-height: 85vh;
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(20px) scale(0.96);
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  &--visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  &--sm {
+    max-width: 440px;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-6);
+    border-bottom: 1px solid var(--color-gray-200);
+  }
+
+  &__title-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  &__icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    background: var(--color-primary-mid);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-bold);
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  &__close {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      background: var(--color-gray-100);
+      color: var(--text-primary);
+    }
+  }
+
+  &__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-6);
+  }
+
+  &__footer {
+    padding: var(--space-5) var(--space-6);
+    border-top: 1px solid var(--color-gray-200);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-3);
+  }
+
+  &__accept {
+    min-width: 120px;
+    height: 44px;
+    font-size: var(--fs-sm);
+    // Animație Register din navbar
+    will-change: transform;
+    backface-visibility: hidden;
+    transition: background 0.15s ease, transform 0.12s ease,
+                box-shadow 0.15s ease, opacity 0.15s ease !important;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px) !important;
+      box-shadow: 0 8px 24px rgba(26, 86, 219, 0.36) !important;
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0) scale(0.98) !important;
+      box-shadow: 0 3px 8px rgba(26, 86, 219, 0.20) !important;
+      transition-duration: 0.07s !important;
+    }
+  }
+
+  &__cancel {
+    min-width: 90px;
+    height: 44px;
+    font-size: var(--fs-sm);
+    // Animație Sign In (ghost) din navbar
+    will-change: transform;
+    backface-visibility: hidden;
+    transition: background 0.2s ease, color 0.2s ease,
+                box-shadow 0.2s ease, border-color 0.2s ease,
+                transform 0.12s ease !important;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px) !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0) scale(0.98) !important;
+      box-shadow: none !important;
+      transition-duration: 0.07s !important;
+    }
+  }
+}
+
+// Formular forgot
+.forgot-form {
+  &--hidden {
+    display: none;
+  }
+
+  &__desc {
+    font-size: var(--fs-sm);
+    color: var(--text-secondary);
+    line-height: var(--lh-relaxed);
+    margin-bottom: var(--space-5);
+  }
+}
+
+// Submit forgot
+.forgot-submit {
+  min-width: 150px;
+  height: 44px;
+  font-size: var(--fs-sm);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  // Animație Register din navbar
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: background 0.15s ease, transform 0.12s ease,
+              box-shadow 0.15s ease, opacity 0.15s ease !important;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(26, 86, 219, 0.36) !important;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.98) !important;
+    box-shadow: 0 3px 8px rgba(26, 86, 219, 0.20) !important;
+    transition-duration: 0.07s !important;
+  }
+}
+
+// Success state
+.forgot-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-4) 0;
+  opacity: 0;
+  transform: scale(0.92) translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  &--visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    pointer-events: all;
+  }
+
+  &__circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--color-primary-mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-5);
+
+    .forgot-success--visible & {
+      animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+    }
+  }
+
+  &__check {
+    stroke-dasharray: 30;
+    stroke-dashoffset: 30;
+
+    .forgot-success--visible & {
+      animation: drawCheck 0.4s ease 0.3s forwards;
+    }
+  }
+
+  &__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-bold);
+    color: var(--text-primary);
+    margin-bottom: var(--space-2);
+  }
+
+  &__sub {
+    font-size: var(--fs-sm);
+    color: var(--text-secondary);
+    line-height: var(--lh-relaxed);
+    margin-bottom: var(--space-4);
+
+    strong {
+      color: var(--text-primary);
+      font-weight: var(--fw-semibold);
+    }
+  }
+
+  &__hint {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+  }
+
+  &__retry {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:hover { opacity: 0.75; }
+  }
+}
+
+// Butonul "Forgot password?" — stilizat ca link, nu ca buton
+.form-group__link {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+  transition: opacity 0.15s ease;
+
+  &:hover { opacity: 0.75; }
+}
+
+@keyframes popIn {
+  from { transform: scale(0.6); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+@keyframes drawCheck {
+  to { stroke-dashoffset: 0; }
 }
