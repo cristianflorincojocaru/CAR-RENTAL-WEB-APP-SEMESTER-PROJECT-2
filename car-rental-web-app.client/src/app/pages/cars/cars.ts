@@ -22,10 +22,10 @@ export class CarsComponent implements OnInit {
 
   branches = [
     { key: 'All',                   label: 'All Branches' },
-    { key: 'Craiova — Central',     label: 'Craiova Central' },
-    { key: 'Craiova — Airport',     label: 'Craiova Airport' },
-    { key: 'Bucharest — Otopeni',   label: 'Bucharest' },
-    { key: 'Timișoara',             label: 'Timișoara' },
+    { key: 'Bucharest — Central',   label: 'Bucharest — Central' },
+    { key: 'Bucharest — Otopeni',   label: 'Bucharest — Otopeni' },
+    { key: 'Cluj — Airport',        label: 'Cluj — Airport' },
+    { key: 'Timișoara — Airport',   label: 'Timișoara — Airport' },
   ];
   activeBranch = 'All';
 
@@ -52,10 +52,12 @@ export class CarsComponent implements OnInit {
   searchTransmission = '';
 
   private locationToBranch: Record<string, string> = {
-    'Henri Coandă Airport':   'Bucharest — Otopeni',
-    'Otopeni Airport':         'Bucharest — Otopeni',
-    'Bucharest — City Centre': 'Bucharest — Otopeni',
-    'Timișoara':               'Timișoara',
+    'Bucharest — Central':           'Bucharest — Central',
+    'Bucharest — Otopeni (Henri Coandă Airport)': 'Bucharest — Otopeni',
+    'Henri Coandă Airport':          'Bucharest — Otopeni',
+    'Otopeni Airport':               'Bucharest — Otopeni',
+    'Cluj — Airport':                'Cluj — Airport',
+    'Timișoara — Airport':           'Timișoara — Airport',
   };
 
   constructor(

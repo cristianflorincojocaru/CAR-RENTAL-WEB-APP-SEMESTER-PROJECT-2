@@ -25,8 +25,8 @@
       </h1>
 
       <p class="cars-hero__description">
-        Browse all available cars across our branches. Filter by location or
-        category to find your perfect match — and keep an eye out for special offers.
+        Browse all available cars across our branches.<br>
+        Filter by location or category to find your perfect match — and keep an eye out for special offers.
       </p>
 
       <div class="cars-hero__stats">
@@ -76,9 +76,12 @@
       </button>
     </div>
 
-    <!-- ── Branch Tabs ── -->
+    <!-- ── Branch Tabs — Contact page style ── -->
     <div class="fleet__branch-wrap animate-fadeInUp">
-      <button *ngFor="let b of branches" class="fleet__branch-tab" [class.active]="activeBranch === b.key"
+      <button
+        *ngFor="let b of branches"
+        class="fleet__branch-tab"
+        [class.fleet__branch-tab--active]="activeBranch === b.key"
         (click)="setBranch(b.key)">
         <!-- Globe icon for All -->
         <svg *ngIf="b.key === 'All'" width="15" height="15" viewBox="0 0 15 15" fill="none">
@@ -241,7 +244,7 @@
         <div class="fleet__empty-icon">🔍</div>
         <h3 class="fleet__empty-title">No cars found</h3>
         <p class="fleet__empty-sub">Try a different branch or category.</p>
-        <button class="btn btn--primary btn--reactive" (click)="setBranch('All'); setCategory('All')">
+        <button class="btn btn--primary btn--reset-filters" (click)="setBranch('All'); setCategory('All')">
           Reset filters
         </button>
       </div>

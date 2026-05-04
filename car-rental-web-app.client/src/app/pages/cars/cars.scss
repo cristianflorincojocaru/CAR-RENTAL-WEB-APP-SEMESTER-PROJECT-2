@@ -152,7 +152,7 @@
 // ============================================================
 .fleet {
 
-  // ── Branch tabs ─────────────────────────────────────────────
+  // ── Branch tabs — Contact page style ────────────────────────
   &__branch-wrap {
     display: flex;
     flex-wrap: wrap;
@@ -166,39 +166,40 @@
     align-items: center;
     gap: var(--space-2);
     padding: var(--space-2) var(--space-5);
+    border-radius: var(--radius-full);
     font-family: var(--font-display);
     font-size: var(--fs-sm);
     font-weight: var(--fw-medium);
     color: var(--text-secondary);
-    background: var(--color-white);
-    border: 1.5px solid var(--color-gray-200);
-    border-radius: var(--radius-full);
+    background: var(--color-gray-100);
+    border: 1.5px solid transparent;
     cursor: pointer;
-    transition: color 0.15s ease, border-color 0.15s ease,
-                background 0.15s ease, box-shadow 0.15s ease,
-                transform 0.12s ease;
+    transition: background 0.2s ease, color 0.2s ease,
+                border-color 0.2s ease, box-shadow 0.2s ease,
+                transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
 
-    svg { flex-shrink: 0; transition: transform 0.15s ease; }
+    svg { flex-shrink: 0; }
 
-    &:hover:not(.active) {
-      border-color: var(--color-primary-mid);
+    &:hover:not(.fleet__branch-tab--active) {
+      background: var(--color-white);
       color: var(--color-primary);
-      background: var(--color-primary-soft);
-      transform: translateY(-1px);
-    }
-
-    &.active {
-      background: var(--color-primary);
-      color: white;
-      border-color: var(--color-primary);
-      box-shadow: 0 4px 14px rgba(26, 86, 219, 0.28);
-      transform: translateY(-1px);
+      border-color: var(--color-primary-mid);
+      box-shadow: 0 2px 8px rgba(26, 86, 219, 0.10);
     }
 
     &:active {
-      transform: translateY(0) scale(0.98);
-      box-shadow: 0 2px 6px rgba(26, 86, 219, 0.18);
-      transition-duration: 0.07s;
+      transform: scale(0.94);
+      transition-duration: 0.08s;
+    }
+
+    &--active {
+      background: var(--color-primary);
+      color: white;
+      border-color: var(--color-primary);
+      box-shadow:
+        0 0 0 3px rgba(26, 86, 219, 0.18),
+        0 4px 12px rgba(26, 86, 219, 0.28);
+      transform: translateY(-1px);
     }
   }
 
@@ -233,24 +234,30 @@
     border: 1.5px solid transparent;
     border-radius: var(--radius-full);
     cursor: pointer;
-    transition: color 0.15s ease, background 0.15s ease,
-                border-color 0.15s ease, transform 0.12s ease;
+    transition: background 0.2s ease, color 0.2s ease,
+                border-color 0.2s ease, box-shadow 0.2s ease,
+                transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
 
     &:hover:not(.active) {
-      background: var(--color-primary-soft);
+      background: var(--color-white);
       color: var(--color-primary);
-      transform: translateY(-1px);
+      border-color: var(--color-primary-mid);
+      box-shadow: 0 2px 8px rgba(26, 86, 219, 0.10);
+    }
+
+    &:active {
+      transform: scale(0.94);
+      transition-duration: 0.08s;
     }
 
     &.active {
       background: var(--color-primary);
       color: white;
       border-color: var(--color-primary);
-    }
-
-    &:active {
-      transform: translateY(0) scale(0.97);
-      transition-duration: 0.07s;
+      box-shadow:
+        0 0 0 3px rgba(26, 86, 219, 0.18),
+        0 4px 12px rgba(26, 86, 219, 0.28);
+      transform: translateY(-1px);
     }
   }
 
@@ -370,6 +377,25 @@
     font-size: var(--fs-md);
     color: var(--text-secondary);
     margin-bottom: var(--space-6);
+  }
+
+  // Reset filters button — identical animation to Contact "Send message"
+  &__empty .btn--primary {
+    will-change: transform;
+    backface-visibility: hidden;
+    transition: background 0.15s ease, transform 0.12s ease,
+                box-shadow 0.15s ease, opacity 0.15s ease !important;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 18px rgba(26, 86, 219, 0.32) !important;
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0) scale(0.98) !important;
+      box-shadow: 0 2px 6px rgba(26, 86, 219, 0.20) !important;
+      transition-duration: 0.07s !important;
+    }
   }
 }
 
@@ -655,6 +681,25 @@
   }
 }
 
+// Reset filters button — identical animation to Contact page "Send message"
+.btn--reset-filters {
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: background 0.15s ease, transform 0.12s ease,
+              box-shadow 0.15s ease, opacity 0.15s ease !important;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 18px rgba(26, 86, 219, 0.32) !important;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.98) !important;
+    box-shadow: 0 2px 6px rgba(26, 86, 219, 0.20) !important;
+    transition-duration: 0.07s !important;
+  }
+}
+
 // Ghost button animation — mirrors navbar Sign In hover
 .btn--ghost {
   transition: background 0.2s ease, color 0.2s ease,
@@ -674,7 +719,7 @@
 }
 
 // ============================================================
-// CARS — ADDITIONS 
+// CARS — ADDITIONS
 // ============================================================
 
 // ── Search context banner ─────────────────────────────────────
