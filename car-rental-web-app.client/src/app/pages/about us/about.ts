@@ -44,7 +44,7 @@ export class AboutComponent {
 
   // --- Hero stats strip ---
   stats: Stat[] = [
-    { value: '2018',  label: 'founded'         },
+    { value: '2016',  label: 'founded'         },
     { value: '100+',  label: 'vehicles'         },
     { value: '15k+',  label: 'happy customers'  },
     { value: '4.9★',  label: 'average rating'   }
@@ -83,54 +83,54 @@ export class AboutComponent {
   // --- Team ---
   team: TeamMember[] = [
     {
-      initials: 'AM',
+      initials: 'CF',
       avatarBg: 'linear-gradient(135deg, #1A56DB, #3B82F6)',
-      name: 'Alexandru Marin',
+      name: 'Cojocaru Florin-Cristian',
       role: 'Co-founder & CEO',
-      bio: 'Former logistics manager with a passion for making mobility simpler. Alex started DriveNow after one too many frustrating rental experiences.'
+      bio: 'The driving force behind WheelDeal. Florin-Cristian turned a shared frustration with overpriced, confusing car rentals into a mission — building the service he always wished existed.'
     },
     {
-      initials: 'IR',
+      initials: 'NA',
       avatarBg: 'linear-gradient(135deg, #0F172A, #1A56DB)',
-      name: 'Ioana Radu',
+      name: 'Nicoli Andrei-Claudiu',
       role: 'Head of Operations',
-      bio: 'Ioana keeps the fleet running like clockwork — from scheduling maintenance to ensuring every car is ready before you even arrive.'
+      bio: 'Andrei-Claudiu is the reason every car is clean, fuelled, and ready before you arrive. He runs our fleet and logistics with the precision of someone who genuinely can\'t stand things being done halfway.'
     },
     {
-      initials: 'MN',
+      initials: 'CA',
       avatarBg: 'linear-gradient(135deg, #1D4ED8, #60A5FA)',
-      name: 'Mihai Neagu',
+      name: 'Cherciu Adrian-Dumitru',
       role: 'Customer Experience Lead',
-      bio: 'If you have ever called our support line, there is a good chance you spoke to Mihai. He believes no rental issue is too small to fix — fast.'
+      bio: 'Adrian-Dumitru believes that a rental company\'s real product is the feeling you walk away with. He obsesses over every touchpoint — from the first click to the moment you hand back the keys.'
     }
   ];
 
   // --- Milestones ---
   milestones: Milestone[] = [
     {
+      year: '2016',
+      title: 'Three friends, eight cars',
+      description: 'WheelDeal launched from a shared office in Bucharest with a lean fleet and an even leaner budget. The pitch was simple: no hidden fees, no queues, no nonsense.'
+    },
+    {
       year: '2018',
-      title: 'The beginning',
-      description: 'Launched with just 8 cars and a big idea: rent a car in under 3 minutes, delivered to your door in Bucharest.'
+      title: 'Airport breakthrough',
+      description: 'We landed our first airport desk at Henri Coandă — a milestone that took two years of hustling. Overnight, WheelDeal became the fastest car-rental option off the runway.'
     },
     {
-      year: '2019',
-      title: 'First 1,000 customers',
-      description: 'Word spread fast. We hit 1,000 happy rentals and expanded our fleet to 30 vehicles, adding our first SUV models.'
+      year: '2020',
+      title: 'Built to last',
+      description: 'When the world stopped, we kept going. We used the quiet period to overhaul our booking platform, slash wait times, and emerge from the pandemic leaner, faster, and more customer-focused than ever.'
     },
     {
-      year: '2021',
-      title: 'National expansion',
-      description: 'Opened pickup points in Cluj-Napoca, Timișoara and Iași — making DriveNow available across all major Romanian cities.'
-    },
-    {
-      year: '2023',
-      title: 'Going green',
-      description: 'Introduced our first hybrid and electric vehicles, reducing fleet emissions by 20% as part of our sustainability pledge.'
+      year: '2022',
+      title: 'Going national',
+      description: 'Expanded to Cluj-Napoca and Timișoara airports, bringing WheelDeal to the two busiest travel hubs outside Bucharest. Romania\'s roads were ours to cover.'
     },
     {
       year: '2024',
-      title: '15,000 customers & counting',
-      description: 'Reached a milestone we are proud of: 15,000 verified customers and a 4.9-star rating across all review platforms.'
+      title: '15,000 happy drivers',
+      description: 'We hit a number we\'re genuinely proud of: 15,000 verified customers and a 4.9-star average across every platform. Not bad for three friends with eight cars.'
     }
   ];
 

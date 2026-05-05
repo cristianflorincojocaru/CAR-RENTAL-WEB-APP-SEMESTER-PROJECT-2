@@ -22,10 +22,10 @@ export class CarsComponent implements OnInit {
 
   branches = [
     { key: 'All',                   label: 'All Branches' },
-    { key: 'Bucharest — Central',   label: 'Bucharest — Central' },
-    { key: 'Bucharest — Otopeni',   label: 'Bucharest — Otopeni' },
-    { key: 'Cluj — Airport',        label: 'Cluj — Airport' },
-    { key: 'Timișoara — Airport',   label: 'Timișoara — Airport' },
+    { key: 'Bucharest — Central',   label: 'Bucharest Central' },
+    { key: 'Bucharest — Otopeni',   label: 'Bucharest Otopeni' },
+    { key: 'Cluj — Airport',        label: 'Cluj Airport' },
+    { key: 'Timișoara — Airport',   label: 'Timișoara Airport' },
   ];
   activeBranch = 'All';
 
