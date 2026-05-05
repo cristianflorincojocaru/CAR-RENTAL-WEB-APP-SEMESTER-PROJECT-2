@@ -26,9 +26,11 @@
       </h1>
 
       <p class="about-hero__description">
-        Founded in 2018 in Bucharest, DriveNow has grown from a small local fleet
-        into one of Romania's most trusted car rental services — built on
-        transparency, quality, and a genuine passion for the road.
+        What started as three friends, a shared dream, and eight cars parked outside Bucharest
+        has grown into one of Romania's most trusted names in car rental. WheelDeal was born
+        in 2016 from a simple frustration: renting a car was needlessly complicated, overpriced,
+        and full of hidden traps. So we built the experience we always wanted — transparent,
+        effortless, and genuinely customer-first.
       </p>
 
       <div class="about-hero__actions">
@@ -39,8 +41,12 @@
                   stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </a>
-        <a routerLink="/contact" class="btn btn--secondary btn--lg">
+        <a routerLink="/contact" class="btn btn--secondary btn--lg btn--ghost-hero">
           Get in Touch
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </a>
       </div>
     </div>
@@ -179,7 +185,7 @@
       <div class="section-header__label">How we got here</div>
       <h2 class="section-header__title">Our journey</h2>
       <p class="section-header__description">
-        Six years of growth, driven by customer trust and a love for the open road.
+        Eight years of growth, driven by customer trust and a love for the open road.
       </p>
     </div>
 
@@ -206,22 +212,27 @@
   <div class="container">
     <div class="section-header">
       <div class="section-header__label">What sets us apart</div>
-      <h2 class="section-header__title">Why DriveNow?</h2>
+      <h2 class="section-header__title">Why WheelDeal?</h2>
+      <p class="section-header__description" style="white-space: nowrap;">
+        Six reasons thousands of customers choose us — and come back every time.
+      </p>
     </div>
 
-    <div class="grid-3 perks__grid">
+    <div class="perks__grid">
       <div class="perk-card" *ngFor="let perk of perks; let i = index"
            [style.animation-delay]="(i * 0.08) + 's'">
         <div class="perk-card__icon" [innerHTML]="perk.icon"></div>
-        <h3 class="perk-card__title">{{ perk.title }}</h3>
-        <p class="perk-card__desc">{{ perk.description }}</p>
+        <div class="perk-card__body">
+          <h3 class="perk-card__title">{{ perk.title }}</h3>
+          <p class="perk-card__desc">{{ perk.description }}</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============================================================ -->
-<!-- FOOTER CTA (reused from home)                                 -->
+<!-- FOOTER CTA — identical to home page                          -->
 <!-- ============================================================ -->
 <section class="footer-cta">
   <div class="footer-cta__bg">
@@ -232,8 +243,7 @@
     <div class="footer-cta__content">
       <h2 class="footer-cta__title">Ready to hit the road?</h2>
       <p class="footer-cta__text">
-        Join over 15,000 satisfied customers.
-        Your first booking comes with a 10% discount.
+        Join over 15,000 satisfied customers. Your first booking comes with a 10% discount.
       </p>
       <div class="footer-cta__actions">
         <a routerLink="/cars" class="btn btn--white btn--xl">Find Your Car</a>
