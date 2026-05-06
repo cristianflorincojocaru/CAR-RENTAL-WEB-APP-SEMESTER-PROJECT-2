@@ -66,83 +66,78 @@
 <!-- ============================================================ -->
 <section class="section section-alt mission">
   <div class="container">
-    <div class="mission__grid">
-      <!-- Left: visual card -->
-      <div class="mission__visual animate-fadeInUp">
-        <div class="mission__card mission__card--primary">
-          <div class="mission__card-icon">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-              <circle cx="18" cy="18" r="16" fill="#EFF6FF"/>
-              <path d="M10 24L12 18Q14 12 18 10Q22 12 24 18L26 24"
-                    stroke="#1A56DB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="14" cy="24" r="2.5" fill="#1A56DB"/>
-              <circle cx="22" cy="24" r="2.5" fill="#1A56DB"/>
-              <path d="M11 20h14" stroke="#1A56DB" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="mission__card-text">
-            <div class="mission__card-value">100+</div>
-            <div class="mission__card-label">vehicles in fleet</div>
-          </div>
-        </div>
 
-        <div class="mission__card mission__card--accent">
-          <div class="mission__card-icon">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-              <circle cx="18" cy="18" r="16" fill="#FFF7ED"/>
-              <path d="M18 8l2.5 7.5H28l-6.2 4.5 2.3 7.5L18 23l-6.1 4.5 2.3-7.5L8 15.5h7.5z"
-                    stroke="#F59E0B" stroke-width="1.8" stroke-linejoin="round" fill="none"/>
-            </svg>
-          </div>
-          <div class="mission__card-text">
-            <div class="mission__card-value">4.9★</div>
-            <div class="mission__card-label">average rating</div>
-          </div>
-        </div>
+    <!-- Centered header -->
+    <div class="section-header animate-fadeInUp">
+      <div class="section-header__label">Why we exist</div>
+      <h2 class="section-header__title">Our mission</h2>
+    </div>
 
-        <div class="mission__card mission__card--subtle">
-          <div class="mission__card-icon">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-              <circle cx="18" cy="18" r="16" fill="#F0FDF4"/>
-              <path d="M12 19l4 4 8-8" stroke="#22C55E" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="mission__card-text">
-            <div class="mission__card-value">0</div>
-            <div class="mission__card-label">hidden fees</div>
-          </div>
+    <!-- Full-width paragraphs -->
+    <div class="mission__intro animate-fadeInUp delay-1">
+      <p class="mission__paragraph">
+        We believe renting a car should be as easy as unlocking your phone.
+        No fine print, no surprise charges — just a clean car, a fair price,
+        and a team that actually picks up the phone.
+      </p>
+      <p class="mission__paragraph">
+        Every vehicle in our fleet is inspected before each rental, fully insured,
+        and delivered with a full tank. Whether you need an economy runaround or a
+        premium SUV for the weekend, we've got the right car at the right price.
+      </p>
+    </div>
+
+    <!-- Stat cards row -->
+    <div class="mission__stats-row animate-fadeInUp delay-2">
+      <div class="mission__card mission__card--primary">
+        <div class="mission__card-icon">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+            <circle cx="18" cy="18" r="16" fill="#DBEAFE"/>
+            <path d="M10 24L12 18Q14 12 18 10Q22 12 24 18L26 24"
+                  stroke="#1A56DB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="14" cy="24" r="2.5" fill="#1A56DB"/>
+            <circle cx="22" cy="24" r="2.5" fill="#1A56DB"/>
+            <path d="M11 20h14" stroke="#1A56DB" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
         </div>
+        <div class="mission__card-value">100+</div>
+        <div class="mission__card-label">vehicles in fleet</div>
       </div>
 
-      <!-- Right: text -->
-      <div class="mission__text animate-fadeInUp delay-1">
-        <div class="section-header section-header--left">
-          <div class="section-header__label">Why we exist</div>
-          <h2 class="section-header__title">Our mission</h2>
+      <div class="mission__card mission__card--accent">
+        <div class="mission__card-icon">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+            <circle cx="18" cy="18" r="16" fill="#FDE68A"/>
+            <path d="M18 8l2.5 7.5H28l-6.2 4.5 2.3 7.5L18 23l-6.1 4.5 2.3-7.5L8 15.5h7.5z"
+                  stroke="#D97706" stroke-width="1.8" stroke-linejoin="round" fill="none"/>
+          </svg>
         </div>
-        <p class="mission__paragraph">
-          We believe renting a car should be as easy as unlocking your phone.
-          No fine print, no surprise charges — just a clean car, a fair price,
-          and a team that actually picks up the phone.
-        </p>
-        <p class="mission__paragraph">
-          Every vehicle in our fleet is inspected before each rental, fully insured,
-          and delivered with a full tank. Whether you need an economy runaround or a
-          premium SUV for the weekend, we've got the right car at the right price.
-        </p>
+        <div class="mission__card-value">4.9★</div>
+        <div class="mission__card-label">average rating</div>
+      </div>
 
-        <div class="mission__values">
-          <div class="mission__value" *ngFor="let v of values">
-            <div class="mission__value-icon" [innerHTML]="v.icon"></div>
-            <div>
-              <div class="mission__value-title">{{ v.title }}</div>
-              <div class="mission__value-desc">{{ v.description }}</div>
-            </div>
-          </div>
+      <div class="mission__card mission__card--subtle">
+        <div class="mission__card-icon">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+            <circle cx="18" cy="18" r="16" fill="#BBF7D0"/>
+            <path d="M12 19l4 4 8-8" stroke="#16A34A" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
+        <div class="mission__card-value">0</div>
+        <div class="mission__card-label">hidden fees</div>
       </div>
     </div>
+
+    <!-- Values row -->
+    <div class="mission__values-row animate-fadeInUp delay-2">
+      <div class="mission__value" *ngFor="let v of values">
+        <div class="mission__value-icon" [innerHTML]="v.icon"></div>
+        <div class="mission__value-title">{{ v.title }}</div>
+        <div class="mission__value-desc">{{ v.description }}</div>
+      </div>
+    </div>
+
   </div>
 </section>
 
