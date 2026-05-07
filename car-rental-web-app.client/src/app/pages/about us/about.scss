@@ -318,8 +318,7 @@
   &__value {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-3);
+    gap: var(--space-2);
     padding: var(--space-6) var(--space-5);
     background: var(--color-white);
     border: 1.5px solid var(--color-gray-200);
@@ -335,35 +334,95 @@
     }
   }
 
+  // Header row: icon-wrap + title
+  &__value-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-1);
+  }
+
+  // Wrapper carries the drop-shadow for triangle (clip-path clips box-shadow on child)
+  // For square and circle it just passes through; the icon itself carries box-shadow
+  &__value-icon-wrap {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: filter 0.2s ease;
+
+    &--triangle {
+      filter: drop-shadow(0 0 6px rgba(26, 86, 219, 0.35))
+              drop-shadow(0 0 2px rgba(26, 86, 219, 0.20));
+    }
+
+    .mission__value:hover &--triangle {
+      filter: drop-shadow(0 0 10px rgba(26, 86, 219, 0.55))
+              drop-shadow(0 0 4px rgba(26, 86, 219, 0.35));
+    }
+  }
+
   &__value-icon {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 40px;
     height: 40px;
-    background: var(--color-primary-soft);
+    background: linear-gradient(145deg, #e8f0fe 0%, var(--color-primary-soft) 100%);
     border: 1.5px solid var(--color-primary-mid);
     border-radius: var(--radius-md);
-    transition: background 0.18s ease, box-shadow 0.18s ease;
+    // 3D effect: top-left light, bottom-right shadow
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.9),
+      inset 0 -1px 0 rgba(26,86,219,0.12),
+      0 0 0 4px rgba(26, 86, 219, 0.08),
+      0 0 14px rgba(26, 86, 219, 0.18),
+      0 3px 8px rgba(26, 86, 219, 0.14);
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 
     svg { transition: stroke 0.18s ease; }
 
+    &--triangle {
+      clip-path: polygon(50% 6%, 100% 94%, 0% 94%);
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+      background: linear-gradient(145deg, #e8f0fe 0%, var(--color-primary-soft) 100%);
+    }
+
+    &--circle {
+      border-radius: 50%;
+    }
+
     .mission__value:hover & {
-      background: var(--color-primary);
-      box-shadow: 0 4px 12px rgba(26,86,219,0.25);
+      background: linear-gradient(145deg, #3b6ff0 0%, var(--color-primary) 60%, #1241a8 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.25),
+        inset 0 -1px 0 rgba(0,0,0,0.18),
+        0 0 0 5px rgba(26, 86, 219, 0.14),
+        0 0 22px rgba(26, 86, 219, 0.40),
+        0 4px 12px rgba(26, 86, 219, 0.28);
+      transform: translateY(-2px) scale(1.06);
       svg { stroke: white; }
+    }
+
+    .mission__value:hover &--triangle {
+      background: linear-gradient(160deg, #6b95fb 0%, #2563eb 55%, #1241a8 100%);
+      box-shadow: none;
+      transform: translateY(-2px) scale(1.06);
     }
   }
 
   &__value-title {
     font-family: var(--font-display);
-    font-size: var(--fs-base);
+    font-size: var(--fs-md);
     font-weight: var(--fw-semibold);
     color: var(--text-primary);
+    line-height: 1.2;
   }
 
   &__value-desc {
-    font-size: var(--fs-sm);
+    font-size: var(--fs-base);
     color: var(--text-secondary);
     line-height: var(--lh-relaxed);
   }

@@ -788,7 +788,7 @@
     min-width: 90px;
     height: 44px;
     font-size: var(--fs-sm);
-    // Animație Sign In (ghost) din navbar
+    // Animație Sign In (ghost) din navbar — identic
     will-change: transform;
     backface-visibility: hidden;
     transition: background 0.2s ease, color 0.2s ease,
@@ -796,13 +796,18 @@
                 transform 0.12s ease !important;
 
     &:hover:not(:disabled) {
-      transform: translateY(-1px) !important;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+      background: var(--color-gray-100) !important;
+      color: var(--text-primary) !important;
+      border-color: var(--color-gray-200) !important;
+      box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.08) !important;
+      transform: none !important;
     }
 
     &:active:not(:disabled) {
-      transform: translateY(0) scale(0.98) !important;
+      background: var(--color-gray-200) !important;
+      border-color: var(--color-gray-300) !important;
       box-shadow: none !important;
+      transform: scale(0.99) !important;
       transition-duration: 0.07s !important;
     }
   }
