@@ -131,9 +131,18 @@
 
     <!-- Values row -->
     <div class="mission__values-row animate-fadeInUp delay-2">
-      <div class="mission__value" *ngFor="let v of values">
-        <div class="mission__value-icon" [innerHTML]="v.icon"></div>
-        <div class="mission__value-title">{{ v.title }}</div>
+      <div class="mission__value" *ngFor="let v of values; let i = index">
+        <div class="mission__value-header">
+          <div class="mission__value-icon-wrap"
+               [class.mission__value-icon-wrap--triangle]="i === 1"
+               [class.mission__value-icon-wrap--circle]="i === 2">
+            <div class="mission__value-icon"
+                 [class.mission__value-icon--triangle]="i === 1"
+                 [class.mission__value-icon--circle]="i === 2"
+                 [innerHTML]="v.icon"></div>
+          </div>
+          <div class="mission__value-title">{{ v.title }}</div>
+        </div>
         <div class="mission__value-desc">{{ v.description }}</div>
       </div>
     </div>
