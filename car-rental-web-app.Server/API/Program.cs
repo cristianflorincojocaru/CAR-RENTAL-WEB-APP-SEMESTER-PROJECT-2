@@ -63,6 +63,9 @@ if (app.Environment.IsDevelopment())
         c.DisplayRequestDuration();
         c.EnableFilter();
     });
+
+    // .NET 10 built-in OpenAPI explorer (optional — accessible at /openapi/v1.json)
+    app.MapOpenApi();
 }
 
 app.UseHttpsRedirection();

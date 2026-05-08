@@ -22,34 +22,34 @@ public static class MappingExtensions
         {
             var icon = v.FuelType.ToLower() switch
             {
-                "hybrid" => "🌱",
+                "hybrid"   => "🌱",
                 "electric" => "🔋",
-                _ => "❄️"
+                _          => "❄️"
             };
             specs.Add(new VehicleSpecDto(icon, v.FuelType));
         }
 
         return new VehicleDto(
-            Id: v.Id,
-            Name: v.FullName,
-            Brand: v.Brand,
-            Model: v.Model,
-            Year: v.Year,
-            FuelType: v.FuelType,
-            Category: v.Category.ToString(),
-            Branch: v.Branch?.Name ?? string.Empty,
-            BranchId: v.BranchId,
+            Id:                 v.Id,
+            Name:               v.FullName,
+            Brand:              v.Brand,
+            Model:              v.Model,
+            Year:               v.Year,
+            FuelType:           v.FuelType,
+            Category:           v.Category.ToString(),
+            Branch:             v.Branch?.Name ?? string.Empty,
+            BranchId:           v.BranchId,
             RegistrationNumber: v.RegistrationNumber,
-            DailyRate: v.DailyRate,
-            Status: v.Status.ToString(),
-            Rating: v.Rating,
-            ColorHex: v.ColorHex,
-            Transmission: v.Transmission,
-            Seats: v.Seats,
-            IsOffer: v.IsOffer,
-            DiscountPercent: v.DiscountPercent,
-            IsActive: v.IsActive,
-            Specs: specs
+            DailyRate:          v.DailyRate,
+            Status:             v.Status.ToString(),
+            Rating:             v.Rating,
+            ColorHex:           v.ColorHex,
+            Transmission:       v.Transmission,
+            Seats:              v.Seats,
+            IsOffer:            v.IsOffer,
+            DiscountPercent:    v.DiscountPercent,
+            IsActive:           v.IsActive,
+            Specs:              specs
         );
     }
 
@@ -65,10 +65,10 @@ public static class MappingExtensions
     public static RentalListItemDto ToListDto(this Rental r) => new(
         r.Id,
         r.BookingReference,
-        r.Vehicle?.FullName ?? string.Empty,
+        r.Vehicle?.FullName            ?? string.Empty,
         r.Vehicle?.Category.ToString() ?? string.Empty,
-        r.Client?.FullName ?? string.Empty,
-        r.Client?.Email ?? string.Empty,
+        r.Client?.FullName             ?? string.Empty,
+        r.Client?.Email                ?? string.Empty,
         r.StartDate,
         r.EndDate,
         r.TotalCost,
@@ -82,13 +82,13 @@ public static class MappingExtensions
         r.Id,
         r.BookingReference,
         r.VehicleId,
-        r.Vehicle?.FullName ?? string.Empty,
+        r.Vehicle?.FullName            ?? string.Empty,
         r.Vehicle?.Category.ToString() ?? string.Empty,
         r.ClientId,
-        r.Client?.FullName ?? string.Empty,
-        r.Client?.Email ?? string.Empty,
+        r.Client?.FullName             ?? string.Empty,
+        r.Client?.Email                ?? string.Empty,
         r.BranchId,
-        r.Branch?.Name ?? string.Empty,
+        r.Branch?.Name                 ?? string.Empty,
         r.StartDate,
         r.EndDate,
         r.PickupLocation,
@@ -101,7 +101,7 @@ public static class MappingExtensions
         r.Notes,
         r.PayNow,
         r.CreatedAt,
-        r.CreatedByUser?.FullName ?? string.Empty,
+        r.CreatedByUser?.FullName      ?? string.Empty,
         r.CompletedByUser?.FullName
     );
 

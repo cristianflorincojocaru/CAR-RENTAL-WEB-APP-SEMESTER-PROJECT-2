@@ -14,7 +14,7 @@ public class RentalService : IRentalService
 
     public RentalService(IUnitOfWork uow, IAuditService audit)
     {
-        _uow = uow;
+        _uow   = uow;
         _audit = audit;
     }
 
@@ -79,7 +79,7 @@ public class RentalService : IRentalService
         var branchId = createdByUser.BranchId ?? vehicle.BranchId;
 
         // Calculate cost
-        var days = (request.ReturnDate.Date - request.PickupDate.Date).Days;
+        var days     = (request.ReturnDate.Date - request.PickupDate.Date).Days;
         var baseRate = vehicle.IsOffer && vehicle.DiscountPercent.HasValue
             ? vehicle.DailyRate * (1 - vehicle.DiscountPercent.Value / 100m)
             : vehicle.DailyRate;
@@ -87,12 +87,12 @@ public class RentalService : IRentalService
         var protectionCost = request.ProtectionPlan?.ToLower() switch
         {
             "standard" => 8m,
-            "premium" => 16m,
-            _ => 0m
+            "premium"  => 16m,
+            _          => 0m
         };
 
-        var extrasCost = CalculateExtrasCost(request.Extras, days);
-        var totalCost = Math.Round((baseRate + protectionCost + (extrasCost / days)) * days, 2);
+        var extrasCost  = CalculateExtrasCost(request.Extras, days);
+        var totalCost   = Math.Round((baseRate + protectionCost + (extrasCost / days)) * days, 2);
 
         var extrasJson = request.Extras?.Count > 0
             ? JsonSerializer.Serialize(request.Extras)
@@ -113,7 +113,6 @@ public class RentalService : IRentalService
             request.Notes,
             request.PayNow);
 
-        // Update vehicle status
         vehicle.ChangeStatus(VehicleStatus.Rented);
         _uow.Vehicles.Update(vehicle);
 
@@ -138,7 +137,6 @@ public class RentalService : IRentalService
         rental.Complete(completedByUserId);
         _uow.Rentals.Update(rental);
 
-        // Set vehicle back to available
         var vehicle = await _uow.Vehicles.GetByIdAsync(rental.VehicleId, ct);
         if (vehicle != null)
         {
@@ -166,7 +164,6 @@ public class RentalService : IRentalService
         rental.Cancel(reason);
         _uow.Rentals.Update(rental);
 
-        // Set vehicle back to available
         var vehicle = await _uow.Vehicles.GetByIdAsync(rental.VehicleId, ct);
         if (vehicle != null)
         {
@@ -195,11 +192,11 @@ public class RentalService : IRentalService
 
         var ratesPerDay = new Dictionary<string, decimal>
         {
-            ["gps"] = 4m,
-            ["child_seat"] = 5m,
+            ["gps"]               = 4m,
+            ["child_seat"]        = 5m,
             ["additional_driver"] = 7m,
-            ["roadside"] = 3m,
-            ["full_insurance"] = 0m
+            ["roadside"]          = 3m,
+            ["full_insurance"]    = 0m
         };
 
         return extras

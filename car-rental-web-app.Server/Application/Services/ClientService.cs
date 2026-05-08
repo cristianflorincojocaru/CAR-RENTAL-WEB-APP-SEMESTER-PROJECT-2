@@ -14,7 +14,7 @@ public class ClientService : IClientService
 
     public ClientService(IUnitOfWork uow, IAuditService audit)
     {
-        _uow = uow;
+        _uow   = uow;
         _audit = audit;
     }
 

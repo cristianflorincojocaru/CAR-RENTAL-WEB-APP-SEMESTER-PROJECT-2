@@ -217,7 +217,7 @@ CREATE TABLE [__EFMigrationsHistory] (
     CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
 );
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES ('20260504000001_InitialCreate', '8.0.11');
+VALUES ('20260504000001_InitialCreate', '9.0.5');
 GO
 
 PRINT 'WheelDeal database schema created successfully.';

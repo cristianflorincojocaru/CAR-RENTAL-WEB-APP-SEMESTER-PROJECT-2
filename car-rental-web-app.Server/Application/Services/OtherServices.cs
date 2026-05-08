@@ -18,18 +18,18 @@ public class BranchService : IBranchService
 
     public BranchService(IUnitOfWork uow, IAuditService audit)
     {
-        _uow = uow;
+        _uow   = uow;
         _audit = audit;
     }
 
     public async Task<IEnumerable<BranchDto>> GetAllAsync(CancellationToken ct = default)
     {
         var branches = await _uow.Branches.GetActiveAsync(ct);
-        var result = new List<BranchDto>();
+        var result   = new List<BranchDto>();
         foreach (var b in branches)
         {
             var vehicles = await _uow.Vehicles.GetByBranchAsync(b.Id, ct);
-            var rentals = await _uow.Rentals.GetByBranchAsync(b.Id, ct);
+            var rentals  = await _uow.Rentals.GetByBranchAsync(b.Id, ct);
             result.Add(b.ToDto(
                 vehicles.Count(v => v.IsActive),
                 rentals.Count(r => r.Status == RentalStatus.Active)));
@@ -42,7 +42,7 @@ public class BranchService : IBranchService
         var branch = await _uow.Branches.GetByIdWithDetailsAsync(id, ct);
         if (branch == null) return null;
         var vehicles = await _uow.Vehicles.GetByBranchAsync(id, ct);
-        var rentals = await _uow.Rentals.GetByBranchAsync(id, ct);
+        var rentals  = await _uow.Rentals.GetByBranchAsync(id, ct);
         return branch.ToDto(
             vehicles.Count(v => v.IsActive),
             rentals.Count(r => r.Status == RentalStatus.Active));
@@ -130,8 +130,8 @@ public class UserService : IUserService
 
     public UserService(IUnitOfWork uow, IAuditService audit, IPasswordHasher<User> hasher)
     {
-        _uow = uow;
-        _audit = audit;
+        _uow    = uow;
+        _audit  = audit;
         _hasher = hasher;
     }
 
@@ -155,9 +155,8 @@ public class UserService : IUserService
         if (await _uow.Users.UsernameExistsAsync(request.Username, ct))
             throw new InvalidOperationException($"Username '{request.Username}' already taken.");
 
-        // Generate temporary password
         var tempPassword = $"TempPass{Guid.NewGuid().ToString("N")[..8]}!1";
-        var tempUser = User.Create(request.Username, "", request.Email, request.FullName,
+        var tempUser     = User.Create(request.Username, "", request.Email, request.FullName,
             request.Phone, request.Role, request.BranchId, createdByUserId);
         var hash = _hasher.HashPassword(tempUser, tempPassword);
 
@@ -168,7 +167,7 @@ public class UserService : IUserService
         await _uow.SaveChangesAsync(ct);
 
         await _audit.LogAsync(createdByUserId, "User", user.Id, "StaffAdded",
-            $"Staff member {user.FullName} ({user.Role}) created by user {createdByUserId}.", ct);
+            $"Staff member {user.FullName} ({user.Role}) created.", ct);
 
         var created = await _uow.Users.GetByIdWithDetailsAsync(user.Id, ct);
         return created!.ToListDto();
@@ -208,7 +207,8 @@ public class UserService : IUserService
         user.UnlockAccount();
         _uow.Users.Update(user);
         await _uow.SaveChangesAsync(ct);
-        await _audit.LogAsync(null, "User", id, "AccountUnlocked", $"Account for user {user.FullName} unlocked.", ct);
+        await _audit.LogAsync(null, "User", id, "AccountUnlocked",
+            $"Account for user {user.FullName} unlocked.", ct);
     }
 
     public async Task DeactivateAsync(int id, CancellationToken ct = default)
@@ -218,7 +218,8 @@ public class UserService : IUserService
         user.SetIsActive(false);
         _uow.Users.Update(user);
         await _uow.SaveChangesAsync(ct);
-        await _audit.LogAsync(null, "User", id, "UserDeactivated", $"User {user.FullName} deactivated.", ct);
+        await _audit.LogAsync(null, "User", id, "UserDeactivated",
+            $"User {user.FullName} deactivated.", ct);
     }
 }
 
@@ -233,14 +234,15 @@ public class ReportService : IReportService
     public async Task<RevenueSummaryDto> GetRevenueSummaryAsync(DateTime? from, DateTime? to,
         int? branchId, CancellationToken ct = default)
     {
-        var rentals = await _uow.Rentals.GetByFiltersAsync(branchId, null, from, to, ct);
+        var rentals     = await _uow.Rentals.GetByFiltersAsync(branchId, null, from, to, ct);
         var rentalsList = rentals.ToList();
 
         var branches = await _uow.Branches.GetActiveAsync(ct);
         var revenueByBranch = branches.ToDictionary(
             b => b.Name,
-            b => rentalsList.Where(r => r.BranchId == b.Id && r.Status == RentalStatus.Completed)
-                           .Sum(r => r.TotalCost));
+            b => rentalsList
+                .Where(r => r.BranchId == b.Id && r.Status == RentalStatus.Completed)
+                .Sum(r => r.TotalCost));
 
         var vehicles = await _uow.Vehicles.GetAllAsync(ct);
         var rentalsByCategory = Enum.GetValues<VehicleCategory>().ToDictionary(
@@ -252,17 +254,18 @@ public class ReportService : IReportService
             });
 
         var completed = rentalsList.Where(r => r.Status == RentalStatus.Completed).ToList();
+
         return new RevenueSummaryDto(
-            TotalRevenue: completed.Sum(r => r.TotalCost),
-            TotalRentals: rentalsList.Count,
-            ActiveRentals: rentalsList.Count(r => r.Status == RentalStatus.Active),
-            CompletedRentals: completed.Count,
-            CancelledRentals: rentalsList.Count(r => r.Status == RentalStatus.Cancelled),
-            AverageDailyRate: completed.Count > 0
+            TotalRevenue:       completed.Sum(r => r.TotalCost),
+            TotalRentals:       rentalsList.Count,
+            ActiveRentals:      rentalsList.Count(r => r.Status == RentalStatus.Active),
+            CompletedRentals:   completed.Count,
+            CancelledRentals:   rentalsList.Count(r => r.Status == RentalStatus.Cancelled),
+            AverageDailyRate:   completed.Count > 0
                 ? completed.Average(r => r.TotalCost / Math.Max(r.DurationDays, 1))
                 : 0,
-            RevenueByBranch: revenueByBranch,
-            RentalsByCategory: rentalsByCategory
+            RevenueByBranch:    revenueByBranch,
+            RentalsByCategory:  rentalsByCategory
         );
     }
 
@@ -273,28 +276,28 @@ public class ReportService : IReportService
             : await _uow.Vehicles.GetAllAsync(ct);
 
         var activeVehicles = allVehicles.Where(v => v.IsActive).ToList();
-        var allClients = await _uow.Clients.GetAllAsync(ct);
-        var allRentals = await _uow.Rentals.GetByFiltersAsync(branchId, null, null, null, ct);
-        var rentalsList = allRentals.ToList();
+        var allClients     = await _uow.Clients.GetAllAsync(ct);
+        var allRentals     = await _uow.Rentals.GetByFiltersAsync(branchId, null, null, null, ct);
+        var rentalsList    = allRentals.ToList();
 
-        var today = DateTime.UtcNow.Date;
-        var completedToday = rentalsList.Count(r =>
+        var today            = DateTime.UtcNow.Date;
+        var completedToday   = rentalsList.Count(r =>
             r.Status == RentalStatus.Completed && r.UpdatedAt.Date == today);
-        var todayRevenue = rentalsList
+        var todayRevenue     = rentalsList
             .Where(r => r.Status == RentalStatus.Completed && r.UpdatedAt.Date == today)
             .Sum(r => r.TotalCost);
 
         var alertCount = await _uow.SecurityAlerts.GetUnreadCountAsync(ct);
 
         return new DashboardStatsDto(
-            TotalVehicles: activeVehicles.Count,
+            TotalVehicles:    activeVehicles.Count,
             AvailableVehicles: activeVehicles.Count(v => v.Status == VehicleStatus.Available),
-            RentedVehicles: activeVehicles.Count(v => v.Status == VehicleStatus.Rented),
-            TotalClients: allClients.Count(),
-            ActiveRentals: rentalsList.Count(r => r.Status == RentalStatus.Active),
-            CompletedToday: completedToday,
-            TodayRevenue: todayRevenue,
-            UnreadAlerts: alertCount
+            RentedVehicles:   activeVehicles.Count(v => v.Status == VehicleStatus.Rented),
+            TotalClients:     allClients.Count(),
+            ActiveRentals:    rentalsList.Count(r => r.Status == RentalStatus.Active),
+            CompletedToday:   completedToday,
+            TodayRevenue:     todayRevenue,
+            UnreadAlerts:     alertCount
         );
     }
 }
@@ -327,11 +330,11 @@ public class SecurityAlertService : ISecurityAlertService
     public async Task<IEnumerable<object>> GetUnreadAlertsAsync(CancellationToken ct = default)
     {
         var alerts = await _uow.SecurityAlerts.GetUnreadAsync(ct);
-        return alerts.Select(a => new
+        return alerts.Select(a => (object)new
         {
             a.Id,
             a.UserId,
-            UserName = a.User?.FullName,
+            UserName  = a.User?.FullName,
             AlertType = a.AlertType.ToString(),
             a.Description,
             a.IsRead,

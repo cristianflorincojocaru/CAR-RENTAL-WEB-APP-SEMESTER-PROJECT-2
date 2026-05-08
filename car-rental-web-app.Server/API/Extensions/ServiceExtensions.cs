@@ -118,7 +118,7 @@ public static class ServiceExtensions
                 }
             });
 
-            // JWT auth in Swagger
+            // JWT auth in Swagger UI
             var jwtScheme = new OpenApiSecurityScheme
             {
                 Name = "Authorization",
@@ -140,7 +140,7 @@ public static class ServiceExtensions
                 { jwtScheme, Array.Empty<string>() }
             });
 
-            // Include XML comments if present
+            // XML comments
             var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
             if (File.Exists(xmlPath)) c.IncludeXmlComments(xmlPath);

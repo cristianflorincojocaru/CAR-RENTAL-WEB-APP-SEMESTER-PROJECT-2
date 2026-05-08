@@ -42,9 +42,9 @@ CarRental/
 
 ## Prerequisites
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8)
-- [SQL Server LocalDB](https://docs.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb) (included with Visual Studio) **or** any SQL Server instance
-- [Visual Studio 2022](https://visualstudio.microsoft.com/) or [VS Code](https://code.visualstudio.com/) with C# extension
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10)
+- [SQL Server LocalDB](https://docs.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb) (inclusă cu Visual Studio 2022 17.12+) **sau** orice instanță SQL Server
+- [Visual Studio 2022 v17.12+](https://visualstudio.microsoft.com/) sau [VS Code](https://code.visualstudio.com/) cu extensia C#
 
 ---
 
