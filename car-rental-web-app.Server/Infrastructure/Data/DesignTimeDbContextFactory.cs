@@ -33,6 +33,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AppDbConte
             sql.MigrationsAssembly("CarRental.Infrastructure");
         });
 
-        return new AppDbContext(optionsBuilder.Build());
+        return new AppDbContext(optionsBuilder.Options); // nu .Build()
+
     }
 }

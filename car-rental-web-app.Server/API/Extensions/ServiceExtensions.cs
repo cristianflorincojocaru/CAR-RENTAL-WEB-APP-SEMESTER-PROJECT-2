@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 
 namespace CarRental.API.Extensions;
 
@@ -103,47 +102,15 @@ public static class ServiceExtensions
 
     public static IServiceCollection AddSwagger(this IServiceCollection services)
     {
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(c =>
+        services.AddOpenApi(options =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo
+            options.AddDocumentTransformer((document, context, ct) =>
             {
-                Title = "WheelDeal Car Rental API",
-                Version = "v1",
-                Description = "Backend API for the WheelDeal car rental management system.",
-                Contact = new OpenApiContact
-                {
-                    Name = "WheelDeal Support",
-                    Email = "contact@wheeldeal.ro"
-                }
+                document.Info.Title = "WheelDeal Car Rental API";
+                document.Info.Version = "v1";
+                document.Info.Description = "Backend API for the WheelDeal car rental management system.";
+                return Task.CompletedTask;
             });
-
-            // JWT auth in Swagger UI
-            var jwtScheme = new OpenApiSecurityScheme
-            {
-                Name = "Authorization",
-                Type = SecuritySchemeType.Http,
-                Scheme = "Bearer",
-                BearerFormat = "JWT",
-                In = ParameterLocation.Header,
-                Description = "Enter your JWT token. Example: Bearer {token}",
-                Reference = new OpenApiReference
-                {
-                    Id = JwtBearerDefaults.AuthenticationScheme,
-                    Type = ReferenceType.SecurityScheme
-                }
-            };
-
-            c.AddSecurityDefinition(jwtScheme.Reference.Id, jwtScheme);
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                { jwtScheme, Array.Empty<string>() }
-            });
-
-            // XML comments
-            var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            if (File.Exists(xmlPath)) c.IncludeXmlComments(xmlPath);
         });
 
         return services;

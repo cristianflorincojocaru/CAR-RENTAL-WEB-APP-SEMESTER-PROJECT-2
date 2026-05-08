@@ -11,9 +11,11 @@ export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router      = inject(Router);
 
-  if (authService.isLoggedIn()) {
-    return true;
-  }
+  console.log('Guard check — isLoggedIn:', authService.isLoggedIn());
+console.log('Token:', localStorage.getItem('wd_access_token')?.substring(0, 20));
+if (authService.isLoggedIn()) {
+  return true;
+}
 
   // Salvăm URL-ul curent pentru a reveni după login
   router.navigate(['/login'], {

@@ -4,6 +4,7 @@ using CarRental.Domain.Entities;
 using CarRental.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
     .ConfigureApiBehaviorOptions(options =>
     {
-        // Return standardised validation error format
         options.InvalidModelStateResponseFactory = context =>
         {
             var errors = context.ModelState
@@ -55,17 +55,12 @@ app.UseExceptionMiddleware();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "WheelDeal Car Rental API v1");
-        c.RoutePrefix = "swagger";
-        c.DisplayRequestDuration();
-        c.EnableFilter();
-    });
-
-    // .NET 10 built-in OpenAPI explorer (optional — accessible at /openapi/v1.json)
     app.MapOpenApi();
+    app.MapScalarApiReference(options =>
+    {
+        options.Title = "WheelDeal Car Rental API";
+        options.Theme = ScalarTheme.Purple;
+    });
 }
 
 app.UseHttpsRedirection();
