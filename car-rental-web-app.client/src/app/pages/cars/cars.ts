@@ -136,7 +136,7 @@ export class CarsComponent implements OnInit {
         cars.sort((a, b) => this.getDiscountedPrice(b) - this.getDiscountedPrice(a));
         break;
       case 'rating':
-        cars.sort((a, b) => b.rating - a.rating);
+        cars.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
         break;
       case 'name':
         cars.sort((a, b) => a.name.localeCompare(b.name));

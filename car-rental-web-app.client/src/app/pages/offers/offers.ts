@@ -87,7 +87,7 @@ export class OffersComponent implements OnInit {
         sorted.sort((a, b) => this.discounted(b) - this.discounted(a));
         break;
       case 'rating':
-        sorted.sort((a, b) => b.rating - a.rating);
+        sorted.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
         break;
     }
     return sorted;

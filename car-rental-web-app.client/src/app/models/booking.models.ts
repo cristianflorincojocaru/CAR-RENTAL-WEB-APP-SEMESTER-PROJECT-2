@@ -1,8 +1,8 @@
 // ============================================================
-// BOOKING / RENTAL MODELS
+// BOOKING / RENTAL MODELS — aliniate cu RentalDtos din backend
 // ============================================================
 
-export type RentalStatus = 'Active' | 'Completed' | 'Cancelled';
+export type RentalStatus  = 'Active' | 'Completed' | 'Cancelled';
 export type ProtectionPlan = 'basic' | 'standard' | 'premium';
 
 export interface CreateBookingRequest {
@@ -11,8 +11,8 @@ export interface CreateBookingRequest {
   returnDate: string;
   pickupLocation: string;
   returnLocation: string;
-  protectionPlan: ProtectionPlan;
-  extras: string[];            // ex: ['gps', 'child_seat']
+  protectionPlan: string;      // 'basic' | 'standard' | 'premium'
+  extras?: string[];           // ex: ['gps', 'child_seat']
   firstName: string;
   lastName: string;
   email: string;
@@ -24,15 +24,29 @@ export interface CreateBookingRequest {
 
 export interface BookingResponse {
   id: number;
-  bookingReference: string;    // ex: "DN-AB12CD"
+  bookingReference: string;
   vehicleId: number;
+  vehicleName: string;
+  vehicleCategory: string;
   clientId: number;
+  clientName: string;
+  clientEmail: string;
   branchId: number;
+  branchName: string;
   startDate: string;
   endDate: string;
+  pickupLocation: string;
+  returnLocation: string;
   totalCost: number;
   status: RentalStatus;
+  cancellationReason?: string;
+  protectionPlan?: string;
+  extras?: string;
+  notes?: string;
+  payNow: boolean;
   createdAt: string;
+  createdByUserName: string;
+  completedByUserName?: string;
 }
 
 export interface Rental {
@@ -40,6 +54,8 @@ export interface Rental {
   bookingReference: string;
   vehicleName: string;
   vehicleCategory: string;
+  clientName: string;
+  clientEmail: string;
   startDate: string;
   endDate: string;
   totalCost: number;

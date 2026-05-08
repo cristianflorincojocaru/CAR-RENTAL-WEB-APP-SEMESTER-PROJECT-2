@@ -45,10 +45,10 @@ public class AppDbContext : DbContext
              .IsRequired(false);
 
             e.HasOne(u => u.CreatedByUser)
-             .WithMany()
-             .HasForeignKey(u => u.CreatedByUserId)
-             .OnDelete(DeleteBehavior.SetNull)
-             .IsRequired(false);
+ .WithMany()
+ .HasForeignKey(u => u.CreatedByUserId)
+ .OnDelete(DeleteBehavior.NoAction)  // ← era SetNull
+ .IsRequired(false);
         });
 
         // ── Branch ─────────────────────────────────────────────

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { Car, CarFilters } from '../models/car.models';
@@ -36,11 +37,15 @@ export class CarService {
       params = params.set('isOffer', String(filters.isOffer));
     }
 
-    return this.http.get<Car[]>(this.apiUrl, { params });
+    return this.http.get<Car[]>(this.apiUrl, { params }).pipe(
+      map(cars => cars.map(c => this.addAliases(c)))
+    );
   }
 
   getById(id: number): Observable<Car> {
-    return this.http.get<Car>(`${this.apiUrl}/${id}`);
+    return this.http.get<Car>(`${this.apiUrl}/${id}`).pipe(
+      map(c => this.addAliases(c))
+    );
   }
 
   getOffers(category?: string): Observable<Car[]> {
@@ -48,10 +53,23 @@ export class CarService {
     if (category && category !== 'All') {
       params = params.set('category', category);
     }
-    return this.http.get<Car[]>(this.apiUrl, { params });
+    return this.http.get<Car[]>(this.apiUrl, { params }).pipe(
+      map(cars => cars.map(c => this.addAliases(c)))
+    );
   }
 
   getBranches(): Observable<string[]> {
     return this.http.get<string[]>(`${this.apiUrl}/branches`);
+  }
+
+  // ── Helper ────────────────────────────────────────────────────
+
+  private addAliases(car: Car): Car {
+    return {
+      ...car,
+      color: car.colorHex,
+      fuel: car.fuelType,
+      isFavorite: car.isFavorite ?? false,
+    };
   }
 }
