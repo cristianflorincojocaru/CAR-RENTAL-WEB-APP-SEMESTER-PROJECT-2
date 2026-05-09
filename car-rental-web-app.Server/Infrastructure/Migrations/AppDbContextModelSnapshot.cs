@@ -224,6 +224,47 @@ namespace CarRental.Infrastructure.Migrations
                     b.ToTable("ContactMessages", (string)null);
                 });
 
+            modelBuilder.Entity("CarRental.Domain.Entities.PromoCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApplicableCategory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ApplicableVehicleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("DiscountPercent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("WeekendOnly")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PromoCodes");
+                });
+
             modelBuilder.Entity("CarRental.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
@@ -515,6 +556,10 @@ namespace CarRental.Infrastructure.Migrations
                     b.Property<string>("FuelType")
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");

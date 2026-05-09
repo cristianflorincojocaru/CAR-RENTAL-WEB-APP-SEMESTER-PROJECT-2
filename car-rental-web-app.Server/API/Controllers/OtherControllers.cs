@@ -311,7 +311,7 @@ public class PromoController : ControllerBase
         // Verifică condiția de categorie
         if (!string.IsNullOrEmpty(code.ApplicableCategory))
         {
-            var vehicle = await _db.Vehicles.FindAsync(new object[] { request.VehicleId }, ct);
+            var vehicle = await _db.Vehicles.FirstOrDefaultAsync(v => v.Id == request.VehicleId, ct);
             if (vehicle == null || vehicle.Category.ToString() != code.ApplicableCategory)
                 return Ok(new PromoValidationResult(false, $"This code is only valid for {code.ApplicableCategory} vehicles.", null, null, null));
         }

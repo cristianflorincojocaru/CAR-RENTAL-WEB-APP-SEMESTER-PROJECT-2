@@ -668,12 +668,39 @@
         <span>+€{{ e.price }}/day</span>
       </div>
     </ng-container>
+
+    <!-- Promo code input -->
+    <div class="sidebar-promo">
+      <div class="sidebar-promo__input-wrap" *ngIf="!appliedPromo">
+        <input class="form-control sidebar-promo__input"
+               type="text"
+               placeholder="Promo code"
+               [(ngModel)]="promoCodeInput"
+               [disabled]="promoLoading">
+        <button class="btn btn--primary btn--sm sidebar-promo__btn"
+                (click)="applyPromo()"
+                [disabled]="promoLoading || !promoCodeInput">
+          <span *ngIf="!promoLoading">Apply</span>
+          <span *ngIf="promoLoading">...</span>
+        </button>
+      </div>
+      <div class="sidebar-promo__error" *ngIf="promoError">{{ promoError }}</div>
+      <div class="sidebar-promo__success" *ngIf="appliedPromo">
+        🏷️ <strong>{{ appliedPromo.code }}</strong> — {{ appliedPromo.description }}
+        <button class="sidebar-promo__remove" (click)="removePromo()">✕</button>
+      </div>
+    </div>
+
     <div class="sidebar-price-divider"></div>
     <div class="sidebar-price-row sidebar-price-row--daily">
       <span>Daily total</span>
       <span>€{{ dailyTotal }}/day</span>
     </div>
-    <div class="sidebar-price-total" *ngIf="rentalDays > 1">
+    <div class="sidebar-price-row sidebar-price-row--promo" *ngIf="appliedPromo">
+      <span>Promo discount ({{ appliedPromo.discountPercent }}%)</span>
+      <span class="promo-saving">-€{{ promoSaving }}</span>
+    </div>
+    <div class="sidebar-price-total" *ngIf="rentalDays > 1 || appliedPromo">
       <span>{{ rentalDays }} days total</span>
       <span>€{{ grandTotal }}</span>
     </div>

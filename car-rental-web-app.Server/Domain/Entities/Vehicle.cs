@@ -20,9 +20,12 @@ public class Vehicle
     public string? Transmission { get; private set; }
     public int? Seats { get; private set; }
     public decimal? Rating { get; private set; } = 4.5m;
+
+    public void SetImageUrl(string? url) { ImageUrl = url?.Trim(); UpdatedAt = DateTime.UtcNow; }
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow;
 
+    public string? ImageUrl { get; private set; }
     // Navigation
     public Branch Branch { get; private set; } = null!;
     public User AddedByUser { get; private set; } = null!;
@@ -31,9 +34,9 @@ public class Vehicle
     protected Vehicle() { }
 
     public static Vehicle Create(string registrationNumber, int branchId, int addedByUserId,
-        string brand, string model, int year, VehicleCategory category, decimal dailyRate,
-        string? fuelType = null, string? transmission = null, int? seats = null,
-        string? colorHex = null)
+    string brand, string model, int year, VehicleCategory category, decimal dailyRate,
+    string? fuelType = null, string? transmission = null, int? seats = null,
+    string? colorHex = null, string? imageUrl = null)
     {
         return new Vehicle
         {
@@ -49,6 +52,7 @@ public class Vehicle
             Transmission = transmission?.Trim(),
             Seats = seats,
             ColorHex = colorHex?.Trim(),
+            ImageUrl = imageUrl?.Trim(),
             Status = VehicleStatus.Available,
             IsActive = true,
             CreatedAt = DateTime.UtcNow,

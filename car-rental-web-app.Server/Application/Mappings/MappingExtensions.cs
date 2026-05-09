@@ -48,8 +48,9 @@ public static class MappingExtensions
             Seats:              v.Seats,
             IsOffer:            v.IsOffer,
             DiscountPercent:    v.DiscountPercent,
-            IsActive:           v.IsActive,
-            Specs:              specs
+            IsActive: v.IsActive,
+            ImageUrl: v.ImageUrl,
+            Specs: specs
         );
     }
 

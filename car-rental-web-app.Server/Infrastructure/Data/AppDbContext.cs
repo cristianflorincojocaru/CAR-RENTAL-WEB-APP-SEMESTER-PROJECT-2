@@ -16,6 +16,7 @@ public class AppDbContext : DbContext
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
     public DbSet<SecurityAlert> SecurityAlerts => Set<SecurityAlert>();
 
+    public DbSet<PromoCode> PromoCodes => Set<PromoCode>();
     public DbSet<ContactMessage> ContactMessages => Set<ContactMessage>();
 
     protected override void OnModelCreating(ModelBuilder mb)
@@ -90,6 +91,7 @@ public class AppDbContext : DbContext
             e.Property(v => v.FuelType).HasMaxLength(30);
             e.Property(v => v.Transmission).HasMaxLength(20);
             e.Property(v => v.ColorHex).HasMaxLength(10);
+            e.Property(v => v.ImageUrl).HasMaxLength(500);
 
             e.HasIndex(v => v.RegistrationNumber).IsUnique();
             e.HasIndex(v => v.Category);
