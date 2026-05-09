@@ -36,3 +36,5 @@ public enum AlertType
     AccountLocked = 1,
     UnauthorizedAccess = 2
 }
+
+public enum PromoType { Percentage }
