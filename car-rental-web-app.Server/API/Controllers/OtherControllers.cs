@@ -2,10 +2,14 @@ using System.Security.Claims;
 using CarRental.Application.DTOs.Auth;
 using CarRental.Application.DTOs.Branches;
 using CarRental.Application.DTOs.Contact;
+using CarRental.Application.DTOs.Promo;
 using CarRental.Application.DTOs.Reports;
 using CarRental.Application.Interfaces;
+using CarRental.Domain.Entities;
+using CarRental.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.API.Controllers;
 
@@ -20,7 +24,6 @@ public class BranchesController : ControllerBase
 
     public BranchesController(IBranchService branchService) => _branchService = branchService;
 
-    /// <summary>Get all active branches</summary>
     [HttpGet]
     [AllowAnonymous]
     [ProducesResponseType(typeof(IEnumerable<BranchDto>), 200)]
@@ -30,7 +33,6 @@ public class BranchesController : ControllerBase
         return Ok(result);
     }
 
-    /// <summary>Get branch by ID</summary>
     [HttpGet("{id:int}")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(BranchDto), 200)]
@@ -41,33 +43,27 @@ public class BranchesController : ControllerBase
         return result is null ? NotFound() : Ok(result);
     }
 
-    /// <summary>Create a new branch (Admin only)</summary>
     [HttpPost]
     [Authorize(Roles = "Administrator")]
     [ProducesResponseType(typeof(BranchDto), 201)]
-    [ProducesResponseType(409)]
     public async Task<IActionResult> Create([FromBody] CreateBranchRequest request, CancellationToken ct)
     {
         var result = await _branchService.CreateAsync(request, ct);
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
-    /// <summary>Update branch details (Admin only)</summary>
     [HttpPut("{id:int}")]
     [Authorize(Roles = "Administrator")]
     [ProducesResponseType(typeof(BranchDto), 200)]
-    [ProducesResponseType(404)]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateBranchRequest request, CancellationToken ct)
     {
         var result = await _branchService.UpdateAsync(id, request, ct);
         return Ok(result);
     }
 
-    /// <summary>Assign a manager to a branch (Admin only)</summary>
     [HttpPatch("{id:int}/assign-manager")]
     [Authorize(Roles = "Administrator")]
     [ProducesResponseType(204)]
-    [ProducesResponseType(404)]
     public async Task<IActionResult> AssignManager(int id, [FromBody] AssignManagerRequest request, CancellationToken ct)
     {
         var adminId = int.Parse(User.FindFirstValue("userId")!);
@@ -75,11 +71,9 @@ public class BranchesController : ControllerBase
         return NoContent();
     }
 
-    /// <summary>Deactivate a branch (Admin only)</summary>
     [HttpDelete("{id:int}")]
     [Authorize(Roles = "Administrator")]
     [ProducesResponseType(204)]
-    [ProducesResponseType(409)]
     public async Task<IActionResult> Deactivate(int id, CancellationToken ct)
     {
         var adminId = int.Parse(User.FindFirstValue("userId")!);
@@ -100,7 +94,6 @@ public class UsersController : ControllerBase
 
     public UsersController(IUserService userService) => _userService = userService;
 
-    /// <summary>Get all staff users (Admin only)</summary>
     [HttpGet]
     [Authorize(Roles = "Administrator")]
     [ProducesResponseType(typeof(IEnumerable<UserListItemDto>), 200)]
@@ -110,22 +103,18 @@ public class UsersController : ControllerBase
         return Ok(result);
     }
 
-    /// <summary>Get user by ID</summary>
     [HttpGet("{id:int}")]
     [Authorize(Roles = "Administrator,Manager")]
     [ProducesResponseType(typeof(UserListItemDto), 200)]
-    [ProducesResponseType(404)]
     public async Task<IActionResult> GetById(int id, CancellationToken ct)
     {
         var result = await _userService.GetByIdAsync(id, ct);
         return result is null ? NotFound() : Ok(result);
     }
 
-    /// <summary>Create a new staff member (Admin only)</summary>
     [HttpPost]
     [Authorize(Roles = "Administrator")]
     [ProducesResponseType(typeof(UserListItemDto), 201)]
-    [ProducesResponseType(409)]
     public async Task<IActionResult> Create([FromBody] CreateUserRequest request, CancellationToken ct)
     {
         var adminId = int.Parse(User.FindFirstValue("userId")!);
@@ -133,18 +122,15 @@ public class UsersController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
-    /// <summary>Update staff member details (Admin only)</summary>
     [HttpPut("{id:int}")]
     [Authorize(Roles = "Administrator")]
     [ProducesResponseType(typeof(UserListItemDto), 200)]
-    [ProducesResponseType(404)]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateUserRequest request, CancellationToken ct)
     {
         var result = await _userService.UpdateAsync(id, request, ct);
         return Ok(result);
     }
 
-    /// <summary>Lock a user account (Admin only)</summary>
     [HttpPost("{id:int}/lock")]
     [Authorize(Roles = "Administrator")]
     [ProducesResponseType(204)]
@@ -154,7 +140,6 @@ public class UsersController : ControllerBase
         return NoContent();
     }
 
-    /// <summary>Unlock a user account (Admin only)</summary>
     [HttpPost("{id:int}/unlock")]
     [Authorize(Roles = "Administrator")]
     [ProducesResponseType(204)]
@@ -164,7 +149,6 @@ public class UsersController : ControllerBase
         return NoContent();
     }
 
-    /// <summary>Deactivate a user (Admin only)</summary>
     [HttpDelete("{id:int}")]
     [Authorize(Roles = "Administrator")]
     [ProducesResponseType(204)]
@@ -192,25 +176,21 @@ public class ReportsController : ControllerBase
         _alertService = alertService;
     }
 
-    /// <summary>Dashboard statistics (filtered by branch for managers)</summary>
     [HttpGet("dashboard")]
     [ProducesResponseType(typeof(DashboardStatsDto), 200)]
     public async Task<IActionResult> Dashboard(CancellationToken ct)
     {
         var role = User.FindFirstValue(ClaimTypes.Role);
         int? branchId = null;
-
         if (role == "Manager")
         {
             var branchClaim = User.FindFirstValue("branchId");
             if (branchClaim != null) branchId = int.Parse(branchClaim);
         }
-
         var result = await _reportService.GetDashboardStatsAsync(branchId, ct);
         return Ok(result);
     }
 
-    /// <summary>Revenue summary report</summary>
     [HttpGet("revenue")]
     [ProducesResponseType(typeof(RevenueSummaryDto), 200)]
     public async Task<IActionResult> Revenue(
@@ -225,12 +205,10 @@ public class ReportsController : ControllerBase
             var branchClaim = User.FindFirstValue("branchId");
             branchId = branchClaim != null ? int.Parse(branchClaim) : branchId;
         }
-
         var result = await _reportService.GetRevenueSummaryAsync(from, to, branchId, ct);
         return Ok(result);
     }
 
-    /// <summary>Get unread security alerts (Admin only)</summary>
     [HttpGet("security-alerts")]
     [Authorize(Roles = "Administrator")]
     [ProducesResponseType(200)]
@@ -240,7 +218,6 @@ public class ReportsController : ControllerBase
         return Ok(result);
     }
 
-    /// <summary>Mark a security alert as read</summary>
     [HttpPatch("security-alerts/{id:int}/read")]
     [Authorize(Roles = "Administrator")]
     [ProducesResponseType(204)]
@@ -250,7 +227,6 @@ public class ReportsController : ControllerBase
         return NoContent();
     }
 
-    /// <summary>Get unread security alerts count</summary>
     [HttpGet("security-alerts/count")]
     [Authorize(Roles = "Administrator")]
     [ProducesResponseType(typeof(int), 200)]
@@ -269,21 +245,81 @@ public class ReportsController : ControllerBase
 [Produces("application/json")]
 public class ContactController : ControllerBase
 {
+    private readonly AppDbContext _db;
     private readonly ILogger<ContactController> _logger;
 
-    public ContactController(ILogger<ContactController> logger) => _logger = logger;
+    public ContactController(AppDbContext db, ILogger<ContactController> logger)
+    {
+        _db = db;
+        _logger = logger;
+    }
 
-    /// <summary>Submit a contact message</summary>
     [HttpPost]
     [ProducesResponseType(typeof(ContactMessageResponse), 200)]
-    public IActionResult Send([FromBody] ContactMessageRequest request)
+    public async Task<IActionResult> Send([FromBody] ContactMessageRequest request, CancellationToken ct)
     {
-        // Log the contact request; in production send via SMTP
-        _logger.LogInformation("Contact message from {Email}: {Subject}", request.Email, request.Subject);
+        var message = ContactMessage.Create(
+            request.FirstName, request.LastName, request.Email,
+            request.Phone, request.Subject, request.Message);
+
+        _db.ContactMessages.Add(message);
+        await _db.SaveChangesAsync(ct);
+
+        _logger.LogInformation("Contact message saved from {Email}: {Subject}", request.Email, request.Subject);
 
         return Ok(new ContactMessageResponse(
             Success: true,
             Message: "Thank you! We will get back to you within 24 hours."
         ));
+    }
+}
+
+// ── Promo ──────────────────────────────────────────────────────────────────
+
+[ApiController]
+[Route("api/promo")]
+[AllowAnonymous]
+[Produces("application/json")]
+public class PromoController : ControllerBase
+{
+    private readonly AppDbContext _db;
+
+    public PromoController(AppDbContext db) => _db = db;
+
+    /// <summary>Validate a promo code for a specific vehicle and dates</summary>
+    [HttpPost("validate")]
+    [ProducesResponseType(typeof(PromoValidationResult), 200)]
+    public async Task<IActionResult> Validate([FromBody] ValidatePromoRequest request, CancellationToken ct)
+    {
+        var code = await _db.PromoCodes
+            .FirstOrDefaultAsync(p => p.Code == request.Code.ToUpper().Trim(), ct);
+
+        if (code == null || !code.IsValid())
+            return Ok(new PromoValidationResult(false, "Invalid or expired promo code.", null, null, null));
+
+        // Verifică condiția de weekend
+        if (code.WeekendOnly)
+        {
+            if (!DateTime.TryParse(request.PickupDate, out var pickup))
+                return Ok(new PromoValidationResult(false, "Invalid pickup date.", null, null, null));
+
+            var isWeekend = pickup.DayOfWeek == DayOfWeek.Saturday || pickup.DayOfWeek == DayOfWeek.Sunday;
+            if (!isWeekend)
+                return Ok(new PromoValidationResult(false, "This code is valid for weekend rentals only.", null, null, null));
+        }
+
+        // Verifică condiția de categorie
+        if (!string.IsNullOrEmpty(code.ApplicableCategory))
+        {
+            var vehicle = await _db.Vehicles.FindAsync(new object[] { request.VehicleId }, ct);
+            if (vehicle == null || vehicle.Category.ToString() != code.ApplicableCategory)
+                return Ok(new PromoValidationResult(false, $"This code is only valid for {code.ApplicableCategory} vehicles.", null, null, null));
+        }
+
+        // Verifică condiția de vehicul specific
+        if (code.ApplicableVehicleId.HasValue && code.ApplicableVehicleId != request.VehicleId)
+            return Ok(new PromoValidationResult(false, "This code is not valid for this vehicle.", null, null, null));
+
+        return Ok(new PromoValidationResult(true, null, code.Code, code.DiscountPercent, code.Description));
     }
 }

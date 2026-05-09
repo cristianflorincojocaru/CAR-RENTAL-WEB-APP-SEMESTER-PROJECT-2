@@ -3,18 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 
-interface Car {
-  id: number;
-  name: string;
-  year: number;
-  fuel: string;
-  category: string;
-  price: number;
-  rating: number;
-  color: string;
-  isFavorite: boolean;
-  specs: { icon: string; value: string }[];
-}
+import { CarService } from '../../services/car.service';
+import { Car } from '../../models/car.models';
 
 interface Step {
   icon: string;
@@ -64,63 +54,8 @@ export class HomeComponent implements OnInit {
   // --- Cars ---
   carCategories = ['All', 'Economy', 'Compact', 'SUV', 'Premium'];
   activeCategory = 'All';
-
-  allCars: Car[] = [
-    {
-      id: 1, name: 'Dacia Logan',   year: 2023, fuel: 'Petrol',
-      category: 'Economy', price: 19, rating: 4.8, color: '#60A5FA', isFavorite: false,
-      specs: [
-        { icon: '⚡', value: 'Manual' },
-        { icon: '👥', value: '5 seats' },
-        { icon: '❄️',  value: 'A/C' }
-      ]
-    },
-    {
-      id: 2, name: 'VW Golf 8',     year: 2023, fuel: 'Diesel',
-      category: 'Compact', price: 32, rating: 4.9, color: '#1A56DB', isFavorite: false,
-      specs: [
-        { icon: '⚡', value: 'Automatic' },
-        { icon: '👥', value: '5 seats' },
-        { icon: '❄️',  value: 'A/C' }
-      ]
-    },
-    {
-      id: 3, name: 'BMW X3',        year: 2024, fuel: 'Hybrid',
-      category: 'SUV', price: 65, rating: 4.9, color: '#1340B0', isFavorite: false,
-      specs: [
-        { icon: '⚡', value: 'Automatic' },
-        { icon: '👥', value: '5 seats' },
-        { icon: '🌱', value: 'Hybrid' }
-      ]
-    },
-    {
-      id: 4, name: 'Mercedes C220', year: 2024, fuel: 'Diesel',
-      category: 'Premium', price: 85, rating: 5.0, color: '#0F172A', isFavorite: false,
-      specs: [
-        { icon: '⚡', value: 'Automatic' },
-        { icon: '👥', value: '5 seats' },
-        { icon: '⭐', value: 'Premium' }
-      ]
-    },
-    {
-      id: 5, name: 'Skoda Octavia', year: 2023, fuel: 'Diesel',
-      category: 'Compact', price: 28, rating: 4.7, color: '#3B82F6', isFavorite: false,
-      specs: [
-        { icon: '⚡', value: 'Manual' },
-        { icon: '👥', value: '5 seats' },
-        { icon: '🧳', value: 'Large boot' }
-      ]
-    },
-    {
-      id: 6, name: 'Duster 4x4',   year: 2024, fuel: 'Petrol',
-      category: 'SUV', price: 39, rating: 4.8, color: '#1D4ED8', isFavorite: false,
-      specs: [
-        { icon: '⚡', value: 'Manual' },
-        { icon: '👥', value: '5 seats' },
-        { icon: '🏔️', value: '4x4' }
-      ]
-    }
-  ];
+  allCars: Car[] = [];
+  isLoading = false;
 
   get filteredCars(): Car[] {
     if (this.activeCategory === 'All') return this.allCars;
@@ -202,9 +137,25 @@ export class HomeComponent implements OnInit {
     }
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private carService: CarService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadFeaturedCars();
+  }
+
+  private loadFeaturedCars(): void {
+    this.isLoading = true;
+    this.carService.getAll().subscribe({
+      next: cars => {
+        // Luăm maxim 6 mașini pentru featured section
+        this.allCars = cars.slice(0, 6);
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
+      }
+    });
+  }
 
   closeBanner(): void {
     this.bannerVisible = false;
@@ -212,7 +163,6 @@ export class HomeComponent implements OnInit {
 
   setTab(tab: 'short' | 'long'): void {
     this.activeTab = tab;
-    // Recalculate maxReturnDate when tab changes
     if (this.searchForm.pickupDate) {
       this.onPickupDateChange();
     }
@@ -237,8 +187,8 @@ export class HomeComponent implements OnInit {
     this.activeCategory = cat;
   }
 
-  trackByCat = (index: number, car: any): string => {
-    return this.activeCategory + '_' + (car.id ?? car.name);
+  trackByCat = (index: number, car: Car): string => {
+    return this.activeCategory + '_' + car.id;
   };
 
   toggleFavorite(car: Car): void {
@@ -254,16 +204,13 @@ export class HomeComponent implements OnInit {
     const pickup = new Date(this.searchForm.pickupDate);
 
     if (this.activeTab === 'short') {
-      // max 7 zile
       pickup.setDate(pickup.getDate() + 7);
     } else {
-      // max 28 zile (4 săptămâni)
       pickup.setDate(pickup.getDate() + 28);
     }
 
     this.maxReturnDate = pickup.toISOString().split('T')[0];
 
-    // dacă return date depășește noul max, resetează
     if (this.searchForm.returnDate > this.maxReturnDate) {
       this.searchForm.returnDate = '';
     }

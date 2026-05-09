@@ -16,6 +16,8 @@ public class AppDbContext : DbContext
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
     public DbSet<SecurityAlert> SecurityAlerts => Set<SecurityAlert>();
 
+    public DbSet<ContactMessage> ContactMessages => Set<ContactMessage>();
+
     protected override void OnModelCreating(ModelBuilder mb)
     {
         base.OnModelCreating(mb);
@@ -227,6 +229,21 @@ public class AppDbContext : DbContext
              .WithMany(u => u.SecurityAlerts)
              .HasForeignKey(s => s.UserId)
              .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        mb.Entity<ContactMessage>(e =>
+        {
+            e.ToTable("ContactMessages");
+            e.HasKey(c => c.Id);
+            e.Property(c => c.Id).UseIdentityColumn();
+            e.Property(c => c.FirstName).HasMaxLength(100).IsRequired();
+            e.Property(c => c.LastName).HasMaxLength(100).IsRequired();
+            e.Property(c => c.Email).HasMaxLength(200).IsRequired();
+            e.Property(c => c.Phone).HasMaxLength(20);
+            e.Property(c => c.Subject).HasMaxLength(200).IsRequired();
+            e.Property(c => c.Message).HasMaxLength(2000).IsRequired();
+            e.HasIndex(c => c.Email);
+            e.HasIndex(c => c.CreatedAt);
         });
     }
 }

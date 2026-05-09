@@ -92,3 +92,75 @@ public class SecurityAlert
 
     public void MarkAsRead() => IsRead = true;
 }
+
+public class ContactMessage
+{
+    public int Id { get; private set; }
+    public string FirstName { get; private set; } = string.Empty;
+    public string LastName { get; private set; } = string.Empty;
+    public string Email { get; private set; } = string.Empty;
+    public string? Phone { get; private set; }
+    public string Subject { get; private set; } = string.Empty;
+    public string Message { get; private set; } = string.Empty;
+    public bool IsRead { get; private set; }
+    public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+
+    protected ContactMessage() { }
+
+    public static ContactMessage Create(string firstName, string lastName,
+        string email, string? phone, string subject, string message)
+    {
+        return new ContactMessage
+        {
+            FirstName = firstName,
+            LastName = lastName,
+            Email = email,
+            Phone = phone,
+            Subject = subject,
+            Message = message,
+            IsRead = false,
+            CreatedAt = DateTime.UtcNow
+        };
+    }
+
+    public void MarkAsRead() => IsRead = true;
+}
+
+
+public class PromoCode
+{
+    public int Id { get; private set; }
+    public string Code { get; private set; } = string.Empty;
+    public PromoType Type { get; private set; }
+    public decimal DiscountPercent { get; private set; }
+    public DateTime ExpiresAt { get; private set; }
+    public bool IsActive { get; private set; }
+    public string? Description { get; private set; }
+    // Condiții opționale
+    public string? ApplicableCategory { get; private set; }  // ex: "Premium"
+    public int? ApplicableVehicleId { get; private set; }    // ex: doar Duster
+    public bool WeekendOnly { get; private set; }
+
+    protected PromoCode() { }
+
+    public static PromoCode Create(string code, PromoType type, decimal discountPercent,
+        DateTime expiresAt, string? description = null, string? applicableCategory = null,
+        int? applicableVehicleId = null, bool weekendOnly = false)
+    {
+        return new PromoCode
+        {
+            Code = code.ToUpper().Trim(),
+            Type = type,
+            DiscountPercent = discountPercent,
+            ExpiresAt = expiresAt,
+            IsActive = true,
+            Description = description,
+            ApplicableCategory = applicableCategory,
+            ApplicableVehicleId = applicableVehicleId,
+            WeekendOnly = weekendOnly
+        };
+    }
+
+    public bool IsValid() => IsActive && DateTime.UtcNow < ExpiresAt;
+}
+

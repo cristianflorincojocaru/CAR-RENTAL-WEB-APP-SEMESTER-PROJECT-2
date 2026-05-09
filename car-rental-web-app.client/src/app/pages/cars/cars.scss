@@ -460,9 +460,11 @@
   }
 
   &__offer-badge {
-    position: absolute;
-    top: var(--space-4);
-    right: 44px;
+  position: absolute;
+  top: var(--space-4);
+  left: 50%;
+  transform: translateX(-50%);
+  right: unset;
     display: flex;
     align-items: center;
     gap: 4px;

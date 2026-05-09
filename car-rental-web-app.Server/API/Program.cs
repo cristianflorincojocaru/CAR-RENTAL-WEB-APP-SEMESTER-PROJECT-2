@@ -11,6 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 // ── Services ───────────────────────────────────────────────────────────────
 
 builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    })
     .ConfigureApiBehaviorOptions(options =>
     {
         options.InvalidModelStateResponseFactory = context =>

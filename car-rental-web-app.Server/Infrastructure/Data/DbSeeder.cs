@@ -136,5 +136,25 @@ public static class DbSeeder
             db.Clients.AddRange(clients);
             await db.SaveChangesAsync();
         }
+
+        // ── Promo codes ───────────────────────────────────────────
+        if (!await db.PromoCodes.AnyAsync())
+        {
+            // Dacia Duster e vehiculul 6 (B-600-WHL)
+            var duster = await db.Vehicles.FirstOrDefaultAsync(v => v.RegistrationNumber == "B-600-WHL");
+
+            var promos = new[]
+            {
+                PromoCode.Create("SUMMER30", PromoType.Percentage, 30,
+                    new DateTime(2026, 8, 31), "30% off all weekend rentals", weekendOnly: true),
+                PromoCode.Create("FLEET10", PromoType.Percentage, 10,
+                    new DateTime(2026, 6, 30), "10% off all Premium models", applicableCategory: "Premium"),
+                PromoCode.Create("DRIVE25", PromoType.Percentage, 25,
+                    new DateTime(2026, 7, 15), "25% off Dacia Duster 4x4",
+                    applicableVehicleId: duster?.Id),
+            };
+            db.PromoCodes.AddRange(promos);
+            await db.SaveChangesAsync();
+        }
     }
 }
