@@ -22,6 +22,7 @@ public record VehicleDto(
     int? Seats,
     bool IsOffer,
     int? DiscountPercent,
+    string? ImageUrl,
     bool IsActive,
     List<VehicleSpecDto> Specs
 );

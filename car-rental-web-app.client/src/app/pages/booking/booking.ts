@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { CarService } from '../../services/car.service';
 import { BookingService } from '../../services/booking.service';
 import { Car } from '../../models/car.models';
 import { CreateBookingRequest, ProtectionPlan } from '../../models/booking.models';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 interface Extra {
   id: string;
@@ -88,6 +89,12 @@ export class BookingComponent implements OnInit {
 
   formErrors: Partial<Record<keyof BookingForm, string>> = {};
   bookingApiError = '';
+
+  // Promo code
+  promoCodeInput = '';
+  promoLoading = false;
+  promoError = '';
+  appliedPromo: { code: string; discountPercent: number; description: string } | null = null;
 
   selectedProtection: ProtectionPlan = 'basic';
 
@@ -190,6 +197,7 @@ export class BookingComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
+    private http: HttpClient,
   ) {}
 
   ngOnInit(): void {
@@ -199,7 +207,6 @@ export class BookingComponent implements OnInit {
       return;
     }
 
-    // Înlocuiește `new CarsComponent(...)` — folosim serviciul corect
     this.carService.getById(id).subscribe({
       next: (car) => {
         this.car = car;
@@ -250,9 +257,9 @@ export class BookingComponent implements OnInit {
       'Otopeni Airport': 'Henri Coandă Airport (OTP), Bucharest',
       'Bucharest — City Centre': 'Otopeni — City Centre',
       'Cluj-Napoca': 'Cluj-Napoca',
-      Timișoara: 'Timișoara',
-      Iași: 'Iași',
-      Constanța: 'Constanța',
+      'Timișoara': 'Timișoara',
+      'Iași': 'Iași',
+      'Constanța': 'Constanța',
     };
     if (map[loc]) return map[loc];
     const found = this.locations.find((l) => l.toLowerCase().includes(loc.toLowerCase()));
@@ -295,8 +302,57 @@ export class BookingComponent implements OnInit {
     return this.discountedBasePrice + this.extrasTotal + this.protectionPrice;
   }
 
+  get promoSaving(): number {
+    if (!this.appliedPromo) return 0;
+    return Math.round(this.dailyTotal * this.rentalDays * this.appliedPromo.discountPercent / 100);
+  }
+
   get grandTotal(): number {
-    return this.dailyTotal * Math.max(this.rentalDays, 1);
+    const base = this.dailyTotal * Math.max(this.rentalDays, 1);
+    if (this.appliedPromo) {
+      return Math.round(base * (1 - this.appliedPromo.discountPercent / 100));
+    }
+    return base;
+  }
+
+  // ── Promo code ────────────────────────────────────────────────
+
+  applyPromo(): void {
+    if (!this.promoCodeInput.trim() || !this.car) return;
+
+    this.promoLoading = true;
+    this.promoError = '';
+
+    this.http.post<any>(`${environment.apiUrl}/promo/validate`, {
+      code: this.promoCodeInput.trim(),
+      vehicleId: this.car.id,
+      pickupDate: this.form.pickupDate || new Date().toISOString().split('T')[0],
+      returnDate: this.form.returnDate || new Date().toISOString().split('T')[0],
+    }).subscribe({
+      next: (res) => {
+        this.promoLoading = false;
+        if (res.isValid) {
+          this.appliedPromo = {
+            code: res.code,
+            discountPercent: res.discountPercent,
+            description: res.description,
+          };
+          this.promoCodeInput = '';
+        } else {
+          this.promoError = res.errorMessage;
+        }
+      },
+      error: () => {
+        this.promoLoading = false;
+        this.promoError = 'Could not validate promo code. Please try again.';
+      },
+    });
+  }
+
+  removePromo(): void {
+    this.appliedPromo = null;
+    this.promoError = '';
+    this.promoCodeInput = '';
   }
 
   // ── Date handlers ─────────────────────────────────────────────
