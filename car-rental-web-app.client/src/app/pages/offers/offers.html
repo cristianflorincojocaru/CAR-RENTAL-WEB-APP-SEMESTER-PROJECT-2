@@ -118,21 +118,24 @@
         <!-- Image -->
         <div class="offer-card__image-wrap">
           <div class="offer-card__image-placeholder">
-            <svg viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="320" height="180" fill="#FFF7ED" rx="12" />
-              <path d="M55 122 L72 86 Q86 64 114 58 L160 54 L206 58 Q234 64 248 86 L265 122 Z" [attr.fill]="car.color"
-                opacity="0.88" />
-              <path d="M112 86 L124 64 Q133 57 156 56 L164 56 Q187 57 196 64 L208 86 Z" fill="#FEF3C7" opacity="0.8" />
-              <line x1="160" y1="86" x2="160" y2="122" stroke="white" stroke-width="1" opacity="0.4" />
-              <circle cx="102" cy="130" r="20" fill="#1E293B" />
-              <circle cx="102" cy="130" r="11" fill="#334155" />
-              <circle cx="102" cy="130" r="5" fill="#94A3B8" />
-              <circle cx="218" cy="130" r="20" fill="#1E293B" />
-              <circle cx="218" cy="130" r="11" fill="#334155" />
-              <circle cx="218" cy="130" r="5" fill="#94A3B8" />
-              <ellipse cx="258" cy="108" rx="7" ry="4.5" fill="#FEF9C3" opacity="0.9" />
-            </svg>
-          </div>
+  <img *ngIf="car.imageUrl"
+       [src]="car.imageUrl"
+       [alt]="car.name">
+  <svg *ngIf="!car.imageUrl" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="320" height="180" fill="#FFF7ED" rx="12" />
+    <path d="M55 122 L72 86 Q86 64 114 58 L160 54 L206 58 Q234 64 248 86 L265 122 Z" [attr.fill]="car.color"
+      opacity="0.88" />
+    <path d="M112 86 L124 64 Q133 57 156 56 L164 56 Q187 57 196 64 L208 86 Z" fill="#FEF3C7" opacity="0.8" />
+    <line x1="160" y1="86" x2="160" y2="122" stroke="white" stroke-width="1" opacity="0.4" />
+    <circle cx="102" cy="130" r="20" fill="#1E293B" />
+    <circle cx="102" cy="130" r="11" fill="#334155" />
+    <circle cx="102" cy="130" r="5" fill="#94A3B8" />
+    <circle cx="218" cy="130" r="20" fill="#1E293B" />
+    <circle cx="218" cy="130" r="11" fill="#334155" />
+    <circle cx="218" cy="130" r="5" fill="#94A3B8" />
+    <ellipse cx="258" cy="108" rx="7" ry="4.5" fill="#FEF9C3" opacity="0.9" />
+  </svg>
+</div>
           <div class="offer-card__category-badge">{{ car.category }}</div>
           <div class="offer-card__savings">Save €{{ savings(car) }}/day</div>
         </div>

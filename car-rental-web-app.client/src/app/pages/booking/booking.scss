@@ -1336,3 +1336,54 @@
   color: #166534;
   font-weight: var(--fw-bold);
 }
+
+// Sidebar vehicle image
+.sidebar-vehicle {
+  &__img {
+    width: 100%;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-3);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+
+// Confirmation vehicle image
+.conf-vehicle {
+  &__image {
+    width: 100%;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+    }
+  }
+}

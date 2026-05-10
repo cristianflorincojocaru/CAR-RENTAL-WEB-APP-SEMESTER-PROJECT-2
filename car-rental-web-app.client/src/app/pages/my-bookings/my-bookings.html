@@ -1,0 +1,393 @@
+<div class="my-bookings-page">
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- HERO                                                        -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <section class="bookings-hero">
+    <div class="bookings-hero__bg">
+      <div class="bookings-hero__bg-circle bookings-hero__bg-circle--1"></div>
+      <div class="bookings-hero__bg-circle bookings-hero__bg-circle--2"></div>
+      <div class="bookings-hero__bg-grid"></div>
+    </div>
+
+    <div class="container bookings-hero__inner">
+      <div class="bookings-hero__content animate-fadeInUp">
+        <div class="badge badge--primary bookings-hero__badge">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+            <path d="M6 1l1.2 3.6H11l-3 2.2 1.1 3.6L6 8.5l-3.1 1.9 1.1-3.6L1 4.6h3.8z"/>
+          </svg>
+          Your rental history
+        </div>
+
+        <h1 class="bookings-hero__title">
+          My <span class="bookings-hero__title-highlight">Bookings</span>
+        </h1>
+
+        <p class="bookings-hero__description">
+          Track all your past and current vehicle rentals in one place.
+          Every detail, every receipt — always at hand.
+        </p>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="bookings-hero__stats animate-fadeInUp delay-2">
+        <div class="booking-stat">
+          <div class="booking-stat__value">{{ totalBookings }}</div>
+          <div class="booking-stat__label">total rentals</div>
+        </div>
+        <div class="booking-stat">
+          <div class="booking-stat__value booking-stat__value--active">{{ activeCount }}</div>
+          <div class="booking-stat__label">active now</div>
+        </div>
+        <div class="booking-stat">
+          <div class="booking-stat__value">{{ completedCount }}</div>
+          <div class="booking-stat__label">completed</div>
+        </div>
+        <div class="booking-stat">
+          <div class="booking-stat__value">
+            <span *ngIf="totalSpent > 0">€{{ totalSpent }}</span>
+            <span *ngIf="totalSpent === 0">—</span>
+          </div>
+          <div class="booking-stat__label">total spent</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- MAIN SECTION                                               -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <section class="section bookings-section">
+    <div class="container">
+
+      <!-- ── Toolbar ─────────────────────────────────────────── -->
+      <div class="bookings-toolbar animate-fadeInUp delay-1">
+        <div class="bookings-filters">
+          <button
+            *ngFor="let f of filterOptions"
+            class="bookings-filter-btn"
+            [class.active]="activeFilter === f"
+            (click)="setFilter(f)">
+            {{ f }}
+          </button>
+        </div>
+
+        <div class="bookings-sort">
+          <label class="bookings-sort__label">Sort by</label>
+          <div class="bookings-sort__wrap">
+            <select class="bookings-sort__select" [(ngModel)]="activeSort">
+              <option *ngFor="let opt of sortOptions" [value]="opt.value">{{ opt.label }}</option>
+            </select>
+            <svg class="bookings-sort__chevron" width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Results bar ────────────────────────────────────── -->
+      <div class="bookings-results-bar animate-fadeInUp delay-1"
+           *ngIf="!isLoading && !loadError">
+        <span>
+          <strong>{{ filteredRentals.length }}</strong>
+          rental{{ filteredRentals.length !== 1 ? 's' : '' }} found
+          <span *ngIf="activeFilter !== 'All'"> · {{ activeFilter }}</span>
+        </span>
+      </div>
+
+      <!-- ── Loading ───────────────────────────────────────── -->
+      <div class="bookings-loading" *ngIf="isLoading">
+        <div class="bookings-loading__spinner"></div>
+        <p>Loading your bookings…</p>
+      </div>
+
+      <!-- ── Error ─────────────────────────────────────────── -->
+      <div class="bookings-error" *ngIf="loadError && !isLoading">
+        <div class="bookings-error__icon">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+            <circle cx="32" cy="32" r="30" fill="#FEE2E2" stroke="#FECACA" stroke-width="1.5"/>
+            <path d="M32 20v16M32 42v2" stroke="#EF4444" stroke-width="2.5"
+                  stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Couldn't load bookings</h3>
+        <p>We couldn't connect to the server. Please check your connection and try again.</p>
+        <button class="btn btn--primary btn--lg btn--reactive" (click)="retry()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M2 8a6 6 0 1110.5-4M14 2v4h-4" stroke="white"
+                  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Try Again
+        </button>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- BOOKINGS LIST                                          -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="bookings-list" *ngIf="!isLoading && !loadError && filteredRentals.length > 0">
+
+        <div
+          class="booking-card"
+          *ngFor="let rental of filteredRentals; let i = index; trackBy: trackById"
+          [style.animation-delay]="(i * 0.07) + 's'">
+
+          <!-- ── Visual panel ──────────────────────────────── -->
+          <div class="booking-card__visual">
+
+            <div class="booking-card__car-img">
+              <svg viewBox="0 0 220 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="220" height="120" fill="#EFF6FF" rx="8"/>
+                <!-- Body -->
+                <path d="M30 88L44 60Q55 44 75 40L110 37L145 40Q165 44 176 60L190 88Z"
+                      [attr.fill]="getCategoryColor(rental.vehicleCategory)" opacity="0.88"/>
+                <!-- Windscreen -->
+                <path d="M75 60L83 44Q90 38 106 37L114 37Q130 38 137 44L145 60Z"
+                      fill="#DBEAFE" opacity="0.85"/>
+                <!-- Center line -->
+                <line x1="110" y1="60" x2="110" y2="88"
+                      stroke="white" stroke-width="0.8" opacity="0.4"/>
+                <!-- Front wheel -->
+                <circle cx="68" cy="95" r="14" fill="#1E293B"/>
+                <circle cx="68" cy="95" r="8"  fill="#334155"/>
+                <circle cx="68" cy="95" r="4"  fill="#94A3B8"/>
+                <!-- Rear wheel -->
+                <circle cx="152" cy="95" r="14" fill="#1E293B"/>
+                <circle cx="152" cy="95" r="8"  fill="#334155"/>
+                <circle cx="152" cy="95" r="4"  fill="#94A3B8"/>
+                <!-- Headlight -->
+                <ellipse cx="183" cy="76" rx="5.5" ry="3.5" fill="#FEF9C3" opacity="0.85"/>
+              </svg>
+            </div>
+
+            <!-- Status badge -->
+            <span class="booking-status-badge"
+                  [class.booking-status-badge--active]="rental.status === 'Active'"
+                  [class.booking-status-badge--completed]="rental.status === 'Completed'"
+                  [class.booking-status-badge--cancelled]="rental.status === 'Cancelled'">
+              <span class="booking-status-badge__dot"></span>
+              {{ rental.status }}
+            </span>
+
+            <!-- Category chip -->
+            <span class="booking-card__category-chip">{{ rental.vehicleCategory }}</span>
+          </div>
+
+          <!-- ── Content panel ─────────────────────────────── -->
+          <div class="booking-card__content">
+
+            <!-- Header: name + total -->
+            <div class="booking-card__header">
+              <div class="booking-card__title-group">
+                <h3 class="booking-card__vehicle-name">{{ rental.vehicleName }}</h3>
+                <div class="booking-card__ref">
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                    <rect x="1" y="1" width="9" height="9" rx="1.5"
+                          stroke="#94A3B8" stroke-width="1"/>
+                    <path d="M3 3.5h5M3 5.5h5M3 7.5h3" stroke="#94A3B8"
+                          stroke-width="1" stroke-linecap="round"/>
+                  </svg>
+                  {{ rental.bookingReference }}
+                </div>
+              </div>
+
+              <div class="booking-card__total-block">
+                <span class="booking-card__total-amount">€{{ rental.totalCost }}</span>
+                <span class="booking-card__total-label">total</span>
+              </div>
+            </div>
+
+            <div class="booking-card__divider"></div>
+
+            <!-- Date range -->
+            <div class="booking-card__dates-row">
+
+              <div class="booking-card__date-block">
+                <div class="booking-card__date-label">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <rect x="0.5" y="1.5" width="11" height="10" rx="1.5"
+                          stroke="#1A56DB" stroke-width="1"/>
+                    <path d="M3 0.5v2M9 0.5v2M0.5 4.5h11" stroke="#1A56DB"
+                          stroke-width="1" stroke-linecap="round"/>
+                  </svg>
+                  Pick-up
+                </div>
+                <div class="booking-card__date-value">
+                  {{ rental.startDate | date:'EEE, d MMM yyyy' }}
+                </div>
+              </div>
+
+              <!-- Arrow + duration -->
+              <div class="booking-card__date-arrow">
+                <svg width="32" height="12" viewBox="0 0 32 12" fill="none">
+                  <path d="M0 6h30M25 2l4 4-4 4" stroke="#CBD5E1"
+                        stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="booking-card__duration-pill">
+                  {{ getRentalDays(rental) }}d
+                </div>
+              </div>
+
+              <div class="booking-card__date-block booking-card__date-block--right">
+                <div class="booking-card__date-label booking-card__date-label--right">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <rect x="0.5" y="1.5" width="11" height="10" rx="1.5"
+                          stroke="#1A56DB" stroke-width="1"/>
+                    <path d="M3 0.5v2M9 0.5v2M0.5 4.5h11" stroke="#1A56DB"
+                          stroke-width="1" stroke-linecap="round"/>
+                    <path d="M3.5 7.5l2 2 3.5-3" stroke="#1A56DB"
+                          stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Return
+                </div>
+                <div class="booking-card__date-value">
+                  {{ rental.endDate | date:'EEE, d MMM yyyy' }}
+                </div>
+              </div>
+
+            </div>
+
+            <div class="booking-card__divider"></div>
+
+            <!-- Locations -->
+            <div class="booking-card__locations">
+              <div class="booking-card__location">
+                <svg width="11" height="14" viewBox="0 0 11 14" fill="none">
+                  <path d="M5.5 1A3.5 3.5 0 015.5 8L5.5 13"
+                        stroke="#1A56DB" stroke-width="1.2" stroke-linecap="round"/>
+                  <circle cx="5.5" cy="4.5" r="2" stroke="#1A56DB" stroke-width="1.2"/>
+                </svg>
+                <div>
+                  <span class="booking-card__location-label">Pick-up:</span>
+                  <span class="booking-card__location-value">{{ rental.pickupLocation }}</span>
+                </div>
+              </div>
+
+              <div class="booking-card__location">
+                <svg width="11" height="14" viewBox="0 0 11 14" fill="none">
+                  <path d="M5.5 1A3.5 3.5 0 015.5 8L5.5 13"
+                        stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/>
+                  <circle cx="5.5" cy="4.5" r="2" stroke="#94A3B8" stroke-width="1.2"/>
+                </svg>
+                <div>
+                  <span class="booking-card__location-label">Return:</span>
+                  <span *ngIf="!sameLocation(rental)" class="booking-card__location-value">
+                    {{ rental.returnLocation }}
+                  </span>
+                  <span *ngIf="sameLocation(rental)"
+                        class="booking-card__location-value booking-card__location-value--muted">
+                    Same location
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer: price breakdown + action -->
+            <div class="booking-card__footer">
+              <div class="booking-card__price-breakdown">
+                <span class="booking-card__daily-rate">€{{ getDailyRate(rental) }}/day</span>
+                <span class="booking-card__price-sep">×</span>
+                <span class="booking-card__days-count">
+                  {{ getRentalDays(rental) }} day{{ getRentalDays(rental) !== 1 ? 's' : '' }}
+                </span>
+                <span class="booking-card__price-sep">=</span>
+                <span class="booking-card__total-inline">€{{ rental.totalCost }}</span>
+              </div>
+
+              <a routerLink="/cars" class="btn btn--sm btn--secondary btn--reactive">
+                Book Again
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                  <path d="M2.5 6.5h8M7 3l3.5 3.5L7 10"
+                        stroke="currentColor" stroke-width="1.4"
+                        stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- EMPTY STATE                                            -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="bookings-empty"
+           *ngIf="!isLoading && !loadError && filteredRentals.length === 0">
+
+        <div class="bookings-empty__icon">
+          <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="38" fill="#EFF6FF" stroke="#DBEAFE" stroke-width="1.5"/>
+            <!-- Car silhouette -->
+            <path d="M18 50L24 35Q29 24 40 22Q51 24 56 35L62 50"
+                  stroke="#1A56DB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  opacity="0.4"/>
+            <circle cx="28" cy="53" r="5.5" stroke="#1A56DB" stroke-width="2" opacity="0.4"/>
+            <circle cx="52" cy="53" r="5.5" stroke="#1A56DB" stroke-width="2" opacity="0.4"/>
+            <!-- Calendar icon overlay -->
+            <rect x="28" y="27" width="24" height="20" rx="3"
+                  fill="white" stroke="#1A56DB" stroke-width="1.5"/>
+            <path d="M33 25v4M47 25v4M28 32h24" stroke="#1A56DB"
+                  stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M34 38l3 3 6-5" stroke="#1A56DB"
+                  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <h3 class="bookings-empty__title">
+          <ng-container *ngIf="activeFilter === 'All'">No bookings yet</ng-container>
+          <ng-container *ngIf="activeFilter !== 'All'">No {{ activeFilter.toLowerCase() }} rentals</ng-container>
+        </h3>
+
+        <p class="bookings-empty__sub">
+          <ng-container *ngIf="activeFilter === 'All'">
+            Your rental history will appear here once you make your first booking.
+            Browse our fleet and hit the road!
+          </ng-container>
+          <ng-container *ngIf="activeFilter !== 'All'">
+            No rentals match the selected filter. Try switching to a different status.
+          </ng-container>
+        </p>
+
+        <div class="bookings-empty__actions">
+          <a routerLink="/cars" class="btn btn--primary btn--lg btn--reactive">
+            Browse Cars
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="white"
+                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <button *ngIf="activeFilter !== 'All'"
+                  class="btn btn--ghost btn--lg"
+                  (click)="setFilter('All')">
+            Show All
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- FOOTER CTA                                                  -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <section class="footer-cta">
+    <div class="footer-cta__bg">
+      <div class="footer-cta__circle footer-cta__circle--1"></div>
+      <div class="footer-cta__circle footer-cta__circle--2"></div>
+    </div>
+    <div class="container footer-cta__inner">
+      <div class="footer-cta__content">
+        <h2 class="footer-cta__title">Ready to hit the road again?</h2>
+        <p class="footer-cta__text">
+          Browse our full fleet and book your next adventure in minutes.
+        </p>
+        <div class="footer-cta__actions">
+          <a routerLink="/cars" class="btn btn--white btn--xl btn--reactive">Browse Fleet</a>
+          <a routerLink="/offers" class="btn btn--xl footer-cta__contact-btn btn--reactive">View Offers</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>

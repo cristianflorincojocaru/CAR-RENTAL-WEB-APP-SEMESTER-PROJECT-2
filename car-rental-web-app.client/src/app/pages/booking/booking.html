@@ -445,21 +445,24 @@
             <div class="conf-card__label">Your Vehicle</div>
             <div class="conf-vehicle">
               <div class="conf-vehicle__image">
-                <svg viewBox="0 0 260 140" fill="none">
-                  <rect width="260" height="140" fill="#EFF6FF" rx="10"/>
-                  <path d="M40 100L55 68Q65 50 88 45L130 42L172 45Q195 50 205 68L220 100Z"
-                        [attr.fill]="car.color" opacity="0.88"/>
-                  <path d="M88 68L98 50Q106 44 124 43L130 42L136 43Q154 44 162 50L172 68Z"
-                        fill="#DBEAFE" opacity="0.85"/>
-                  <circle cx="82" cy="107" r="17" fill="#1E293B"/>
-                  <circle cx="82" cy="107" r="9" fill="#334155"/>
-                  <circle cx="82" cy="107" r="4.5" fill="#94A3B8"/>
-                  <circle cx="178" cy="107" r="17" fill="#1E293B"/>
-                  <circle cx="178" cy="107" r="9" fill="#334155"/>
-                  <circle cx="178" cy="107" r="4.5" fill="#94A3B8"/>
-                  <ellipse cx="214" cy="88" rx="6" ry="4" fill="#FEF9C3" opacity="0.85"/>
-                </svg>
-              </div>
+  <img *ngIf="car.imageUrl"
+       [src]="car.imageUrl"
+       [alt]="car.name">
+  <svg *ngIf="!car.imageUrl" viewBox="0 0 260 140" fill="none">
+    <rect width="260" height="140" fill="#EFF6FF" rx="10"/>
+    <path d="M40 100L55 68Q65 50 88 45L130 42L172 45Q195 50 205 68L220 100Z"
+          [attr.fill]="car.color" opacity="0.88"/>
+    <path d="M88 68L98 50Q106 44 124 43L130 42L136 43Q154 44 162 50L172 68Z"
+          fill="#DBEAFE" opacity="0.85"/>
+    <circle cx="82" cy="107" r="17" fill="#1E293B"/>
+    <circle cx="82" cy="107" r="9" fill="#334155"/>
+    <circle cx="82" cy="107" r="4.5" fill="#94A3B8"/>
+    <circle cx="178" cy="107" r="17" fill="#1E293B"/>
+    <circle cx="178" cy="107" r="9" fill="#334155"/>
+    <circle cx="178" cy="107" r="4.5" fill="#94A3B8"/>
+    <ellipse cx="214" cy="88" rx="6" ry="4" fill="#FEF9C3" opacity="0.85"/>
+  </svg>
+</div>
               <div class="conf-vehicle__info">
                 <div class="conf-vehicle__name">{{ car.name }}</div>
                 <div class="conf-vehicle__meta">{{ car.year }} · {{ car.fuel }} · {{ car.category }}</div>
@@ -627,21 +630,24 @@
     <div class="sidebar-card__label">Your Vehicle</div>
     <div class="sidebar-vehicle">
       <div class="sidebar-vehicle__img">
-        <svg viewBox="0 0 220 120" fill="none">
-          <rect width="220" height="120" fill="#EFF6FF" rx="8"/>
-          <path d="M30 88L44 60Q55 44 75 40L110 37L145 40Q165 44 176 60L190 88Z"
-                [attr.fill]="car.color" opacity="0.88"/>
-          <path d="M75 60L83 44Q90 38L106 37L114 37Q130 38 137 44L145 60Z"
-                fill="#DBEAFE" opacity="0.85"/>
-          <circle cx="68" cy="95" r="14" fill="#1E293B"/>
-          <circle cx="68" cy="95" r="8" fill="#334155"/>
-          <circle cx="68" cy="95" r="4" fill="#94A3B8"/>
-          <circle cx="152" cy="95" r="14" fill="#1E293B"/>
-          <circle cx="152" cy="95" r="8" fill="#334155"/>
-          <circle cx="152" cy="95" r="4" fill="#94A3B8"/>
-          <ellipse cx="183" cy="76" rx="5.5" ry="3.5" fill="#FEF9C3" opacity="0.85"/>
-        </svg>
-      </div>
+  <img *ngIf="car.imageUrl"
+       [src]="car.imageUrl"
+       [alt]="car.name">
+  <svg *ngIf="!car.imageUrl" viewBox="0 0 220 120" fill="none">
+    <rect width="220" height="120" fill="#EFF6FF" rx="8"/>
+    <path d="M30 88L44 60Q55 44 75 40L110 37L145 40Q165 44 176 60L190 88Z"
+          [attr.fill]="car.color" opacity="0.88"/>
+    <path d="M75 60L83 44Q90 38L106 37L114 37Q130 38 137 44L145 60Z"
+          fill="#DBEAFE" opacity="0.85"/>
+    <circle cx="68" cy="95" r="14" fill="#1E293B"/>
+    <circle cx="68" cy="95" r="8" fill="#334155"/>
+    <circle cx="68" cy="95" r="4" fill="#94A3B8"/>
+    <circle cx="152" cy="95" r="14" fill="#1E293B"/>
+    <circle cx="152" cy="95" r="8" fill="#334155"/>
+    <circle cx="152" cy="95" r="4" fill="#94A3B8"/>
+    <ellipse cx="183" cy="76" rx="5.5" ry="3.5" fill="#FEF9C3" opacity="0.85"/>
+  </svg>
+</div>
       <div class="sidebar-vehicle__info">
         <div class="sidebar-vehicle__name">{{ car.name }}</div>
         <div class="sidebar-vehicle__meta">{{ car.year }} · {{ car.fuel }}</div>
