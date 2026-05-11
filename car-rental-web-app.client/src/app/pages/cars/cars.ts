@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
@@ -16,7 +16,7 @@ export type { Car } from '../../models/car.models';
   templateUrl: './cars.html',
   styleUrls: ['./cars.scss']
 })
-export class CarsComponent implements OnInit {
+export class CarsComponent implements OnInit, AfterViewInit {
 
   // ── State ────────────────────────────────────────────────────
 
@@ -43,6 +43,10 @@ export class CarsComponent implements OnInit {
   allCars: Car[] = [];
   isLoading = false;
   loadError = false;
+  statsAnimating = false;
+  statsVisible = false;
+  private _loadStart = 0;
+  private _viewReady = false;
 
   // ── Search params venite de la Home ──────────────────────────
   fromSearch = false;
@@ -83,7 +87,20 @@ export class CarsComponent implements OnInit {
         if (mapped) this.activeBranch = mapped;
       }
 
-      this.loadCars();
+      // la primul load așteptăm AfterViewInit; la navigări ulterioare loadCars direct
+      if (this._viewReady) {
+        this.loadCars();
+      }
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this._viewReady = true;
+    // un frame după ce view-ul e în DOM, apoi pornim primul load
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        this.loadCars();
+      });
     });
   }
 
@@ -92,6 +109,7 @@ export class CarsComponent implements OnInit {
   loadCars(): void {
     this.isLoading = true;
     this.loadError = false;
+    this._loadStart = Date.now();
 
     const filters: CarFilters = {
       branch:       this.activeBranch !== 'All' ? this.activeBranch : undefined,
@@ -103,12 +121,27 @@ export class CarsComponent implements OnInit {
 
     this.carService.getAll(filters).subscribe({
       next: cars => {
-        // isFavorite este stare locală — o păstrăm între refresh-uri
-        this.allCars = cars.map(car => ({
+        const mapped = cars.map(car => ({
           ...car,
           isFavorite: this.getFavoriteState(car.id)
         }));
-        this.isLoading = false;
+        const elapsed = Date.now() - this._loadStart;
+        const remaining = Math.max(0, 200 - elapsed);
+        setTimeout(() => {
+          // 1. oprește animația și golește numerele
+          this.statsAnimating = false;
+          this.allCars = [];
+          // 2. după un frame, pune datele și pornește animația
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              this.allCars = mapped;
+              this.isLoading = false;
+              this.statsVisible = true;
+              setTimeout(() => { this.statsAnimating = true; }, 20);
+              setTimeout(() => { this.statsAnimating = false; }, 700);
+            });
+          });
+        }, remaining);
       },
       error: () => {
         this.loadError = true;
@@ -162,6 +195,12 @@ export class CarsComponent implements OnInit {
   setBranch(key: string): void {
     this.activeBranch = key;
     this.loadCars();
+  }
+
+  private triggerStatsAnimation(): void {
+    this.statsAnimating = false;
+    setTimeout(() => { this.statsAnimating = true; }, 20);
+    setTimeout(() => { this.statsAnimating = false; }, 1400);
   }
 
   setCategory(cat: string): void {
