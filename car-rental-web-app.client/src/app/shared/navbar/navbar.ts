@@ -36,6 +36,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .join('');
   }
 
+  /**
+   * Returns true if the logged-in user has a staff role
+   * (Administrator, Manager, or Operator).
+   * Used to show/hide the Dashboard button in the navbar.
+   */
+  get isStaff(): boolean {
+    const role = this.currentUser?.role;
+    return role === 'Administrator' || role === 'Manager' || role === 'Operator';
+  }
+
   constructor(public authService: AuthService) {}
 
   ngOnInit(): void {

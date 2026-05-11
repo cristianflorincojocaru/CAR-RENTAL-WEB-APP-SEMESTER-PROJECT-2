@@ -248,10 +248,112 @@
 }
 
 // ============================================================
-// NAVBAR USER MENU 
+// DASHBOARD BUTTON — staff-only pill in navbar
+// ============================================================
+.navbar__dashboard-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px var(--space-3) 6px var(--space-3);
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--color-primary-mid);
+  background: var(--color-primary-soft);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease, border-color 0.15s ease,
+              color 0.15s ease, transform 0.12s ease, box-shadow 0.15s ease;
+
+  svg {
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(26, 86, 219, 0.28);
+
+    svg path, svg rect { stroke: white; }
+
+    .navbar__dashboard-btn__role-pill {
+      background: rgba(255, 255, 255, 0.22);
+      color: white;
+    }
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 2px 6px rgba(26, 86, 219, 0.18);
+    transition-duration: 0.07s;
+  }
+
+  // Active route state
+  &--active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+    box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.18);
+
+    svg path, svg rect { stroke: white; }
+
+    .navbar__dashboard-btn__role-pill {
+      background: rgba(255, 255, 255, 0.22);
+      color: white;
+    }
+  }
+
+  // Role badge inside button
+  &__role-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--color-primary-mid);
+    color: var(--color-primary-dark);
+    border-radius: var(--radius-full);
+    font-size: 10px;
+    font-weight: var(--fw-bold);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  @media (max-width: 1200px) {
+    // Hide role pill on smaller desktops to save space
+    &__role-pill { display: none; }
+  }
+
+  @media (max-width: 1024px) {
+    display: none; // Hidden on mobile — shown in mobile menu instead
+  }
+}
+
+// Mobile dashboard link — styled differently in the mobile menu
+.navbar__mobile-dashboard-link {
+  display: flex !important;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-primary) !important;
+  font-weight: var(--fw-semibold) !important;
+  background: var(--color-primary-soft) !important;
+  border: 1px solid var(--color-primary-mid) !important;
+
+  &:hover {
+    background: var(--color-primary-mid) !important;
+  }
+
+  svg { flex-shrink: 0; }
+}
+
+// ============================================================
+// NAVBAR USER MENU
 // ============================================================
 
-// ── User Menu (autentificat) ──────────────────────────────────
 .navbar__user-menu {
   position: relative;
 }
@@ -305,12 +407,12 @@
   }
 }
 
-// ── Dropdown ──────────────────────────────────────────────────
+// Dropdown
 .navbar__user-dropdown {
   position: absolute;
   top: calc(100% + var(--space-2));
   right: 0;
-  min-width: 220px;
+  min-width: 230px;
   background: var(--color-white);
   border: var(--border-thin);
   border-radius: var(--radius-xl);
@@ -318,7 +420,6 @@
   z-index: var(--z-dropdown);
   overflow: hidden;
 
-  // Ascuns implicit
   opacity: 0;
   transform: translateY(-6px) scale(0.97);
   pointer-events: none;
@@ -397,10 +498,35 @@
     }
   }
 
+  // Dashboard item in dropdown — highlighted
+  &--dashboard {
+    color: var(--color-primary);
+    font-weight: var(--fw-semibold);
+
+    &:hover {
+      background: var(--color-primary-soft);
+      color: var(--color-primary);
+    }
+  }
+
   svg { flex-shrink: 0; }
+
+  // Small badge inside dropdown item (role label)
+  &__badge {
+    margin-left: auto;
+    padding: 2px 7px;
+    background: var(--color-primary-mid);
+    color: var(--color-primary-dark);
+    border-radius: var(--radius-full);
+    font-size: 9px;
+    font-weight: var(--fw-bold);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
 }
 
-// ── Mobile user info ──────────────────────────────────────────
+// Mobile user info
 .navbar__mobile-user {
   display: flex;
   align-items: center;

@@ -45,6 +45,24 @@
 
       <!-- Autentificat -->
       <ng-container *ngIf="isLoggedIn">
+
+        <!-- Dashboard button — visible only for staff roles -->
+        <a
+          *ngIf="isStaff"
+          routerLink="/dashboard"
+          routerLinkActive="navbar__dashboard-btn--active"
+          class="navbar__dashboard-btn btn--reactive"
+          [title]="currentUser?.role + ' Dashboard'">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <rect x="1" y="1" width="5.5" height="5.5" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+            <rect x="8.5" y="1" width="5.5" height="5.5" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+            <rect x="1" y="8.5" width="5.5" height="5.5" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+            <rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+          </svg>
+          <span>Dashboard</span>
+          <span class="navbar__dashboard-btn__role-pill">{{ currentUser?.role }}</span>
+        </a>
+
         <div class="navbar__user-menu">
           <button class="navbar__user-btn" (click)="toggleUserDropdown()">
             <div class="navbar__user-avatar">{{ userInitials }}</div>
@@ -64,6 +82,23 @@
               <span class="navbar__user-role-badge">{{ currentUser?.role }}</span>
             </div>
             <div class="navbar__user-dropdown-divider"></div>
+
+            <!-- Dashboard link in dropdown — staff only -->
+            <a
+              *ngIf="isStaff"
+              routerLink="/dashboard"
+              class="navbar__user-dropdown-item navbar__user-dropdown-item--dashboard"
+              (click)="closeUserDropdown()">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <rect x="1" y="1" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
+                <rect x="8" y="1" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
+                <rect x="1" y="8" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
+                <rect x="8" y="8" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
+              </svg>
+              Dashboard
+              <span class="navbar__user-dropdown-item__badge">{{ currentUser?.role }}</span>
+            </a>
+
             <a routerLink="/my-bookings" class="navbar__user-dropdown-item" (click)="closeUserDropdown()">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <rect x="1" y="2" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
@@ -109,6 +144,20 @@
       <li><a routerLink="/offers"  (click)="closeMenu()">Offers</a></li>
       <li><a routerLink="/about"   (click)="closeMenu()">About us</a></li>
       <li><a routerLink="/contact" (click)="closeMenu()">Contact</a></li>
+      <!-- Dashboard link for staff — mobile -->
+      <ng-container *ngIf="isLoggedIn && isStaff">
+        <li>
+          <a routerLink="/dashboard" (click)="closeMenu()" class="navbar__mobile-dashboard-link">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <rect x="1" y="1" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
+              <rect x="8" y="1" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
+              <rect x="1" y="8" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
+              <rect x="8" y="8" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
+            </svg>
+            Dashboard ({{ currentUser?.role }})
+          </a>
+        </li>
+      </ng-container>
       <!-- Linkuri extra pentru utilizatori autentificați -->
       <ng-container *ngIf="isLoggedIn">
         <li><a routerLink="/my-bookings" (click)="closeMenu()">My Bookings</a></li>
