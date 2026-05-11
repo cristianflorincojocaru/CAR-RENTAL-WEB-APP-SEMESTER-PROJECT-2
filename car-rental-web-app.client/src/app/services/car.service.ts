@@ -64,12 +64,14 @@ export class CarService {
 
   // ── Helper ────────────────────────────────────────────────────
 
-  private addAliases(car: Car): Car {
-    return {
-      ...car,
-      color: car.colorHex,
-      fuel: car.fuelType,
-      isFavorite: car.isFavorite ?? false,
-    };
-  }
+ private addAliases(car: Car): Car {
+  return {
+    ...car,
+    color: car.colorHex,
+    fuel: car.fuelType,
+    imageUrl: car.imageUrl ? `/${car.imageUrl}` : undefined,
+    isFavorite: car.isFavorite ?? false,
+  };
+}
+
 }

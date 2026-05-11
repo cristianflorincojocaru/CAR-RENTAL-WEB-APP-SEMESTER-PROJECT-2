@@ -18,7 +18,7 @@ export interface Car {
   model: string;
   year: number;
   fuelType?: string;
-  fuel?: string;                // alias pentru fuelType — compatibilitate template-uri
+  fuel?: string;
   category: VehicleCategory;
   branch: string;
   branchId: number;
@@ -29,13 +29,12 @@ export interface Car {
   status: VehicleStatus;
   rating?: number;
   colorHex?: string;
-  color?: string;               // alias pentru colorHex — compatibilitate template-uri
+  color?: string;
+  imageUrl?: string;          // ← adăugat
   isOffer: boolean;
   discountPercent?: number;
   isActive: boolean;
   specs: CarSpec[];
-
-  // Stare locală — nu vine de la API
   isFavorite: boolean;
 }
 
