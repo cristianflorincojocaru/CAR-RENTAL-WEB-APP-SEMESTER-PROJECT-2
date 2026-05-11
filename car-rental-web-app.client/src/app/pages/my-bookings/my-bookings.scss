@@ -872,3 +872,27 @@
     &:hover { background: rgba(255, 255, 255, 0.22); }
   }
 }
+// ── Show All button — aceeași animație cu "Get in Touch" din About ─
+.btn--ghost {
+  isolation: isolate;
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: background 0.2s ease, color 0.2s ease,
+              box-shadow 0.2s ease, border-color 0.2s ease !important;
+
+  &:hover:not(:disabled) {
+    background: var(--color-gray-100) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--color-gray-200) !important;
+    box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.08) !important;
+    transform: none !important;
+  }
+
+  &:active:not(:disabled) {
+    background: var(--color-gray-200) !important;
+    border-color: var(--color-gray-300) !important;
+    box-shadow: none !important;
+    transform: scale(0.98) !important;
+    transition-duration: 0.07s !important;
+  }
+}

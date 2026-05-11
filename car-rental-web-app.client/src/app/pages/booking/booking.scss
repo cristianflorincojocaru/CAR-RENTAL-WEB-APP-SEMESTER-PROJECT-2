@@ -1043,6 +1043,19 @@
   to   { opacity: 1; transform: scale(1); }
 }
 
+@keyframes promoErrorIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 40px;
+  }
+}
+
 .confirmation-grid {
   display: grid;
   grid-template-columns: 1fr 340px;
@@ -1300,6 +1313,8 @@
     margin-top: var(--space-1);
     font-size: var(--fs-xs);
     color: var(--color-error);
+    animation: promoErrorIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+    overflow: hidden;
   }
 
   &__success {
@@ -1325,6 +1340,54 @@
 
     &:hover { color: var(--color-error); }
   }
+}
+
+// ── Promo Apply button — animație permanentă ──────────────────
+.btn--promo-apply {
+  min-width: 70px;            // previne schimbarea de formă între "Apply"/"..."
+  position: relative;
+  overflow: hidden;
+  animation: promoApplyPulse 2.6s ease-in-out infinite;
+
+  // shimmer sweep permanent
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 30%,
+      rgba(255,255,255,0.18) 50%,
+      transparent 70%
+    );
+    background-size: 200% 100%;
+    animation: promoShimmer 2.6s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  // fix flash la click — lock transform origin și elimină resize
+  &:active {
+    transform: translateY(0) scale(0.97) !important;
+    transition-duration: 0.07s !important;
+    animation-play-state: paused;
+  }
+}
+
+@keyframes promoApplyPulse {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(26, 86, 219, 0.25);
+  }
+  50% {
+    box-shadow: 0 4px 16px rgba(26, 86, 219, 0.45),
+                0 0 0 3px rgba(26, 86, 219, 0.12);
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes promoShimmer {
+  0%   { background-position: 200% 0; }
+  60%  { background-position: -200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 .sidebar-price-row--promo {

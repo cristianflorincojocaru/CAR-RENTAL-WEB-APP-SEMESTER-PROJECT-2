@@ -683,9 +683,8 @@
                placeholder="Promo code"
                [(ngModel)]="promoCodeInput"
                [disabled]="promoLoading">
-        <button class="btn btn--primary btn--sm sidebar-promo__btn"
-                (click)="applyPromo()"
-                [disabled]="promoLoading || !promoCodeInput">
+        <button class="btn btn--primary btn--sm btn--reactive btn--promo-apply"
+                (click)="applyPromo()">
           <span *ngIf="!promoLoading">Apply</span>
           <span *ngIf="promoLoading">...</span>
         </button>

@@ -29,10 +29,13 @@
         Filter by location or category to find your perfect match — and keep an eye out for special offers.
       </p>
 
-      <div class="cars-hero__stats">
-        <div class="cars-hero__stat" *ngFor="let b of branches.slice(1)">
+      <div class="cars-hero__stats" [class.cars-hero__stats--hidden]="!statsVisible">
+        <div class="cars-hero__stat" *ngFor="let b of branches.slice(1); let i = index">
           <div class="cars-hero__stat-count">
-            {{ allCars.filter(c => c.branch === b.key).length }}
+            <span class="stat-flip" [class.stat-flip--active]="statsAnimating"
+                  [style.animation-delay]="(i * 0.08) + 's'">
+              {{ allCars.filter(c => c.branch === b.key).length }}
+            </span>
           </div>
           <div class="cars-hero__stat-label">{{ b.label }}</div>
         </div>

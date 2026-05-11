@@ -55,11 +55,24 @@ export class HomeComponent implements OnInit {
   carCategories = ['All', 'Economy', 'Compact', 'SUV', 'Premium'];
   activeCategory = 'All';
   allCars: Car[] = [];
+  displayedCars: Car[] = [];
   isLoading = false;
 
   get filteredCars(): Car[] {
-    if (this.activeCategory === 'All') return this.allCars;
-    return this.allCars.filter(c => c.category === this.activeCategory);
+    return this.displayedCars;
+  }
+
+  private updateDisplayedCars(): void {
+    const pool = this.activeCategory === 'All'
+      ? [...this.allCars]
+      : this.allCars.filter(c => c.category === this.activeCategory);
+
+    // Fisher-Yates shuffle, then take 6
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    this.displayedCars = pool.slice(0, 6);
   }
 
   // --- Steps ---
@@ -147,8 +160,8 @@ export class HomeComponent implements OnInit {
     this.isLoading = true;
     this.carService.getAll().subscribe({
       next: cars => {
-        // Luăm maxim 6 mașini pentru featured section
-        this.allCars = cars.slice(0, 6);
+        this.allCars = cars;
+        this.updateDisplayedCars();
         this.isLoading = false;
       },
       error: () => {
@@ -185,6 +198,7 @@ export class HomeComponent implements OnInit {
 
   setCategory(cat: string): void {
     this.activeCategory = cat;
+    this.updateDisplayedCars();
   }
 
   trackByCat = (index: number, car: Car): string => {
