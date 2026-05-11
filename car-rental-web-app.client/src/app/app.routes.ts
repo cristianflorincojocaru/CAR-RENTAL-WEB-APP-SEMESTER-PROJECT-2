@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-<<<<<<< HEAD
 import { HomeComponent }      from './pages/home/home';
 import { AboutComponent }     from './pages/about us/about';
 import { Contact }            from './pages/contact/contact';
@@ -11,17 +10,7 @@ import { LoginComponent }     from './pages/auth/login/login';
 import { SignupComponent }    from './pages/auth/signup/signup';
 import { BookingComponent }   from './pages/booking/booking';
 import { DashboardComponent } from './pages/dashboard/dashboard';
-=======
-import { HomeComponent }        from './pages/home/home';
-import { AboutComponent }       from './pages/about us/about';
-import { Contact }              from './pages/contact/contact';
-import { CarsComponent }        from './pages/cars/cars';
-import { OffersComponent }      from './pages/offers/offers';
-import { LoginComponent }       from './pages/auth/login/login';
-import { SignupComponent }      from './pages/auth/signup/signup';
-import { BookingComponent }     from './pages/booking/booking';
 import { MyBookingsComponent }  from './pages/my-bookings/my-bookings';
->>>>>>> 08c83621ab69d66b6c9aa022cfa1f52ec8204519
 
 import { authGuard, roleGuard } from './guards/auth.guard';
 
@@ -36,7 +25,6 @@ export const routes: Routes = [
   // ── Rute de autentificare ─────────────────────────────────────
   { path: 'login',  component: LoginComponent,  data: { animation: 'login'  } },
   { path: 'signup', component: SignupComponent, data: { animation: 'signup' } },
-<<<<<<< HEAD
 
   // ── Dashboard — accesibil doar pentru Administrator, Manager, Operator
   {
@@ -45,8 +33,6 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: { animation: 'dashboard' }
   },
-=======
->>>>>>> 08c83621ab69d66b6c9aa022cfa1f52ec8204519
 
   // ── Rute protejate (necesită autentificare) ───────────────────
   {
