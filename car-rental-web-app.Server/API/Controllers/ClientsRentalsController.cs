@@ -127,6 +127,17 @@ public class RentalsController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>Get rentals for current logged-in client</summary>
+    [HttpGet("my")]
+    [Authorize]
+    [ProducesResponseType(typeof(IEnumerable<RentalListItemDto>), 200)]
+    public async Task<IActionResult> GetMyRentals(CancellationToken ct)
+    {
+        var email = User.FindFirstValue(ClaimTypes.Email)!;
+        var result = await _rentalService.GetByClientEmailAsync(email, ct);
+        return Ok(result);
+    }
+
     /// <summary>Get rental by ID</summary>
     [HttpGet("{id:int}")]
     [Authorize(Roles = "Administrator,Manager,Operator")]
@@ -175,17 +186,5 @@ public class RentalsController : ControllerBase
         var userId = int.Parse(User.FindFirstValue("userId")!);
         var result = await _rentalService.CancelAsync(id, request.Reason, userId, ct);
         return Ok(result);
-    }
-
-    /// <summary>Get rentals for current logged-in client</summary>
-    [HttpGet("my")]
-    [Authorize]
-    [ProducesResponseType(typeof(IEnumerable<RentalListItemDto>), 200)]
-    public async Task<IActionResult> GetMyRentals(CancellationToken ct)
-    {
-        // For client portal — looks up rentals by email
-        var email = User.FindFirstValue(ClaimTypes.Email)!;
-        // Return empty if no client found (staff users have no rentals)
-        return Ok(Array.Empty<RentalListItemDto>());
     }
 }
