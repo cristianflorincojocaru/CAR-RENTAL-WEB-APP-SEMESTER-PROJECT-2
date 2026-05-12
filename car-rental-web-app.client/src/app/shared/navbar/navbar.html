@@ -96,7 +96,6 @@
                 <rect x="8" y="8" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.2"/>
               </svg>
               Dashboard
-              <span class="navbar__user-dropdown-item__badge">{{ currentUser?.role }}</span>
             </a>
 
             <a routerLink="/my-bookings" class="navbar__user-dropdown-item" (click)="closeUserDropdown()">
@@ -105,13 +104,6 @@
                 <path d="M4 1v2M10 1v2M1 5h12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
               </svg>
               My Bookings
-            </a>
-            <a routerLink="/profile" class="navbar__user-dropdown-item" (click)="closeUserDropdown()">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <circle cx="7" cy="5" r="3" stroke="currentColor" stroke-width="1.2"/>
-                <path d="M1.5 13a5.5 5.5 0 0111 0" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-              </svg>
-              My Profile
             </a>
             <div class="navbar__user-dropdown-divider"></div>
             <button class="navbar__user-dropdown-item navbar__user-dropdown-item--danger" (click)="logout()">

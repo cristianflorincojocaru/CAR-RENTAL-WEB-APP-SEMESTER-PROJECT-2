@@ -417,7 +417,7 @@
   border: 1.5px solid #FCD34D;
   box-shadow: 0 2px 12px rgba(217, 119, 6, 0.08);
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.35s ease-in-out, box-shadow 0.35s ease-in-out, border-color 0.35s ease-in-out;
   animation: fadeInUp 0.42s ease both;
 
   &:hover {
@@ -426,7 +426,7 @@
     border-color: #D97706;
 
     .offer-card__ribbon {
-      background: linear-gradient(135deg, #C2510A 0%, #92400E 100%);
+      background: linear-gradient(135deg, #D97706 0%, #B45309 60%, #92400E 100%);
     }
   }
 
@@ -448,7 +448,7 @@
     transform-origin: center;
     box-shadow: 0 2px 10px rgba(0,0,0,0.20);
     z-index: 3;
-    transition: background 0.2s ease;
+    transition: background 0.35s ease-in-out;
   }
 
   // ── Image ─────────────────────────────────────────────────
@@ -607,11 +607,11 @@
     font-family: var(--font-display);
     font-size: var(--fs-xl);
     font-weight: var(--fw-bold);
-    // Richer amber gradient via background-clip
-    background: linear-gradient(135deg, #F59E0B 0%, #D97706 60%, #C2510A 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #D97706;
+    background: none;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+    background-clip: unset;
   }
 
   &__now-unit {

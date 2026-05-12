@@ -20,11 +20,11 @@
           </span>
         </div>
       </div>
-      <button class="dash-sidebar__toggle" (click)="toggleSidebar()">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path *ngIf="!sidebarCollapsed" d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <path *ngIf="sidebarCollapsed" d="M4 4l8 4-8 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+      <button class="dash-sidebar__toggle" [class.is-collapsed]="sidebarCollapsed" (click)="toggleSidebar()">
+        <span class="dash-toggle-bar"></span>
+        <span class="dash-toggle-bar"></span>
+        <span class="dash-toggle-bar"></span>
+
       </button>
     </div>
 
@@ -35,7 +35,6 @@
       </div>
       <div class="dash-sidebar__user-info">
         <div class="dash-sidebar__user-name">{{ userName }}</div>
-        <div class="dash-sidebar__user-sub">{{ roleLabel }}</div>
       </div>
     </div>
 
