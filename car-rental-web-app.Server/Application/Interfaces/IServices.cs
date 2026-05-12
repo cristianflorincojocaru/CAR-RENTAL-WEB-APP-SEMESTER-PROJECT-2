@@ -59,6 +59,8 @@ public interface IRentalService
     Task<RentalDto> CompleteAsync(int id, int completedByUserId, CancellationToken ct = default);
     Task<RentalDto> CancelAsync(int id, string reason, int userId, CancellationToken ct = default);
     Task<IEnumerable<RentalListItemDto>> GetByClientAsync(int clientId, CancellationToken ct = default);
+
+    Task<IEnumerable<RentalListItemDto>> GetByClientEmailAsync(string email, CancellationToken ct = default);
 }
 
 public interface IBranchService

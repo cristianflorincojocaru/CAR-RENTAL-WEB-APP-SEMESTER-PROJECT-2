@@ -203,4 +203,11 @@ public class RentalService : IRentalService
             .Where(e => ratesPerDay.ContainsKey(e))
             .Sum(e => ratesPerDay[e] * days);
     }
+
+    public async Task<IEnumerable<RentalListItemDto>> GetByClientEmailAsync(string email, CancellationToken ct = default)
+    {
+        var client = await _uow.Clients.GetByEmailAsync(email, ct);
+        if (client == null) return Enumerable.Empty<RentalListItemDto>();
+        return await GetByClientAsync(client.Id, ct);
+    }
 }
