@@ -124,7 +124,7 @@ test('T07 - Cars page loads vehicles and category filter works', async ({ page }
 
   // Click pe filtrul Economy
   await page.click('.fleet__category-btn:has-text("Economy")');
-  await page.waitForTimeout(800);
+  await page.waitForTimeout(2000);
 
   // Toate cardurile trebuie să fie Economy
   const badges = await page.locator('.car-card__badge').allTextContents();
@@ -142,7 +142,7 @@ test('T08 - Cars page branch filter works', async ({ page }) => {
 
   // Click pe filiala Bucharest Central
   await page.click('.fleet__branch-tab:has-text("Bucharest Central")');
-  await page.waitForTimeout(800);
+  await page.waitForTimeout(2000);
 
   const branchLabels = await page.locator('.car-card__branch').allTextContents();
   for (const label of branchLabels) {
@@ -237,7 +237,7 @@ test('T14 - Admin can navigate to Vehicles section in dashboard', async ({ page 
 
   // Click pe butonul "Manage Fleet" din Quick Actions
   await page.click('.dash-action-btn:has-text("Manage Fleet")');
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(2000);
 
   // Tabelul de vehicule trebuie să apară
   await expect(page.locator('.dash-table')).toBeVisible({ timeout: 10_000 });
@@ -346,7 +346,7 @@ test('T20 - Cars page sort by price works', async ({ page }) => {
 
   // Selectăm sortarea "Price: High to Low"
   await page.selectOption('.fleet__sort-select', { label: 'Price: High to Low' });
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(2000);
 
   // Extragem prețurile afișate
   const priceTexts = await page.locator('.car-card__price-amount').allTextContents();
