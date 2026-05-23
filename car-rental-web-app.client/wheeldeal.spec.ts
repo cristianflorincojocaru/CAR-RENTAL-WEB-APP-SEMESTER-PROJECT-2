@@ -357,3 +357,121 @@ test('T20 - Cars page sort by price works', async ({ page }) => {
     expect(prices[i]).toBeGreaterThanOrEqual(prices[i + 1]);
   }
 });
+
+// =============================================================================
+// TESTE API BACKEND — Playwright request context (fără browser)
+// Base URL: https://localhost:7273/api
+// =============================================================================
+
+const API = 'https://localhost:7273/api';
+
+// Helper: obține token JWT pentru admin
+async function getAdminToken(request: any): Promise<string> {
+  const res = await request.post(`${API}/auth/login`, {
+    data: { email: ADMIN.email, password: ADMIN.password },
+    ignoreHTTPSErrors: true,
+  });
+  const body = await res.json();
+  return body.accessToken;
+}
+
+// =============================================================================
+// TEST A01 — Health check endpoint răspunde cu status 200
+// =============================================================================
+test('A01 - API health check returns 200 and healthy status', async ({ request }) => {
+  const res = await request.get(`${API}/health`, {
+    ignoreHTTPSErrors: true,
+  });
+
+  expect(res.status()).toBe(200);
+  const body = await res.json();
+  expect(body.status).toBe('healthy');
+});
+
+// =============================================================================
+// TEST A02 — Login cu credențiale valide returnează JWT token
+// =============================================================================
+test('A02 - POST /auth/login with valid credentials returns JWT', async ({ request }) => {
+  const res = await request.post(`${API}/auth/login`, {
+    data: { email: ADMIN.email, password: ADMIN.password },
+    ignoreHTTPSErrors: true,
+  });
+
+  expect(res.status()).toBe(200);
+
+  const body = await res.json();
+  expect(body.accessToken).toBeTruthy();
+  expect(body.refreshToken).toBeTruthy();
+  expect(body.user).toBeDefined();
+  expect(body.user.role).toBe('Administrator');
+});
+
+// =============================================================================
+// TEST A03 — Login cu credențiale greșite returnează 401
+// =============================================================================
+test('A03 - POST /auth/login with wrong password returns 401', async ({ request }) => {
+  const res = await request.post(`${API}/auth/login`, {
+    data: { email: ADMIN.email, password: 'WrongPassword999!' },
+    ignoreHTTPSErrors: true,
+  });
+
+  expect(res.status()).toBe(401);
+
+  const body = await res.json();
+  expect(body.title).toBeTruthy();
+});
+
+// =============================================================================
+// TEST A04 — GET /vehicles returnează lista de vehicule (public endpoint)
+// =============================================================================
+test('A04 - GET /vehicles returns list of vehicles without auth', async ({ request }) => {
+  const res = await request.get(`${API}/vehicles`, {
+    ignoreHTTPSErrors: true,
+  });
+
+  expect(res.status()).toBe(200);
+
+  const body = await res.json();
+  expect(Array.isArray(body)).toBeTruthy();
+  expect(body.length).toBeGreaterThan(0);
+
+  // Verificăm structura primului vehicul
+  const vehicle = body[0];
+  expect(vehicle).toHaveProperty('id');
+  expect(vehicle).toHaveProperty('name');
+  expect(vehicle).toHaveProperty('dailyRate');
+  expect(vehicle).toHaveProperty('category');
+  expect(vehicle).toHaveProperty('branch');
+});
+
+// =============================================================================
+// TEST A05 — GET /reports/dashboard necesită autentificare (401 fără token)
+// =============================================================================
+test('A05 - GET /reports/dashboard returns 401 without token', async ({ request }) => {
+  const res = await request.get(`${API}/reports/dashboard`, {
+    ignoreHTTPSErrors: true,
+  });
+
+  expect(res.status()).toBe(401);
+});
+
+// =============================================================================
+// TEST A06 — GET /reports/dashboard returnează statistici cu token valid
+// =============================================================================
+test('A06 - GET /reports/dashboard returns stats with valid admin token', async ({ request }) => {
+  const token = await getAdminToken(request);
+
+  const res = await request.get(`${API}/reports/dashboard`, {
+    headers: { Authorization: `Bearer ${token}` },
+    ignoreHTTPSErrors: true,
+  });
+
+  expect(res.status()).toBe(200);
+
+  const body = await res.json();
+  expect(body).toHaveProperty('totalVehicles');
+  expect(body).toHaveProperty('availableVehicles');
+  expect(body).toHaveProperty('activeRentals');
+  expect(body).toHaveProperty('todayRevenue');
+  expect(body.totalVehicles).toBeGreaterThan(0);
+});
