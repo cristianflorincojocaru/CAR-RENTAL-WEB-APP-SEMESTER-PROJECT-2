@@ -68,6 +68,7 @@ public static class MappingExtensions
         r.BookingReference,
         r.Vehicle?.FullName            ?? string.Empty,
         r.Vehicle?.Category.ToString() ?? string.Empty,
+         r.Vehicle?.ImageUrl,          
         r.Client?.FullName             ?? string.Empty,
         r.Client?.Email                ?? string.Empty,
         r.StartDate,
@@ -80,31 +81,32 @@ public static class MappingExtensions
     );
 
     public static RentalDto ToDto(this Rental r) => new(
-        r.Id,
-        r.BookingReference,
-        r.VehicleId,
-        r.Vehicle?.FullName            ?? string.Empty,
-        r.Vehicle?.Category.ToString() ?? string.Empty,
-        r.ClientId,
-        r.Client?.FullName             ?? string.Empty,
-        r.Client?.Email                ?? string.Empty,
-        r.BranchId,
-        r.Branch?.Name                 ?? string.Empty,
-        r.StartDate,
-        r.EndDate,
-        r.PickupLocation,
-        r.ReturnLocation,
-        r.TotalCost,
-        r.Status.ToString(),
-        r.CancellationReason,
-        r.ProtectionPlan,
-        r.Extras,
-        r.Notes,
-        r.PayNow,
-        r.CreatedAt,
-        r.CreatedByUser?.FullName      ?? string.Empty,
-        r.CompletedByUser?.FullName
-    );
+    r.Id,
+    r.BookingReference,
+    r.VehicleId,
+    r.Vehicle?.FullName            ?? string.Empty,
+    r.Vehicle?.Category.ToString() ?? string.Empty,
+    r.Vehicle?.ImageUrl,                              // ← adăugat
+    r.ClientId,
+    r.Client?.FullName             ?? string.Empty,
+    r.Client?.Email                ?? string.Empty,
+    r.BranchId,
+    r.Branch?.Name                 ?? string.Empty,
+    r.StartDate,
+    r.EndDate,
+    r.PickupLocation,
+    r.ReturnLocation,
+    r.TotalCost,
+    r.Status.ToString(),
+    r.CancellationReason,
+    r.ProtectionPlan,
+    r.Extras,
+    r.Notes,
+    r.PayNow,
+    r.CreatedAt,
+    r.CreatedByUser?.FullName      ?? string.Empty,
+    r.CompletedByUser?.FullName
+);
 
     // ── Branch ─────────────────────────────────────────────────
 

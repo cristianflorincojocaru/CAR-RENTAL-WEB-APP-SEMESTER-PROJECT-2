@@ -180,16 +180,8 @@ export class BookingComponent implements OnInit {
     },
   ];
 
-  locations = [
-    'Henri Coandă Airport (OTP), Bucharest',
-    'Otopeni — City Centre',
-    'Craiova — Central',
-    'Craiova — Airport',
-    'Cluj-Napoca',
-    'Timișoara',
-    'Iași',
-    'Constanța',
-  ];
+  locations: string[] = [];
+locationsLoading = false;
 
   constructor(
     private carService: CarService,
@@ -226,7 +218,12 @@ export class BookingComponent implements OnInit {
       this.form.email = user.email;
       this.form.phone = user.phone ?? '';
     }
+
+    this.loadLocations(); // ← aici
+
   }
+
+  
 
   private initFormFromParams(): void {
     const params = this.route.snapshot.queryParamMap;
@@ -251,30 +248,31 @@ export class BookingComponent implements OnInit {
 
   // ── Helpers locație ───────────────────────────────────────────
 
-  private mapHomeLocation(loc: string): string {
-    const map: Record<string, string> = {
-      'Henri Coandă Airport': 'Henri Coandă Airport (OTP), Bucharest',
-      'Otopeni Airport': 'Henri Coandă Airport (OTP), Bucharest',
-      'Bucharest — City Centre': 'Otopeni — City Centre',
-      'Cluj-Napoca': 'Cluj-Napoca',
-      'Timișoara': 'Timișoara',
-      'Iași': 'Iași',
-      'Constanța': 'Constanța',
-    };
-    if (map[loc]) return map[loc];
-    const found = this.locations.find((l) => l.toLowerCase().includes(loc.toLowerCase()));
-    return found || loc;
-  }
+private mapHomeLocation(loc: string): string {
+  const found = this.locations.find(l => l.toLowerCase().includes(loc.toLowerCase()));
+  return found ?? (this.locations[0] ?? loc);
+}
 
-  private mapBranchToLocation(branch: string): string {
-    if (branch.includes('Otopeni') || branch.includes('Bucharest')) {
-      return 'Henri Coandă Airport (OTP), Bucharest';
-    }
-    if (branch.includes('Craiova — Airport')) return 'Craiova — Airport';
-    if (branch.includes('Craiova')) return 'Craiova — Central';
-    if (branch.includes('Timișoara')) return 'Timișoara';
-    return branch;
+private mapBranchToLocation(branch: string): string {
+  const found = this.locations.find(l =>
+    l.toLowerCase().includes(branch.toLowerCase()) ||
+    branch.toLowerCase().includes(l.toLowerCase())
+  );
+  return found ?? (this.locations[0] ?? '');
+}
+
+  private loadLocations(): void {
+  this.http.get<any[]>(`${environment.apiUrl}/branches`).subscribe({
+    next: (branches) => {
+  this.locations = branches.filter(b => b.isActive).map(b => b.name);
+  if (!this.locationLocked && this.car) {
+    this.form.pickupLocation = this.mapBranchToLocation(this.car.branch ?? '');
+    this.form.returnLocation = this.form.pickupLocation;
   }
+},
+    error: () => {}
+  });
+}
 
   // ── Helpers preț ──────────────────────────────────────────────
 

@@ -8,7 +8,7 @@
 }
 
 // ============================================================
-// HERO — white bg + circles + grid, identical pattern
+// HERO
 // ============================================================
 .bookings-hero {
   position: relative;
@@ -113,7 +113,6 @@
     @media (max-width: 768px) { font-size: var(--fs-base); }
   }
 
-  // Stats strip — identical layout to about page stats
   &__stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -133,7 +132,7 @@
 }
 
 // ============================================================
-// STAT CARDS — matches .about-stat exactly
+// STAT CARDS
 // ============================================================
 .booking-stat {
   background: var(--color-white);
@@ -178,7 +177,7 @@
 }
 
 // ============================================================
-// TOOLBAR — mirrors .fleet__toolbar from cars.scss
+// TOOLBAR
 // ============================================================
 .bookings-toolbar {
   display: flex;
@@ -194,7 +193,6 @@
   box-shadow: var(--shadow-sm);
 }
 
-// Filter tabs
 .bookings-filters {
   display: flex;
   flex-wrap: wrap;
@@ -238,6 +236,14 @@
 
     &:active { transform: scale(0.94); }
   }
+}
+
+// Export buttons
+.bookings-export {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
 }
 
 // Sort dropdown
@@ -392,7 +398,6 @@
     grid-template-columns: 1fr;
   }
 
-  // ── Visual panel (left) ───────────────────────────────────────
   &__visual {
     background: linear-gradient(160deg, var(--color-primary-soft) 0%, #E0EFFE 100%);
     padding: var(--space-6);
@@ -427,6 +432,14 @@
     }
   }
 
+  &__vehicle-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    display: block;
+  }
+
   &__category-chip {
     display: inline-block;
     padding: 4px 12px;
@@ -439,12 +452,9 @@
     letter-spacing: 0.05em;
     text-transform: uppercase;
 
-    @media (max-width: 860px) {
-      display: none; // shown inside content on mobile
-    }
+    @media (max-width: 860px) { display: none; }
   }
 
-  // ── Content panel (right) ─────────────────────────────────────
   &__content {
     padding: var(--space-6);
     display: flex;
@@ -455,7 +465,6 @@
     }
   }
 
-  // Header row: vehicle name + total price
   &__header {
     display: flex;
     align-items: flex-start;
@@ -488,7 +497,6 @@
     letter-spacing: 0.04em;
   }
 
-  // Total price block
   &__total-block {
     text-align: right;
     flex-shrink: 0;
@@ -513,14 +521,12 @@
     letter-spacing: 0.08em;
   }
 
-  // Horizontal rule
   &__divider {
     height: 1px;
     background: var(--color-gray-100);
     margin-block: var(--space-4);
   }
 
-  // ── Date range row ────────────────────────────────────────────
   &__dates-row {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -537,7 +543,6 @@
   &__date-block {
     &--right {
       text-align: right;
-
       @media (max-width: 520px) { text-align: left; }
     }
   }
@@ -555,7 +560,6 @@
 
     &--right {
       justify-content: flex-end;
-
       @media (max-width: 520px) { justify-content: flex-start; }
     }
   }
@@ -568,7 +572,6 @@
     white-space: nowrap;
   }
 
-  // Arrow with duration pill between dates
   &__date-arrow {
     display: flex;
     flex-direction: column;
@@ -594,7 +597,6 @@
     white-space: nowrap;
   }
 
-  // ── Locations ─────────────────────────────────────────────────
   &__locations {
     display: flex;
     flex-direction: column;
@@ -636,7 +638,6 @@
     }
   }
 
-  // ── Card footer: price breakdown + action ─────────────────────
   &__footer {
     display: flex;
     align-items: center;
@@ -687,7 +688,7 @@
 }
 
 // ============================================================
-// STATUS BADGE — mirrors branch-status-badge from contact
+// STATUS BADGE
 // ============================================================
 .booking-status-badge {
   display: inline-flex;
@@ -787,7 +788,7 @@
 }
 
 // ============================================================
-// REACTIVE BUTTON — identical to all other pages
+// REACTIVE BUTTON
 // ============================================================
 .btn--reactive {
   will-change: transform;
@@ -812,7 +813,7 @@
 }
 
 // ============================================================
-// FOOTER CTA — matches other pages exactly
+// FOOTER CTA
 // ============================================================
 .footer-cta {
   position: relative;
@@ -872,7 +873,10 @@
     &:hover { background: rgba(255, 255, 255, 0.22); }
   }
 }
-// ── Show All button — aceeași animație cu "Get in Touch" din About ─
+
+// ============================================================
+// GHOST BUTTON
+// ============================================================
 .btn--ghost {
   isolation: isolate;
   will-change: transform;

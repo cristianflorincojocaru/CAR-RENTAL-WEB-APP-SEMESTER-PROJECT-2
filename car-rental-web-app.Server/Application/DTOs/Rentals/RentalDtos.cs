@@ -8,6 +8,7 @@ public record RentalDto(
     int VehicleId,
     string VehicleName,
     string VehicleCategory,
+    string? VehicleImageUrl,   // ← adăugat
     int ClientId,
     string ClientName,
     string ClientEmail,
@@ -55,6 +56,7 @@ public record RentalListItemDto(
     string BookingReference,
     string VehicleName,
     string VehicleCategory,
+    string? VehicleImageUrl,   // ← adăugat
     string ClientName,
     string ClientEmail,
     DateTime StartDate,

@@ -47,6 +47,7 @@ export interface BookingResponse {
   createdAt: string;
   createdByUserName: string;
   completedByUserName?: string;
+    vehicleImageUrl?: string;   // ← adăugat
 }
 
 export interface Rental {
@@ -54,6 +55,7 @@ export interface Rental {
   bookingReference: string;
   vehicleName: string;
   vehicleCategory: string;
+   vehicleImageUrl?: string;   // ← adăugat
   clientName: string;
   clientEmail: string;
   startDate: string;
