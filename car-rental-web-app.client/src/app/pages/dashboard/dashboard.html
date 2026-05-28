@@ -15,16 +15,19 @@
         </div>
         <div class="dash-sidebar__brand-text" *ngIf="!sidebarCollapsed">
           <span class="dash-sidebar__brand-name">WheelDeal</span>
-          <span class="dash-sidebar__role-badge" [style.background]="roleColor + '22'" [style.color]="roleColor">
+          <span class="dash-sidebar__role-badge"
+                [style.background]="roleColor + '22'"
+                [style.color]="roleColor">
             {{ roleLabel }}
           </span>
         </div>
       </div>
-      <button class="dash-sidebar__toggle" [class.is-collapsed]="sidebarCollapsed" (click)="toggleSidebar()">
+      <button class="dash-sidebar__toggle"
+              [class.is-collapsed]="sidebarCollapsed"
+              (click)="toggleSidebar()">
         <span class="dash-toggle-bar"></span>
         <span class="dash-toggle-bar"></span>
         <span class="dash-toggle-bar"></span>
-
       </button>
     </div>
 
@@ -40,25 +43,33 @@
 
     <!-- Nav items -->
     <nav class="dash-sidebar__nav">
-      <button
-        *ngFor="let item of getNavItems()"
-        class="dash-sidebar__nav-item"
-        [class.active]="activeSection === item.section"
-        (click)="setSection(item.section)"
-        [title]="item.label">
-        <span class="dash-sidebar__nav-icon">{{ item.icon }}</span>
-        <span class="dash-sidebar__nav-label" *ngIf="!sidebarCollapsed">{{ item.label }}</span>
-        <span class="dash-sidebar__nav-indicator" *ngIf="item.section === 'alerts' && stats && stats.unreadAlerts > 0">
-          {{ stats.unreadAlerts }}
-        </span>
-      </button>
+      <ng-container *ngFor="let item of getNavItems()">
+        <!-- Divider -->
+        <div *ngIf="item.divider"
+             class="dash-sidebar__nav-divider"
+             [style.margin]="sidebarCollapsed ? '8px 12px' : '8px 16px'">
+        </div>
+        <button
+          class="dash-sidebar__nav-item"
+          [class.active]="activeSection === item.section"
+          (click)="setSection(item.section)"
+          [title]="item.label">
+          <span class="dash-sidebar__nav-icon">{{ item.icon }}</span>
+          <span class="dash-sidebar__nav-label" *ngIf="!sidebarCollapsed">{{ item.label }}</span>
+          <span class="dash-sidebar__nav-indicator"
+                *ngIf="item.section === 'alerts' && stats && stats.unreadAlerts > 0">
+            {{ stats.unreadAlerts }}
+          </span>
+        </button>
+      </ng-container>
     </nav>
 
     <!-- Back to site -->
     <div class="dash-sidebar__footer">
       <a routerLink="/" class="dash-sidebar__back-btn" [title]="'Back to Site'">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <span *ngIf="!sidebarCollapsed">Back to Site</span>
       </a>
@@ -80,8 +91,11 @@
           <span *ngIf="activeSection === 'branches'">Branches</span>
           <span *ngIf="activeSection === 'revenue'">Revenue Reports</span>
           <span *ngIf="activeSection === 'alerts'">Security Alerts</span>
+          <span *ngIf="activeSection === 'report-builder'">Report Builder</span>
         </h1>
-        <div class="dash-topbar__breadcrumb">WheelDeal Admin › {{ activeSection | titlecase }}</div>
+        <div class="dash-topbar__breadcrumb">
+          WheelDeal Admin › {{ activeSection | titlecase }}
+        </div>
       </div>
       <div class="dash-topbar__right">
         <div class="dash-topbar__date">{{ 'today' | uppercase }}</div>
@@ -104,11 +118,9 @@
     </div>
 
     <!-- ═══════════════════════════════════════════════════════
-         OVERVIEW SECTION
+         OVERVIEW
     ═══════════════════════════════════════════════════════ -->
     <div class="dash-content" *ngIf="activeSection === 'overview' && !isLoading">
-
-      <!-- Stat cards -->
       <div class="dash-stats-grid" *ngIf="stats">
         <div class="dash-stat-card">
           <div class="dash-stat-card__icon" style="background:#EFF6FF">🚗</div>
@@ -118,7 +130,6 @@
           </div>
           <div class="dash-stat-card__sub">of {{ stats.totalVehicles }} total</div>
         </div>
-
         <div class="dash-stat-card">
           <div class="dash-stat-card__icon" style="background:#FEF3C7">🔑</div>
           <div class="dash-stat-card__body">
@@ -127,7 +138,6 @@
           </div>
           <div class="dash-stat-card__sub">{{ stats.rentedVehicles }} vehicles out</div>
         </div>
-
         <div class="dash-stat-card">
           <div class="dash-stat-card__icon" style="background:#D1FAE5">💰</div>
           <div class="dash-stat-card__body">
@@ -136,7 +146,6 @@
           </div>
           <div class="dash-stat-card__sub">{{ stats.completedToday }} rentals completed</div>
         </div>
-
         <div class="dash-stat-card" *ngIf="isAdmin">
           <div class="dash-stat-card__icon" style="background:#FEE2E2">🔔</div>
           <div class="dash-stat-card__body">
@@ -145,7 +154,6 @@
           </div>
           <div class="dash-stat-card__sub">security notifications</div>
         </div>
-
         <div class="dash-stat-card" *ngIf="!isAdmin">
           <div class="dash-stat-card__icon" style="background:#EDE9FE">👥</div>
           <div class="dash-stat-card__body">
@@ -156,70 +164,56 @@
         </div>
       </div>
 
-      <!-- Quick action buttons -->
       <div class="dash-quick-actions">
         <div class="dash-quick-actions__title">Quick Actions</div>
         <div class="dash-quick-actions__grid">
           <button class="dash-action-btn" (click)="setSection('rentals')">
-            <span class="dash-action-btn__icon">📋</span>
-            <span>View Rentals</span>
+            <span class="dash-action-btn__icon">📋</span><span>View Rentals</span>
           </button>
           <button class="dash-action-btn" (click)="setSection('vehicles')">
-            <span class="dash-action-btn__icon">🚗</span>
-            <span>Manage Fleet</span>
+            <span class="dash-action-btn__icon">🚗</span><span>Manage Fleet</span>
           </button>
           <button class="dash-action-btn" *ngIf="isAdmin || isManager" (click)="setSection('clients')">
-            <span class="dash-action-btn__icon">👥</span>
-            <span>Clients</span>
+            <span class="dash-action-btn__icon">👥</span><span>Clients</span>
           </button>
           <button class="dash-action-btn" *ngIf="isAdmin" (click)="setSection('users')">
-            <span class="dash-action-btn__icon">👤</span>
-            <span>Staff</span>
+            <span class="dash-action-btn__icon">👤</span><span>Staff</span>
           </button>
           <button class="dash-action-btn" *ngIf="isAdmin" (click)="setSection('branches')">
-            <span class="dash-action-btn__icon">🏢</span>
-            <span>Branches</span>
+            <span class="dash-action-btn__icon">🏢</span><span>Branches</span>
           </button>
           <button class="dash-action-btn" (click)="setSection('revenue')">
-            <span class="dash-action-btn__icon">💰</span>
-            <span>Revenue</span>
+            <span class="dash-action-btn__icon">💰</span><span>Revenue</span>
+          </button>
+          <button class="dash-action-btn" (click)="setSection('report-builder')">
+            <span class="dash-action-btn__icon">📄</span><span>Reports</span>
           </button>
         </div>
       </div>
-
     </div>
 
     <!-- ═══════════════════════════════════════════════════════
-         VEHICLES SECTION
+         VEHICLES
     ═══════════════════════════════════════════════════════ -->
-    <div class="dash-content" *ngIf="(activeSection === 'vehicles' || activeSection === 'search-vehicle') && !isLoading">
-
+    <div class="dash-content"
+         *ngIf="(activeSection === 'vehicles' || activeSection === 'search-vehicle') && !isLoading">
       <div class="dash-section-toolbar">
         <div class="dash-search-bar">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <circle cx="6.5" cy="6.5" r="4.5" stroke="#94A3B8" stroke-width="1.3"/>
             <path d="M10 10l3.5 3.5" stroke="#94A3B8" stroke-width="1.3" stroke-linecap="round"/>
           </svg>
-          <input
-            type="text"
-            placeholder="Search by name, plate, category…"
-            [(ngModel)]="searchVehicleQuery"
-            (input)="onSearchVehicle()">
+          <input type="text" placeholder="Search by name, plate, category…"
+                 [(ngModel)]="searchVehicleQuery" (input)="onSearchVehicle()">
         </div>
         <span class="dash-count-badge">{{ filteredVehicles.length }} vehicles</span>
       </div>
-
       <div class="dash-table-wrap">
         <table class="dash-table">
           <thead>
             <tr>
-              <th>Vehicle</th>
-              <th>Plate</th>
-              <th>Category</th>
-              <th>Branch</th>
-              <th>Rate</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <th>Vehicle</th><th>Plate</th><th>Category</th>
+              <th>Branch</th><th>Rate</th><th>Status</th><th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -265,10 +259,10 @@
     </div>
 
     <!-- ═══════════════════════════════════════════════════════
-         RENTALS SECTION
+         RENTALS
     ═══════════════════════════════════════════════════════ -->
-    <div class="dash-content" *ngIf="(activeSection === 'rentals' || activeSection === 'active-rentals') && !isLoading">
-
+    <div class="dash-content"
+         *ngIf="(activeSection === 'rentals' || activeSection === 'active-rentals') && !isLoading">
       <div class="dash-section-toolbar">
         <div class="dash-filter-bar">
           <select [(ngModel)]="searchRentalStatus" class="dash-select">
@@ -280,18 +274,12 @@
         </div>
         <span class="dash-count-badge">{{ filteredRentals.length }} rentals</span>
       </div>
-
       <div class="dash-table-wrap">
         <table class="dash-table">
           <thead>
             <tr>
-              <th>Reference</th>
-              <th>Client</th>
-              <th>Vehicle</th>
-              <th>Period</th>
-              <th>Total</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <th>Reference</th><th>Client</th><th>Vehicle</th>
+              <th>Period</th><th>Total</th><th>Status</th><th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -314,20 +302,15 @@
               </td>
               <td>
                 <div class="dash-table__actions">
-                  <button
-                    *ngIf="r.status === 'Active'"
-                    class="dash-btn dash-btn--success"
-                    (click)="completeRental(r.id)"
-                    title="Complete">
+                  <button *ngIf="r.status === 'Active'" class="dash-btn dash-btn--success"
+                          (click)="completeRental(r.id)" title="Complete">
                     <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                      <path d="M2.5 6.5l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M2.5 6.5l3 3 5-5" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                   </button>
-                  <button
-                    *ngIf="r.status === 'Active' && (isAdmin || isManager)"
-                    class="dash-btn dash-btn--danger"
-                    (click)="cancelRental(r.id)"
-                    title="Cancel">
+                  <button *ngIf="r.status === 'Active' && (isAdmin || isManager)"
+                          class="dash-btn dash-btn--danger" (click)="cancelRental(r.id)" title="Cancel">
                     <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
                       <path d="M3 3l7 7M10 3L3 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                     </svg>
@@ -344,36 +327,27 @@
     </div>
 
     <!-- ═══════════════════════════════════════════════════════
-         CLIENTS SECTION
+         CLIENTS
     ═══════════════════════════════════════════════════════ -->
-    <div class="dash-content" *ngIf="(activeSection === 'clients' || activeSection === 'search-client') && !isLoading">
-
+    <div class="dash-content"
+         *ngIf="(activeSection === 'clients' || activeSection === 'search-client') && !isLoading">
       <div class="dash-section-toolbar">
         <div class="dash-search-bar">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <circle cx="6.5" cy="6.5" r="4.5" stroke="#94A3B8" stroke-width="1.3"/>
             <path d="M10 10l3.5 3.5" stroke="#94A3B8" stroke-width="1.3" stroke-linecap="round"/>
           </svg>
-          <input
-            type="text"
-            placeholder="Search by name, email, phone…"
-            [(ngModel)]="searchClientQuery"
-            (input)="onSearchClient()">
+          <input type="text" placeholder="Search by name, email, phone…"
+                 [(ngModel)]="searchClientQuery" (input)="onSearchClient()">
         </div>
         <span class="dash-count-badge">{{ filteredClients.length }} clients</span>
       </div>
-
       <div class="dash-table-wrap">
         <table class="dash-table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Status</th>
-              <th>Flagged</th>
-              <th>Since</th>
-              <th>Actions</th>
+              <th>Name</th><th>Email</th><th>Phone</th>
+              <th>Status</th><th>Flagged</th><th>Since</th><th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -395,22 +369,19 @@
               <td class="dash-table__secondary">{{ formatDate(c.createdAt) }}</td>
               <td>
                 <div class="dash-table__actions" *ngIf="isAdmin || isManager">
-                  <button
-                    *ngIf="!c.isFlagged"
-                    class="dash-btn dash-btn--warning"
-                    (click)="flagClient(c.id)"
-                    title="Flag client">
+                  <button *ngIf="!c.isFlagged" class="dash-btn dash-btn--warning"
+                          (click)="flagClient(c.id)" title="Flag client">
                     <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                      <path d="M2.5 2.5v9M2.5 2.5h7l-2 3.5 2 3.5H2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M2.5 2.5v9M2.5 2.5h7l-2 3.5 2 3.5H2.5"
+                            stroke="currentColor" stroke-width="1.3"
+                            stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                   </button>
-                  <button
-                    *ngIf="c.isFlagged"
-                    class="dash-btn dash-btn--success"
-                    (click)="unflagClient(c.id)"
-                    title="Remove flag">
+                  <button *ngIf="c.isFlagged" class="dash-btn dash-btn--success"
+                          (click)="unflagClient(c.id)" title="Remove flag">
                     <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                      <path d="M2.5 6.5l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M2.5 6.5l3 3 5-5" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                   </button>
                 </div>
@@ -425,31 +396,27 @@
     </div>
 
     <!-- ═══════════════════════════════════════════════════════
-         STAFF SECTION (Admin only)
+         STAFF (Admin only)
     ═══════════════════════════════════════════════════════ -->
     <div class="dash-content" *ngIf="activeSection === 'users' && isAdmin && !isLoading">
       <div class="dash-section-toolbar">
         <span class="dash-count-badge">{{ users.length }} staff members</span>
       </div>
-
       <div class="dash-table-wrap">
         <table class="dash-table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Branch</th>
-              <th>Status</th>
-              <th>Last Login</th>
-              <th>Actions</th>
+              <th>Name</th><th>Email</th><th>Role</th>
+              <th>Branch</th><th>Status</th><th>Last Login</th><th>Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let u of users">
               <td>
                 <div class="dash-table__name-cell">
-                  <div class="dash-table__avatar">{{ u.fullName.split(' ').slice(0,2).map(n => n[0]).join('') }}</div>
+                  <div class="dash-table__avatar">
+                    {{ u.fullName.split(' ').slice(0,2).map(n => n[0]).join('') }}
+                  </div>
                   <div>
                     <div class="dash-table__primary">{{ u.fullName }}</div>
                     <div class="dash-table__secondary">@{{ u.username }}</div>
@@ -470,22 +437,27 @@
                 <span *ngIf="!u.isLocked && u.isActive" class="dash-status-dot dash-status-dot--green">Active</span>
                 <span *ngIf="!u.isLocked && !u.isActive" class="dash-status-dot dash-status-dot--red">Inactive</span>
               </td>
-              <td class="dash-table__secondary">{{ u.lastLoginAt ? formatDate(u.lastLoginAt) : 'Never' }}</td>
+              <td class="dash-table__secondary">
+                {{ u.lastLoginAt ? formatDate(u.lastLoginAt) : 'Never' }}
+              </td>
               <td>
                 <div class="dash-table__actions">
-                  <button *ngIf="u.isLocked" class="dash-btn dash-btn--success" (click)="unlockUser(u.id)" title="Unlock">
+                  <button *ngIf="u.isLocked" class="dash-btn dash-btn--success"
+                          (click)="unlockUser(u.id)" title="Unlock">
                     <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
                       <rect x="2" y="6" width="9" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
                       <path d="M4 6V4a3 3 0 016 0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
                     </svg>
                   </button>
-                  <button *ngIf="!u.isLocked && u.isActive" class="dash-btn dash-btn--warning" (click)="lockUser(u.id)" title="Lock">
+                  <button *ngIf="!u.isLocked && u.isActive" class="dash-btn dash-btn--warning"
+                          (click)="lockUser(u.id)" title="Lock">
                     <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
                       <rect x="2" y="6" width="9" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
                       <path d="M4 6V4a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
                     </svg>
                   </button>
-                  <button *ngIf="u.isActive" class="dash-btn dash-btn--danger" (click)="deactivateUser(u.id)" title="Deactivate">
+                  <button *ngIf="u.isActive" class="dash-btn dash-btn--danger"
+                          (click)="deactivateUser(u.id)" title="Deactivate">
                     <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
                       <path d="M3 3l7 7M10 3L3 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                     </svg>
@@ -502,13 +474,12 @@
     </div>
 
     <!-- ═══════════════════════════════════════════════════════
-         BRANCHES SECTION (Admin only)
+         BRANCHES (Admin only)
     ═══════════════════════════════════════════════════════ -->
     <div class="dash-content" *ngIf="activeSection === 'branches' && isAdmin && !isLoading">
       <div class="dash-section-toolbar">
         <span class="dash-count-badge">{{ branches.length }} branches</span>
       </div>
-
       <div class="dash-branches-grid">
         <div class="dash-branch-card" *ngFor="let b of branches">
           <div class="dash-branch-card__header">
@@ -561,13 +532,12 @@
     </div>
 
     <!-- ═══════════════════════════════════════════════════════
-         SECURITY ALERTS SECTION (Admin only)
+         SECURITY ALERTS (Admin only)
     ═══════════════════════════════════════════════════════ -->
     <div class="dash-content" *ngIf="activeSection === 'alerts' && isAdmin && !isLoading">
       <div class="dash-section-toolbar">
         <span class="dash-count-badge">{{ alerts.length }} unread alerts</span>
       </div>
-
       <div class="dash-alerts-list">
         <div class="dash-alert-item" *ngFor="let a of alerts" [class.dash-alert-item--read]="a.isRead">
           <div class="dash-alert-item__icon">
@@ -582,9 +552,11 @@
               User: {{ a.userName }} · {{ formatDate(a.createdAt) }}
             </div>
           </div>
-          <button *ngIf="!a.isRead" class="dash-btn dash-btn--ghost" (click)="markAlertRead(a.id)" title="Mark as read">
+          <button *ngIf="!a.isRead" class="dash-btn dash-btn--ghost"
+                  (click)="markAlertRead(a.id)" title="Mark as read">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M2 7l3.5 3.5 6.5-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 7l3.5 3.5 6.5-6" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
         </div>
@@ -595,10 +567,9 @@
     </div>
 
     <!-- ═══════════════════════════════════════════════════════
-         REVENUE SECTION
+         REVENUE
     ═══════════════════════════════════════════════════════ -->
     <div class="dash-content" *ngIf="activeSection === 'revenue' && !isLoading">
-
       <div class="dash-stats-grid" *ngIf="revenue">
         <div class="dash-stat-card">
           <div class="dash-stat-card__icon" style="background:#D1FAE5">💰</div>
@@ -642,7 +613,8 @@
               <div class="dash-revenue-bar__label">{{ entry[0] }}</div>
               <div class="dash-revenue-bar__track">
                 <div class="dash-revenue-bar__fill"
-                     [style.width]="revenue && revenue.totalRevenue > 0 ? ((entry[1] / revenue.totalRevenue) * 100) + '%' : '0%'">
+                     [style.width]="revenue && revenue.totalRevenue > 0
+                       ? ((entry[1] / revenue.totalRevenue) * 100) + '%' : '0%'">
                 </div>
               </div>
               <div class="dash-revenue-bar__value">{{ formatCurrency(entry[1]) }}</div>
@@ -650,7 +622,6 @@
             <div *ngIf="revenueEntries().length === 0" class="dash-table__empty">No data.</div>
           </div>
         </div>
-
         <div class="dash-revenue-panel">
           <div class="dash-revenue-panel__title">Rentals by Category</div>
           <div class="dash-category-pills">
@@ -663,8 +634,98 @@
         </div>
       </div>
 
-      <div *ngIf="!revenue" class="dash-table__empty">
-        Revenue data is not available.
+      <div *ngIf="!revenue" class="dash-table__empty">Revenue data is not available.</div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         REPORT BUILDER
+    ═══════════════════════════════════════════════════════ -->
+    <div class="dash-content" *ngIf="activeSection === 'report-builder' && !isLoading">
+      <div class="dash-report-builder">
+
+        <!-- Header -->
+        <div class="dash-report-builder__header">
+          <div class="dash-report-builder__icon">📄</div>
+          <div>
+            <h2 class="dash-report-builder__title">Report Builder</h2>
+            <p class="dash-report-builder__subtitle">
+              Select the sections to include, set optional filters, then generate a printable PDF report.
+              Data is fetched live at generation time.
+            </p>
+          </div>
+        </div>
+
+        <!-- Section checkboxes -->
+        <div class="dash-report-builder__block">
+          <div class="dash-report-builder__block-title">Sections to include</div>
+          <div class="dash-report-sections-grid">
+            <label class="dash-report-section"
+                   *ngFor="let s of availableReportSections"
+                   [class.dash-report-section--selected]="s.selected">
+              <input type="checkbox" [(ngModel)]="s.selected" style="display:none">
+              <div class="dash-report-section__check">
+                <svg *ngIf="s.selected" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span class="dash-report-section__label">{{ s.label }}</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Date filters -->
+        <div class="dash-report-builder__block">
+          <div class="dash-report-builder__block-title">Rental period filter <span style="color:#94A3B8;font-weight:400">(optional)</span></div>
+          <div class="dash-report-filters">
+            <div class="dash-report-filter">
+              <label>From</label>
+              <input type="date" [(ngModel)]="reportDateFrom" class="dash-input">
+            </div>
+            <div class="dash-report-filter">
+              <label>To</label>
+              <input type="date" [(ngModel)]="reportDateTo" class="dash-input">
+            </div>
+            <button *ngIf="reportDateFrom || reportDateTo"
+                    class="dash-btn dash-btn--ghost"
+                    (click)="reportDateFrom = ''; reportDateTo = ''"
+                    style="margin-top:20px">
+              Clear
+            </button>
+          </div>
+        </div>
+
+        <!-- Role info -->
+        <div class="dash-report-builder__info" *ngIf="isManager">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="6" stroke="#1A56DB" stroke-width="1.3"/>
+            <path d="M7 6v4M7 4.5v.5" stroke="#1A56DB" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          Report data is automatically filtered to your branch.
+        </div>
+
+        <!-- Generate button -->
+        <div class="dash-report-builder__actions">
+          <button class="dash-report-generate-btn"
+                  (click)="generateReport()"
+                  [disabled]="isGeneratingReport || availableReportSections.every(s => !s.selected)">
+            <ng-container *ngIf="!isGeneratingReport">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <rect x="2" y="1" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M5 5h6M5 8h6M5 11h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+              </svg>
+              Generate PDF Report
+            </ng-container>
+            <ng-container *ngIf="isGeneratingReport">
+              <div class="dash-spinner dash-spinner--sm"></div>
+              Fetching data…
+            </ng-container>
+          </button>
+          <p class="dash-report-builder__hint">
+            A print dialog will open. Choose "Save as PDF" in your browser to download.
+          </p>
+        </div>
+
       </div>
     </div>
 
