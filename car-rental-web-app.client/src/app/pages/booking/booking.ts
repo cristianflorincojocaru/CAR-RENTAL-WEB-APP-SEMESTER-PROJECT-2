@@ -193,83 +193,83 @@ locationsLoading = false;
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (!id) {
-      this.router.navigate(['/cars']);
-      return;
-    }
-
-    this.carService.getById(id).subscribe({
-      next: (car) => {
-        this.car = car;
-        this.initFormFromParams();
-      },
-      error: () => {
-        this.carLoadError = true;
-        this.router.navigate(['/cars']);
-      },
-    });
-
-    const user = this.authService.getUser();
-    if (user) {
-      const parts = user.fullName.split(' ');
-      this.form.firstName = parts[0] ?? '';
-      this.form.lastName = parts.slice(1).join(' ');
-      this.form.email = user.email;
-      this.form.phone = user.phone ?? '';
-    }
-
-    this.loadLocations(); // ← aici
-
+  const id = Number(this.route.snapshot.paramMap.get('id'));
+  if (!id) {
+    this.router.navigate(['/cars']);
+    return;
   }
+
+  this.carService.getById(id).subscribe({
+    next: (car) => {
+      this.car = car;
+      // Inițializăm form-ul doar dacă locațiile sunt deja încărcate
+      if (this.locations.length > 0) {
+        this.initFormFromParams();
+      }
+      // altfel: loadLocations() va apela initFormFromParams când termină
+    },
+    error: () => {
+      this.carLoadError = true;
+      this.router.navigate(['/cars']);
+    },
+  });
+
+  const user = this.authService.getUser();
+  if (user) {
+    const parts = user.fullName.split(' ');
+    this.form.firstName = parts[0] ?? '';
+    this.form.lastName = parts.slice(1).join(' ');
+    this.form.email = user.email;
+    this.form.phone = user.phone ?? '';
+  }
+
+  this.loadLocations();
+}
 
   
 
   private initFormFromParams(): void {
-    const params = this.route.snapshot.queryParamMap;
+  const params = this.route.snapshot.queryParamMap;
+  const rawLoc = params.get('location') || '';
 
-    if (params.get('locationLocked') === '1') {
-      this.locationLocked = true;
-      this.form.pickupDate = params.get('pickupDate') || '';
-      this.form.returnDate = params.get('returnDate') || '';
-      const rawLoc = params.get('location') || '';
-      this.form.pickupLocation = this.mapHomeLocation(rawLoc);
-      this.form.returnLocation = this.form.pickupLocation;
-
-      if (this.form.pickupDate) {
-        this.calcMinReturn();
-        this.calcDays();
-      }
-    } else {
-      this.form.pickupLocation = this.mapBranchToLocation(this.car?.branch ?? '');
-      this.form.returnLocation = this.form.pickupLocation;
-    }
+  if (params.get('locationLocked') === '1' && rawLoc) {
+    // Vine din search cu locație selectată → blocăm câmpul
+    this.locationLocked = true;
+    this.form.pickupDate  = params.get('pickupDate')  || '';
+    this.form.returnDate  = params.get('returnDate')  || '';
+    this.form.pickupLocation  = this.mapHomeLocation(rawLoc);
+    this.form.returnLocation  = this.form.pickupLocation;
+    if (this.form.pickupDate) { this.calcMinReturn(); this.calcDays(); }
+  } else {
+    // Vine direct din card sau fără locație → branch-ul mașinii, câmp editabil
+    this.locationLocked = false;
+    this.form.pickupDate = params.get('pickupDate') || '';
+    this.form.returnDate = params.get('returnDate') || '';
+    this.form.pickupLocation = this.mapBranchToLocation(this.car?.branch ?? '');
+    this.form.returnLocation = this.form.pickupLocation;
+    if (this.form.pickupDate) { this.calcMinReturn(); this.calcDays(); }
   }
+}
 
   // ── Helpers locație ───────────────────────────────────────────
 
 private mapHomeLocation(loc: string): string {
-  const found = this.locations.find(l => l.toLowerCase().includes(loc.toLowerCase()));
-  return found ?? (this.locations[0] ?? loc);
+  if (!loc) return '';
+  return this.locations.find(l => l === loc) ?? '';
 }
 
 private mapBranchToLocation(branch: string): string {
-  const found = this.locations.find(l =>
-    l.toLowerCase().includes(branch.toLowerCase()) ||
-    branch.toLowerCase().includes(l.toLowerCase())
-  );
-  return found ?? (this.locations[0] ?? '');
+  return this.locations.find(l => l === branch) ?? '';
 }
 
   private loadLocations(): void {
-  this.http.get<any[]>(`${environment.apiUrl}/branches`).subscribe({
-    next: (branches) => {
-  this.locations = branches.filter(b => b.isActive).map(b => b.name);
-  if (!this.locationLocked && this.car) {
-    this.form.pickupLocation = this.mapBranchToLocation(this.car.branch ?? '');
-    this.form.returnLocation = this.form.pickupLocation;
-  }
-},
+  this.http.get<string[]>(`${environment.apiUrl}/vehicles/branches`).subscribe({
+    next: (names) => {
+      this.locations = names;
+      if (this.car) {
+        this.initFormFromParams();
+      }
+    },
     error: () => {}
   });
 }
