@@ -641,93 +641,111 @@
          REPORT BUILDER
     ═══════════════════════════════════════════════════════ -->
     <div class="dash-content" *ngIf="activeSection === 'report-builder' && !isLoading">
-      <div class="dash-report-builder">
+  <div class="dash-report-builder">
 
-        <!-- Header -->
-        <div class="dash-report-builder__header">
-          <div class="dash-report-builder__icon">📄</div>
-          <div>
-            <h2 class="dash-report-builder__title">Report Builder</h2>
-            <p class="dash-report-builder__subtitle">
-              Select the sections to include, set optional filters, then generate a printable PDF report.
-              Data is fetched live at generation time.
-            </p>
-          </div>
-        </div>
-
-        <!-- Section checkboxes -->
-        <div class="dash-report-builder__block">
-          <div class="dash-report-builder__block-title">Sections to include</div>
-          <div class="dash-report-sections-grid">
-            <label class="dash-report-section"
-                   *ngFor="let s of availableReportSections"
-                   [class.dash-report-section--selected]="s.selected">
-              <input type="checkbox" [(ngModel)]="s.selected" style="display:none">
-              <div class="dash-report-section__check">
-                <svg *ngIf="s.selected" width="12" height="12" viewBox="0 0 12 12" fill="none">
-                  <path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8"
-                        stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <span class="dash-report-section__label">{{ s.label }}</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Date filters -->
-        <div class="dash-report-builder__block">
-          <div class="dash-report-builder__block-title">Rental period filter <span style="color:#94A3B8;font-weight:400">(optional)</span></div>
-          <div class="dash-report-filters">
-            <div class="dash-report-filter">
-              <label>From</label>
-              <input type="date" [(ngModel)]="reportDateFrom" class="dash-input">
-            </div>
-            <div class="dash-report-filter">
-              <label>To</label>
-              <input type="date" [(ngModel)]="reportDateTo" class="dash-input">
-            </div>
-            <button *ngIf="reportDateFrom || reportDateTo"
-                    class="dash-btn dash-btn--ghost"
-                    (click)="reportDateFrom = ''; reportDateTo = ''"
-                    style="margin-top:20px">
-              Clear
-            </button>
-          </div>
-        </div>
-
-        <!-- Role info -->
-        <div class="dash-report-builder__info" *ngIf="isManager">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <circle cx="7" cy="7" r="6" stroke="#1A56DB" stroke-width="1.3"/>
-            <path d="M7 6v4M7 4.5v.5" stroke="#1A56DB" stroke-width="1.4" stroke-linecap="round"/>
-          </svg>
-          Report data is automatically filtered to your branch.
-        </div>
-
-        <!-- Generate button -->
-        <div class="dash-report-builder__actions">
-          <button class="dash-report-generate-btn"
-                  (click)="generateReport()"
-                  [disabled]="isGeneratingReport || availableReportSections.every(s => !s.selected)">
-            <ng-container *ngIf="!isGeneratingReport">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <rect x="2" y="1" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M5 5h6M5 8h6M5 11h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-              </svg>
-              Generate PDF Report
-            </ng-container>
-            <ng-container *ngIf="isGeneratingReport">
-              <div class="dash-spinner dash-spinner--sm"></div>
-              Fetching data…
-            </ng-container>
-          </button>
-          <p class="dash-report-builder__hint">
-            A print dialog will open. Choose "Save as PDF" in your browser to download.
-          </p>
-        </div>
-
+    <div class="dash-report-builder__header">
+      <div class="dash-report-builder__header-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+        </svg>
+      </div>
+      <div>
+        <h2 class="dash-report-builder__title">Report Builder</h2>
+        <p class="dash-report-builder__subtitle">
+          Select sections, apply optional date filters, then generate a printable PDF.
+          Data is fetched live at generation time.
+        </p>
       </div>
     </div>
+
+    <div class="dash-rb-card">
+      <div class="dash-rb-card__head">
+        <div class="dash-rb-card__label">Sections to include</div>
+        <div class="dash-rb-card__count">
+          {{ availableReportSections.filter(s => s.selected).length }}
+          of {{ availableReportSections.length }} selected
+        </div>
+      </div>
+      <div class="dash-report-sections-grid">
+        <label class="dash-report-section"
+               *ngFor="let s of availableReportSections"
+               [class.dash-report-section--selected]="s.selected">
+          <input type="checkbox" [(ngModel)]="s.selected" style="display:none">
+          <div class="dash-report-section__check">
+            <svg *ngIf="s.selected" width="11" height="11" viewBox="0 0 11 11" fill="none">
+              <path d="M2 5.5l2.5 2.5 4.5-4" stroke="white" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="dash-report-section__label">{{ s.label }}</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="dash-rb-card">
+      <div class="dash-rb-card__head">
+        <div class="dash-rb-card__label">
+          Rental period filter
+          <span class="dash-rb-optional">optional</span>
+        </div>
+      </div>
+      <div class="dash-report-filters">
+        <div class="dash-report-filter">
+          <label>From</label>
+          <input type="date" [(ngModel)]="reportDateFrom" class="dash-input">
+        </div>
+        <svg class="dash-rb-arrow" width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" stroke-width="1.4"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="dash-report-filter">
+          <label>To</label>
+          <input type="date" [(ngModel)]="reportDateTo" class="dash-input">
+        </div>
+        <button *ngIf="reportDateFrom || reportDateTo"
+                class="dash-btn dash-btn--ghost dash-rb-clear"
+                (click)="reportDateFrom = ''; reportDateTo = ''">
+          Clear
+        </button>
+      </div>
+    </div>
+
+    <div class="dash-rb-info dash-rb-info--branch" *ngIf="isManager">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+        <circle cx="7.5" cy="7.5" r="6.5" stroke="currentColor" stroke-width="1.3"/>
+        <path d="M7.5 7v4M7.5 5v.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      Report data is automatically filtered to your branch.
+    </div>
+
+    <div class="dash-rb-hint-banner">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/>
+        <path d="M8 7v4M8 5v.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <span>When the print dialog opens, choose <strong>Save as PDF</strong> as the destination to download your report.</span>
+    </div>
+
+    <button class="dash-report-generate-btn"
+            (click)="generateReport()"
+            [disabled]="isGeneratingReport || availableReportSections.every(s => !s.selected)">
+      <ng-container *ngIf="!isGeneratingReport">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M17 13v3a2 2 0 01-2 2H5a2 2 0 01-2-2v-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <polyline points="7 9 10 12 13 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="10" y1="3" x2="10" y2="12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        Generate PDF report
+      </ng-container>
+      <ng-container *ngIf="isGeneratingReport">
+        <div class="dash-spinner dash-spinner--sm"></div>
+        Fetching data…
+      </ng-container>
+    </button>
+
+  </div>
+</div>
 
   </main>
 </div>

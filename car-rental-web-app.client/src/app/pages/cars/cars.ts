@@ -227,15 +227,19 @@ export class CarsComponent implements OnInit, AfterViewInit {
 
   /** Construiește query params pentru link-ul Book Now */
   bookingParams(car: Car): Record<string, string> {
-    const p: Record<string, string> = {};
-    if (this.fromSearch) {
-      if (this.searchPickupDate)  p['pickupDate']  = this.searchPickupDate;
-      if (this.searchReturnDate)  p['returnDate']  = this.searchReturnDate;
-      if (this.searchLocation)    p['location']    = this.searchLocation;
+  const p: Record<string, string> = {};
+  if (this.fromSearch) {
+    if (this.searchPickupDate) p['pickupDate'] = this.searchPickupDate;
+    if (this.searchReturnDate) p['returnDate'] = this.searchReturnDate;
+    if (this.searchLocation) {
+      // mapează la numele exact de branch înainte să-l trimitem
+      const mapped = this.locationToBranch[this.searchLocation] ?? this.searchLocation;
+      p['location']      = mapped;
       p['locationLocked'] = '1';
     }
-    return p;
   }
+  return p;
+}
 
   trackById = (_: number, car: Car): number => car.id;
 
