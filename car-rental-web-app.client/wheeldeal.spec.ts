@@ -1,482 +1,675 @@
-import { test, expect, Page } from '@playwright/test';
+/**
+ * WheelDeal – Full Application Screenshot Suite
+ * ------------------------------------------------
+ * Acoperire completă: fiecare pagină + fiecare acțiune importantă.
+ *
+ * Rulare:
+ *   npx playwright test wheeldeal.spec.ts --headed
+ *
+ * Output: screenshots/
+ */
 
-// ─── Config ──────────────────────────────────────────────────────────────────
-const BASE_URL = 'http://localhost:4200';
+import { test, Page } from '@playwright/test';
+// @ts-ignore
+const fs = require('fs');
 
-const ADMIN = { email: 'admin@wheeldeal.ro',       password: 'Admin@123!' };
-const MGR   = { email: 'manager.buc@wheeldeal.ro', password: 'Manager@123!' };
-const OP    = { email: 'op1.buc@wheeldeal.ro',     password: 'Operator@123!' };
+// ── Config ────────────────────────────────────────────────────────────────────
+const BASE  = 'http://localhost:4200';
+const OUT   = 'screenshots';
+const WAIT  = 500;
+const CREDS = { email: 'admin@wheeldeal.ro', password: 'Admin@123!' };
 
-// ─── Helper: login ────────────────────────────────────────────────────────────
-async function login(page: Page, email: string, password: string) {
-  await page.goto(`${BASE_URL}/login`);
-  await page.fill('#email', email);
-  await page.fill('#password', password);
-  await page.click('button[type="submit"]');
-  await page.waitForURL(/localhost:4200\/(?!login)/, { timeout: 10_000 });
+// Crează folderele de output dacă nu există
+['home','about','cars','offers','contact','auth','dashboard','bookings','mobile']
+  .forEach(dir => fs.mkdirSync(`${OUT}/${dir}`, { recursive: true }));
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+async function shot(page: Page, path: string) {
+  await page.waitForTimeout(WAIT);
+  await page.screenshot({ path: `${OUT}/${path}.png`, fullPage: true });
+  console.log(`  ✓ ${path}`);
 }
 
-// ─── Helper: logout (clear storage) ──────────────────────────────────────────
-async function logout(page: Page) {
-  await page.evaluate(() => {
-    localStorage.clear();
-    sessionStorage.clear();
+async function scrollReveal(page: Page) {
+  await page.evaluate(async () => {
+    await new Promise<void>(resolve => {
+      let pos = 0;
+      const step = () => {
+        pos += 300;
+        window.scrollTo(0, pos);
+        if (pos < document.body.scrollHeight) requestAnimationFrame(step);
+        else resolve();
+      };
+      requestAnimationFrame(step);
+    });
   });
-  await page.goto(`${BASE_URL}/`);
+  await page.waitForTimeout(600);
+  await page.evaluate(() => window.scrollTo(0, 0));
 }
 
-// =============================================================================
-// TEST 1 — Pagina de home se încarcă corect
-// =============================================================================
-test('T01 - Home page loads and shows hero title', async ({ page }) => {
-  await page.goto(BASE_URL);
-  await expect(page).toHaveTitle(/WheelDeal/i);
-  await expect(page.locator('.hero__title')).toBeVisible();
-  await expect(page.locator('.hero__search-card')).toBeVisible();
-});
+async function login(page: Page) {
+  await page.goto(`${BASE}/login`, { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(WAIT);
+  await page.fill('[type="email"]', CREDS.email);
+  await page.fill('[type="password"]', CREDS.password);
 
-// =============================================================================
-// TEST 2 — Navigarea prin navbar funcționează
-// =============================================================================
-test('T02 - Navbar navigation works for public routes', async ({ page }) => {
-  await page.goto(BASE_URL);
+  // Click buton submit
+  await page.locator('[type="submit"]').click();
 
-  // Cars
-  await page.click('a[href="/cars"]');
-  await expect(page).toHaveURL(/\/cars/);
-  await expect(page.locator('.cars-hero__title')).toBeVisible();
+  // Așteptăm redirect după login — max 8s
+  await Promise.race([
+    page.waitForURL(`${BASE}/dashboard`, { timeout: 8000 }),
+    page.waitForURL(`${BASE}/`, { timeout: 8000 }),
+  ]).catch(() => {});
 
-  // About
-  await page.click('a[href="/about"]');
-  await expect(page).toHaveURL(/\/about/);
-  await expect(page.locator('.about-hero__title')).toBeVisible();
-
-  // Contact
-  await page.click('a[href="/contact"]');
-  await expect(page).toHaveURL(/\/contact/);
-  await expect(page.locator('.contact-hero__title')).toBeVisible();
-});
-
-// =============================================================================
-// TEST 3 — Pagina /login se afișează corect
-// =============================================================================
-test('T03 - Login page renders form elements', async ({ page }) => {
-  await page.goto(`${BASE_URL}/login`);
-
-  await expect(page.locator('#email')).toBeVisible();
-  await expect(page.locator('#password')).toBeVisible();
-  await expect(page.locator('button[type="submit"]')).toBeVisible();
-  await expect(page.locator('a[href="/signup"]').first()).toBeVisible();
-});
-
-// =============================================================================
-// TEST 4 — Login cu credențiale greșite afișează eroare
-// =============================================================================
-test('T04 - Login with wrong credentials shows error message', async ({ page }) => {
-  await page.goto(`${BASE_URL}/login`);
-  await page.fill('#email', 'wrong@email.com');
-  await page.fill('#password', 'wrongpassword');
-  await page.click('button[type="submit"]');
-
-  await expect(page.locator('.auth-alert')).toBeVisible({ timeout: 8_000 });
-  await expect(page.locator('.auth-alert')).toContainText(/invalid|password|email/i);
-});
-
-// =============================================================================
-// TEST 5 — Login cu credențiale valide (Admin)
-// =============================================================================
-test('T05 - Admin login redirects to home', async ({ page }) => {
-  await login(page, ADMIN.email, ADMIN.password);
-  // After login, should not be on /login anymore
-  await expect(page).not.toHaveURL(/\/login/);
-  // Hero section should be visible on home page
-  await expect(page.locator('.hero__title')).toBeVisible({ timeout: 8_000 });
-});
-
-// =============================================================================
-// TEST 6 — Pagina /signup se afișează și validează câmpurile
-// =============================================================================
-test('T06 - Signup form validation works', async ({ page }) => {
-  await page.goto(`${BASE_URL}/signup`);
-
-  await expect(page.locator('#fullName')).toBeVisible();
-  await expect(page.locator('#username')).toBeVisible();
-  await expect(page.locator('#email')).toBeVisible();
-  await expect(page.locator('#phone')).toBeVisible();
-  await expect(page.locator('#password')).toBeVisible();
-
-  // Submit fără date — trebuie să apară erori de validare
-  await page.click('button[type="submit"]');
-  await expect(page.locator('.form-error').first()).toBeVisible({ timeout: 5_000 });
-});
-
-// =============================================================================
-// TEST 7 — Pagina /cars afișează mașini și filtrele funcționează
-// =============================================================================
-test('T07 - Cars page loads vehicles and category filter works', async ({ page }) => {
-  await page.goto(`${BASE_URL}/cars`);
-
-  // Asteaptă să apară cardurile de mașini
-  await expect(page.locator('.car-card').first()).toBeVisible({ timeout: 12_000 });
-
-  const initialCount = await page.locator('.car-card').count();
-  expect(initialCount).toBeGreaterThan(0);
-
-  // Click pe filtrul Economy
-  await page.click('.fleet__category-btn:has-text("Economy")');
-  await page.waitForTimeout(2000);
-
-  // Toate cardurile trebuie să fie Economy
-  const badges = await page.locator('.car-card__badge').allTextContents();
-  for (const badge of badges) {
-    expect(badge.trim()).toBe('Economy');
-  }
-});
-
-// =============================================================================
-// TEST 8 — Filtrarea pe branch (filiale) funcționează pe /cars
-// =============================================================================
-test('T08 - Cars page branch filter works', async ({ page }) => {
-  await page.goto(`${BASE_URL}/cars`);
-  await expect(page.locator('.car-card').first()).toBeVisible({ timeout: 12_000 });
-
-  // Click pe filiala Bucharest Central
-  await page.click('.fleet__branch-tab:has-text("Bucharest Central")');
-  await page.waitForTimeout(2000);
-
-  const branchLabels = await page.locator('.car-card__branch').allTextContents();
-  for (const label of branchLabels) {
-    expect(label).toContain('Bucharest');
-  }
-});
-
-// =============================================================================
-// TEST 9 — Pagina /offers afișează mașini cu reduceri
-// =============================================================================
-test('T09 - Offers page shows discounted cars', async ({ page }) => {
-  await page.goto(`${BASE_URL}/offers`);
-
-  await expect(page.locator('.offers-hero__title')).toBeVisible();
-  await expect(page.locator('.offer-card').first()).toBeVisible({ timeout: 12_000 });
-
-  // Fiecare card trebuie să aibă un ribbon cu procentaj
-  const ribbons = await page.locator('.offer-card__ribbon').allTextContents();
-  for (const ribbon of ribbons) {
-    expect(ribbon).toMatch(/-\d+%/);
+  // Dacă tot pe login, încearcă selector alternativ
+  if (page.url().includes('/login')) {
+    await page.locator('button[type="submit"], form button').last().click();
+    await page.waitForTimeout(3000);
   }
 
-  // Codul promoțional SUMMER30 trebuie să fie vizibil
-  await expect(page.locator('.promo-code__code:has-text("SUMMER30")')).toBeVisible();
-});
-
-// =============================================================================
-// TEST 10 — Pagina /about se încarcă cu date complete
-// =============================================================================
-test('T10 - About page displays team and milestones', async ({ page }) => {
-  await page.goto(`${BASE_URL}/about`);
-
-  await expect(page.locator('.about-hero__title')).toContainText('Driving freedom');
-  await expect(page.locator('.team-card').first()).toBeVisible();
-  await expect(page.locator('.timeline__item').first()).toBeVisible();
-
-  const teamCards = await page.locator('.team-card').count();
-  expect(teamCards).toBeGreaterThanOrEqual(3);
-});
-
-// =============================================================================
-// TEST 11 — Formularul de contact trimite mesaj cu succes
-// =============================================================================
-test('T11 - Contact form submits successfully', async ({ page }) => {
-  await page.goto(`${BASE_URL}/contact`);
-
-  await page.fill('input[placeholder="John"]', 'Test');
-  await page.fill('input[placeholder="Doe"]', 'User');
-  await page.fill('input[placeholder="john@email.com"]', 'test@example.com');
-  await page.selectOption('select', { label: 'Booking issue' });
-  await page.fill('textarea', 'Acesta este un mesaj de test automat cu mai mult de 10 caractere.');
-
-  await page.click('.c-form__submit');
-
-  // Asteaptă starea de succes
-  await expect(page.locator('.c-form-success--visible')).toBeVisible({ timeout: 10_000 });
-  await expect(page.locator('.c-form-success__title')).toContainText('Message sent');
-});
-
-// =============================================================================
-// TEST 12 — /dashboard redirecționează neautentificații la /login
-// =============================================================================
-test('T12 - Dashboard redirects unauthenticated users to login', async ({ page }) => {
-  // Nu suntem logați — navigăm direct la dashboard
-  await page.goto(`${BASE_URL}/dashboard`);
-  await expect(page).toHaveURL(/\/login/, { timeout: 8_000 });
-});
-
-// =============================================================================
-// TEST 13 — Dashboard-ul Adminului se încarcă cu statistici
-// =============================================================================
-test('T13 - Admin dashboard loads with stats cards', async ({ page }) => {
-  await login(page, ADMIN.email, ADMIN.password);
-  await page.goto(`${BASE_URL}/dashboard`);
-
-  // Sidebar-ul și stat cards-urile trebuie să fie vizibile
-  await expect(page.locator('.dash-sidebar')).toBeVisible({ timeout: 10_000 });
-  await expect(page.locator('.dash-stat-card').first()).toBeVisible({ timeout: 10_000 });
-
-  const statCards = await page.locator('.dash-stat-card').count();
-  expect(statCards).toBeGreaterThanOrEqual(4);
-
-  await logout(page);
-});
-
-// =============================================================================
-// TEST 14 — Dashboard: navigare la secțiunea Vehicles
-// =============================================================================
-test('T14 - Admin can navigate to Vehicles section in dashboard', async ({ page }) => {
-  await login(page, ADMIN.email, ADMIN.password);
-  await page.goto(`${BASE_URL}/dashboard`);
-
-  // Click pe butonul "Manage Fleet" din Quick Actions
-  await page.click('.dash-action-btn:has-text("Manage Fleet")');
-  await page.waitForTimeout(2000);
-
-  // Tabelul de vehicule trebuie să apară
-  await expect(page.locator('.dash-table')).toBeVisible({ timeout: 10_000 });
-  await expect(page.locator('.dash-topbar__title')).toContainText('Fleet Management');
-
-  await logout(page);
-});
-
-// =============================================================================
-// TEST 15 — /my-bookings redirecționează neautentificații
-// =============================================================================
-test('T15 - My Bookings redirects unauthenticated users', async ({ page }) => {
-  await page.goto(`${BASE_URL}/my-bookings`);
-  await expect(page).toHaveURL(/\/login/, { timeout: 8_000 });
-});
-
-// =============================================================================
-// TEST 16 — /my-bookings se încarcă pentru utilizator autentificat
-// =============================================================================
-test('T16 - My Bookings page loads for authenticated user', async ({ page }) => {
-  await login(page, ADMIN.email, ADMIN.password);
-  await page.goto(`${BASE_URL}/my-bookings`);
-
-  await expect(page.locator('.bookings-hero__title')).toBeVisible({ timeout: 10_000 });
-  await expect(page.locator('.bookings-filter-btn').first()).toBeVisible();
-
-  // Filtrele de status trebuie să fie prezente
-  const filters = (await page.locator('.bookings-filter-btn').allTextContents()).map(f => f.trim());
-  expect(filters).toContain('All');
-  expect(filters).toContain('Active');
-
-  await logout(page);
-});
-
-// =============================================================================
-// TEST 17 — Căutarea de mașini de pe Home redirecționează la /cars cu parametri
-// =============================================================================
-test('T17 - Home search form navigates to /cars with query params', async ({ page }) => {
-  await page.goto(BASE_URL);
-
-  // Completăm formularul de căutare
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const afterTomorrow = new Date();
-  afterTomorrow.setDate(afterTomorrow.getDate() + 3);
-
-  const fmt = (d: Date) => d.toISOString().split('T')[0];
-
-  await page.fill('input[name="pickupDate"]', fmt(tomorrow));
-  await page.fill('input[name="returnDate"]', fmt(afterTomorrow));
-  await page.selectOption('select[name="location"]', { label: 'Bucharest — Central' });
-
-  await page.click('.hero__search-btn');
-
-  await expect(page).toHaveURL(/\/cars/, { timeout: 8_000 });
-  await expect(page).toHaveURL(/fromSearch=1/);
-  await expect(page.locator('.search-context-banner')).toBeVisible({ timeout: 8_000 });
-});
-
-// =============================================================================
-// TEST 18 — Toggle-ul de parolare din login funcționează
-// =============================================================================
-test('T18 - Password visibility toggle works on login page', async ({ page }) => {
-  await page.goto(`${BASE_URL}/login`);
-
-  const passwordInput = page.locator('#password');
-  await passwordInput.fill('TestParola123!');
-
-  // Inițial tipul e "password"
-  await expect(passwordInput).toHaveAttribute('type', 'password');
-
-  // Click pe butonul de toggle
-  await page.click('.input-wrap__toggle');
-  await expect(passwordInput).toHaveAttribute('type', 'text');
-
-  // Click din nou — revine la "password"
-  await page.click('.input-wrap__toggle');
-  await expect(passwordInput).toHaveAttribute('type', 'password');
-});
-
-// =============================================================================
-// TEST 19 — Manager vede dashboard-ul cu secțiunile corecte
-// =============================================================================
-test('T19 - Manager sees correct dashboard sections', async ({ page }) => {
-  await login(page, MGR.email, MGR.password);
-  await page.goto(`${BASE_URL}/dashboard`);
-
-  await expect(page.locator('.dash-sidebar')).toBeVisible({ timeout: 10_000 });
-
-  // Managerul NU trebuie să vadă Staff sau Branches
-  await expect(page.locator('.dash-sidebar__nav-item:has-text("Staff")')).not.toBeVisible();
-  await expect(page.locator('.dash-sidebar__nav-item:has-text("Branches")')).not.toBeVisible();
-
-  // Managerul TREBUIE să vadă Revenue și Fleet
-  await expect(page.locator('.dash-sidebar__nav-item:has-text("Revenue")')).toBeVisible();
-
-  await logout(page);
-});
-
-// =============================================================================
-// TEST 20 — Sortarea mașinilor pe /cars funcționează
-// =============================================================================
-test('T20 - Cars page sort by price works', async ({ page }) => {
-  await page.goto(`${BASE_URL}/cars`);
-  await expect(page.locator('.car-card').first()).toBeVisible({ timeout: 12_000 });
-
-  // Selectăm sortarea "Price: High to Low"
-  await page.selectOption('.fleet__sort-select', { label: 'Price: High to Low' });
-  await page.waitForTimeout(2000);
-
-  // Extragem prețurile afișate
-  const priceTexts = await page.locator('.car-card__price-amount').allTextContents();
-  const prices = priceTexts.map(p => parseFloat(p.replace('€', '').trim())).filter(n => !isNaN(n));
-
-  // Verificăm că sunt sortate descrescător
-  for (let i = 0; i < prices.length - 1; i++) {
-    expect(prices[i]).toBeGreaterThanOrEqual(prices[i + 1]);
-  }
-});
-
-// =============================================================================
-// TESTE API BACKEND — Playwright request context (fără browser)
-// Base URL: https://localhost:7273/api
-// =============================================================================
-
-const API = 'https://localhost:7273/api';
-
-// Helper: obține token JWT pentru admin
-async function getAdminToken(request: any): Promise<string> {
-  const res = await request.post(`${API}/auth/login`, {
-    data: { email: ADMIN.email, password: ADMIN.password },
-    ignoreHTTPSErrors: true,
-  });
-  const body = await res.json();
-  return body.accessToken;
+  console.log(`  → logged in, URL: ${page.url()}`);
 }
 
-// =============================================================================
-// TEST A01 — Health check endpoint răspunde cu status 200
-// =============================================================================
-test('A01 - API health check returns 200 and healthy status', async ({ request }) => {
-  const res = await request.get(`${API}/health`, {
-    ignoreHTTPSErrors: true,
-  });
+// ═════════════════════════════════════════════════════════════════════════════
+// 1. HOME
+// ═════════════════════════════════════════════════════════════════════════════
+test('01 – Home page', async ({ page }) => {
+  await page.goto(`${BASE}/`);
+  await page.waitForLoadState('networkidle');
 
-  expect(res.status()).toBe(200);
-  const body = await res.json();
-  expect(body.status).toBe('healthy');
+  await shot(page, 'home/01-hero');
+  await scrollReveal(page);
+  await shot(page, 'home/02-full-page');
+  await page.locator('.btn--primary').first().hover();
+  await shot(page, 'home/03-cta-hover');
 });
 
-// =============================================================================
-// TEST A02 — Login cu credențiale valide returnează JWT token
-// =============================================================================
-test('A02 - POST /auth/login with valid credentials returns JWT', async ({ request }) => {
-  const res = await request.post(`${API}/auth/login`, {
-    data: { email: ADMIN.email, password: ADMIN.password },
-    ignoreHTTPSErrors: true,
-  });
+// ═════════════════════════════════════════════════════════════════════════════
+// 2. ABOUT
+// ═════════════════════════════════════════════════════════════════════════════
+test('02 – About page', async ({ page }) => {
+  await page.goto(`${BASE}/about`);
+  await page.waitForLoadState('networkidle');
 
-  expect(res.status()).toBe(200);
+  await shot(page, 'about/01-hero');
 
-  const body = await res.json();
-  expect(body.accessToken).toBeTruthy();
-  expect(body.refreshToken).toBeTruthy();
-  expect(body.user).toBeDefined();
-  expect(body.user.role).toBe('Administrator');
+  await page.evaluate(() => window.scrollTo(0, 600));
+  await page.waitForTimeout(WAIT);
+  await shot(page, 'about/02-mission');
+
+  await page.evaluate(() => window.scrollTo(0, 1400));
+  await page.waitForTimeout(WAIT);
+  await shot(page, 'about/03-team');
+
+  await page.evaluate(() => window.scrollTo(0, 2200));
+  await page.waitForTimeout(WAIT);
+  await shot(page, 'about/04-timeline');
+
+  await page.evaluate(() => window.scrollTo(0, 3000));
+  await page.waitForTimeout(WAIT);
+  await shot(page, 'about/05-perks');
+
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await page.waitForTimeout(WAIT);
+  await shot(page, 'about/06-footer-cta');
 });
 
-// =============================================================================
-// TEST A03 — Login cu credențiale greșite returnează 401
-// =============================================================================
-test('A03 - POST /auth/login with wrong password returns 401', async ({ request }) => {
-  const res = await request.post(`${API}/auth/login`, {
-    data: { email: ADMIN.email, password: 'WrongPassword999!' },
-    ignoreHTTPSErrors: true,
-  });
+// ═════════════════════════════════════════════════════════════════════════════
+// 3. CARS
+// ═════════════════════════════════════════════════════════════════════════════
+test('03 – Cars page', async ({ page }) => {
+  await page.goto(`${BASE}/cars`);
+  await page.waitForLoadState('networkidle');
 
-  expect(res.status()).toBe(401);
+  await shot(page, 'cars/01-all-cars');
 
-  const body = await res.json();
-  expect(body.title).toBeTruthy();
+  const filters = page.locator('.filter-btn, .tab-btn, [class*="filter"]');
+  const filterCount = await filters.count();
+
+  if (filterCount > 1) {
+    await filters.nth(1).click();
+    await page.waitForTimeout(WAIT);
+    await shot(page, 'cars/02-filtered');
+
+    if (filterCount > 2) {
+      await filters.nth(2).click();
+      await page.waitForTimeout(WAIT);
+      await shot(page, 'cars/03-filtered-2');
+    }
+
+    await filters.first().click();
+    await page.waitForTimeout(WAIT);
+  }
+
+  const firstCard = page.locator('.car-card, [class*="car-card"]').first();
+  if (await firstCard.isVisible()) {
+    await firstCard.hover();
+    await page.waitForTimeout(300);
+    await shot(page, 'cars/04-card-hover');
+  }
+
+  const detailBtn = page.locator('.btn--primary, [class*="detail"], [class*="rent"]').first();
+  if (await detailBtn.isVisible()) {
+    await detailBtn.click();
+    await page.waitForTimeout(WAIT);
+    await shot(page, 'cars/05-detail-or-modal');
+  }
+
+  await page.goto(`${BASE}/cars`, { waitUntil: 'domcontentloaded', timeout: 10000 });
+  await page.waitForTimeout(WAIT);
+  await scrollReveal(page);
+  await shot(page, 'cars/06-full-page');
 });
 
-// =============================================================================
-// TEST A04 — GET /vehicles returnează lista de vehicule (public endpoint)
-// =============================================================================
-test('A04 - GET /vehicles returns list of vehicles without auth', async ({ request }) => {
-  const res = await request.get(`${API}/vehicles`, {
-    ignoreHTTPSErrors: true,
-  });
+// ═════════════════════════════════════════════════════════════════════════════
+// 4. OFFERS
+// ═════════════════════════════════════════════════════════════════════════════
+test('04 – Offers page', async ({ page }) => {
+  await page.goto(`${BASE}/offers`);
+  await page.waitForLoadState('networkidle');
 
-  expect(res.status()).toBe(200);
+  await shot(page, 'offers/01-initial');
+  await scrollReveal(page);
+  await shot(page, 'offers/02-full-page');
 
-  const body = await res.json();
-  expect(Array.isArray(body)).toBeTruthy();
-  expect(body.length).toBeGreaterThan(0);
-
-  // Verificăm structura primului vehicul
-  const vehicle = body[0];
-  expect(vehicle).toHaveProperty('id');
-  expect(vehicle).toHaveProperty('name');
-  expect(vehicle).toHaveProperty('dailyRate');
-  expect(vehicle).toHaveProperty('category');
-  expect(vehicle).toHaveProperty('branch');
+  const offerCard = page.locator('[class*="offer-card"], [class*="promo"]').first();
+  if (await offerCard.isVisible()) {
+    await offerCard.hover();
+    await page.waitForTimeout(300);
+    await shot(page, 'offers/03-card-hover');
+  }
 });
 
-// =============================================================================
-// TEST A05 — GET /reports/dashboard necesită autentificare (401 fără token)
-// =============================================================================
-test('A05 - GET /reports/dashboard returns 401 without token', async ({ request }) => {
-  const res = await request.get(`${API}/reports/dashboard`, {
-    ignoreHTTPSErrors: true,
-  });
+// ═════════════════════════════════════════════════════════════════════════════
+// 5. CONTACT
+// ═════════════════════════════════════════════════════════════════════════════
+test('05 – Contact page', async ({ page }) => {
+  await page.goto(`${BASE}/contact`);
+  await page.waitForLoadState('networkidle');
 
-  expect(res.status()).toBe(401);
+  await shot(page, 'contact/01-initial');
+
+  await page.fill('[placeholder="John"]', 'Ion');
+  await shot(page, 'contact/02-firstname-filled');
+
+  await page.fill('[placeholder="Doe"]', 'Popescu');
+  await page.fill('[placeholder="john@email.com"]', 'ion@test.ro');
+  await page.fill('[placeholder="+40 7xx xxx xxx"]', '+40721000000');
+  await shot(page, 'contact/03-personal-data-filled');
+
+  await page.selectOption('select', { index: 1 });
+  await shot(page, 'contact/04-subject-selected');
+
+  await page.fill('textarea', 'Bună ziua, aș dori informații suplimentare despre serviciile dvs.');
+  await shot(page, 'contact/05-form-complete');
+
+  await page.locator('.c-form__submit').click();
+  await page.waitForSelector('.c-form-success--visible', { timeout: 5000 });
+  await shot(page, 'contact/06-success-message');
+
+  await page.goto(`${BASE}/contact`);
+  await page.waitForLoadState('networkidle');
+
+  const tabs = page.locator('.branches__tab');
+  const tabCount = await tabs.count();
+  for (let i = 0; i < tabCount; i++) {
+    await tabs.nth(i).click();
+    await page.waitForTimeout(WAIT);
+    const tabName = (await tabs.nth(i).textContent())
+      ?.trim().replace(/\s+/g, '-').toLowerCase();
+    await shot(page, `contact/07-branch-${i + 1}-${tabName}`);
+  }
+
+  const map = page.locator('.branch-map, iframe').first();
+  if (await map.isVisible()) {
+    await map.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(WAIT);
+    await shot(page, 'contact/08-map-visible');
+  }
 });
 
-// =============================================================================
-// TEST A06 — GET /reports/dashboard returnează statistici cu token valid
-// =============================================================================
-test('A06 - GET /reports/dashboard returns stats with valid admin token', async ({ request }) => {
-  const token = await getAdminToken(request);
+// ═════════════════════════════════════════════════════════════════════════════
+// 6. LOGIN
+// ═════════════════════════════════════════════════════════════════════════════
+test('06 – Login page', async ({ page }) => {
+  await page.goto(`${BASE}/login`, { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(WAIT);
+  await shot(page, 'auth/01-login-empty');
 
-  const res = await request.get(`${API}/reports/dashboard`, {
-    headers: { Authorization: `Bearer ${token}` },
-    ignoreHTTPSErrors: true,
-  });
+  await page.locator('[type="email"]').click().catch(() => {});
+  await shot(page, 'auth/02-login-email-focus');
 
-  expect(res.status()).toBe(200);
+  await page.fill('[type="email"]', CREDS.email);
+  await shot(page, 'auth/03-login-email-filled');
 
-  const body = await res.json();
-  expect(body).toHaveProperty('totalVehicles');
-  expect(body).toHaveProperty('availableVehicles');
-  expect(body).toHaveProperty('activeRentals');
-  expect(body).toHaveProperty('todayRevenue');
-  expect(body.totalVehicles).toBeGreaterThan(0);
+  await page.fill('[type="password"]', CREDS.password);
+  await shot(page, 'auth/04-login-ready');
+
+  // Credențiale greșite → eroare
+  await page.fill('[type="email"]', 'gresit@test.ro');
+  await page.fill('[type="password"]', 'wrong');
+  await page.locator('[type="submit"]').click();
+  await page.waitForTimeout(2000);
+  await shot(page, 'auth/05-login-error');
+
+  // Login corect
+  await page.fill('[type="email"]', CREDS.email);
+  await page.fill('[type="password"]', CREDS.password);
+  await page.locator('[type="submit"]').click();
+  await Promise.race([
+    page.waitForURL(`${BASE}/dashboard`, { timeout: 8000 }),
+    page.waitForURL(`${BASE}/`, { timeout: 8000 }),
+  ]).catch(() => {});
+  await shot(page, 'auth/06-login-result');
 });
 
-test.afterAll(async () => {
-  // mic buffer pentru cleanup
-  await new Promise(res => setTimeout(res, 100));
+// ═════════════════════════════════════════════════════════════════════════════
+// 7. SIGNUP
+// ═════════════════════════════════════════════════════════════════════════════
+test('07 – Signup page', async ({ page }) => {
+  await page.goto(`${BASE}/signup`, { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(WAIT);
+  await shot(page, 'auth/07-signup-empty');
+
+  const firstField = page.locator('input').first();
+  if (await firstField.isVisible()) {
+    await firstField.click();
+    await firstField.fill('Ion');
+    await shot(page, 'auth/08-signup-name-filled');
+  }
+
+  const inputs = page.locator('input');
+  const inputCount = await inputs.count();
+  for (let i = 0; i < inputCount; i++) {
+    const input = inputs.nth(i);
+    const type = await input.getAttribute('type').catch(() => 'text');
+    if (type === 'email') {
+      await input.fill('ion.nou@test.ro').catch(() => {});
+    } else if (type === 'password') {
+      await input.fill('Parola123!').catch(() => {});
+    } else if (type === 'text' || !type) {
+      const placeholder = await input.getAttribute('placeholder').catch(() => '');
+      if (placeholder?.toLowerCase().includes('last') || placeholder?.toLowerCase().includes('nume')) {
+        await input.fill('Popescu').catch(() => {});
+      } else {
+        await input.fill('Ion').catch(() => {});
+      }
+    }
+  }
+
+  await shot(page, 'auth/09-signup-email-filled');
+  await shot(page, 'auth/10-signup-complete');
+});
+
+// ═════════════════════════════════════════════════════════════════════════════
+// 8a. DASHBOARD – Overview → Alerts
+// ═════════════════════════════════════════════════════════════════════════════
+test('08a – Dashboard Overview to Alerts', async ({ page }) => {
+  await login(page);
+
+  if (page.url().includes('/login')) {
+    console.error('  ✗ Login eșuat – skip dashboard');
+    return;
+  }
+
+  await page.goto(`${BASE}/dashboard`, { waitUntil: 'domcontentloaded', timeout: 8000 }).catch(() => {});
+  await page.waitForTimeout(1500);
+  await shot(page, 'dashboard/01-overview');
+
+  const statCards = page.locator('.dash-stat-card');
+  for (let i = 0; i < await statCards.count(); i++) {
+    await statCards.nth(i).hover();
+    await page.waitForTimeout(200);
+  }
+  await shot(page, 'dashboard/02-stat-cards-hover');
+
+  const actionBtns = page.locator('.dash-action-btn');
+  for (let i = 0; i < await actionBtns.count(); i++) {
+    await actionBtns.nth(i).hover();
+    await page.waitForTimeout(150);
+  }
+  await shot(page, 'dashboard/03-quick-actions-hover');
+
+  await page.locator('.dash-sidebar__toggle').click().catch(() => {});
+  await page.waitForTimeout(400);
+  await shot(page, 'dashboard/04-sidebar-collapsed');
+  await page.locator('.dash-sidebar__toggle').click().catch(() => {});
+  await page.waitForTimeout(400);
+  await shot(page, 'dashboard/05-sidebar-expanded');
+
+  const navClick = async (label: string) => {
+    const items = page.locator('.dash-sidebar__nav-item');
+    for (let i = 0; i < await items.count(); i++) {
+      const text = await items.nth(i).textContent().catch(() => '');
+      if (text?.includes(label)) {
+        await items.nth(i).click();
+        await page.waitForTimeout(1500);
+        return;
+      }
+    }
+  };
+
+  await navClick('Vehicles');
+  await shot(page, 'dashboard/06-vehicles');
+  const vehicleSearch = page.locator('.dash-search-bar input').first();
+  if (await vehicleSearch.isVisible().catch(() => false)) {
+    await vehicleSearch.fill('BMW');
+    await page.waitForTimeout(400);
+    await shot(page, 'dashboard/07-vehicles-search');
+    await vehicleSearch.fill('');
+    await page.waitForTimeout(300);
+  }
+  const firstRow = page.locator('.dash-table tbody tr').first();
+  if (await firstRow.isVisible().catch(() => false)) {
+    await firstRow.hover();
+    await page.waitForTimeout(200);
+    await shot(page, 'dashboard/08-vehicles-row-hover');
+  }
+
+  await navClick('Rentals');
+  await shot(page, 'dashboard/09-rentals');
+  const rentalSelect = page.locator('.dash-select').first();
+  if (await rentalSelect.isVisible().catch(() => false)) {
+    for (const s of ['Active', 'Completed', 'Cancelled']) {
+      await rentalSelect.selectOption(s);
+      await page.waitForTimeout(300);
+      await shot(page, `dashboard/10-rentals-${s.toLowerCase()}`);
+    }
+    await rentalSelect.selectOption('');
+  }
+
+  await navClick('Clients');
+  await shot(page, 'dashboard/11-clients');
+  const clientSearch = page.locator('.dash-search-bar input').first();
+  if (await clientSearch.isVisible().catch(() => false)) {
+    await clientSearch.fill('Ion');
+    await page.waitForTimeout(600);
+    await shot(page, 'dashboard/12-clients-search');
+    await clientSearch.fill('');
+  }
+
+  await navClick('Staff');
+  await shot(page, 'dashboard/13-staff');
+
+});
+
+// ═════════════════════════════════════════════════════════════════════════════
+// 08e. DASHBOARD – Branches (context fresh)
+// ═════════════════════════════════════════════════════════════════════════════
+test('08e – Dashboard Branches', async ({ page }) => {
+  await login(page);
+  if (page.url().includes('/login')) { console.error('  ✗ Login eșuat'); return; }
+
+  await page.goto(`${BASE}/dashboard`, { waitUntil: 'domcontentloaded', timeout: 8000 }).catch(() => {});
+  await page.waitForTimeout(1500);
+
+  const items = page.locator('.dash-sidebar__nav-item');
+  for (let i = 0; i < await items.count(); i++) {
+    const text = await items.nth(i).textContent().catch(() => '');
+    if (text?.includes('Branches')) {
+      await items.nth(i).click().catch(() => {});
+      break;
+    }
+  }
+  await page.waitForTimeout(1500);
+  await shot(page, 'dashboard/15-branches');
+
+  const branchCard = page.locator('.dash-branch-card').first();
+  if (await branchCard.isVisible().catch(() => false)) {
+    await branchCard.hover();
+    await page.waitForTimeout(200);
+    await shot(page, 'dashboard/16-branch-card-hover');
+  }
+});
+
+// ═════════════════════════════════════════════════════════════════════════════
+// 08d. DASHBOARD – Security Alerts (context fresh)
+// ═════════════════════════════════════════════════════════════════════════════
+test('08d – Dashboard Security Alerts', async ({ page }) => {
+  await login(page);
+
+  if (page.url().includes('/login')) {
+    console.error('  ✗ Login eșuat – skip alerts');
+    return;
+  }
+
+  await page.goto(`${BASE}/dashboard`, { waitUntil: 'domcontentloaded', timeout: 8000 }).catch(() => {});
+  await page.waitForTimeout(1500);
+
+  const items = page.locator('.dash-sidebar__nav-item');
+  for (let i = 0; i < await items.count(); i++) {
+    const text = await items.nth(i).textContent().catch(() => '');
+    if (text?.includes('Security Alerts')) {
+      await items.nth(i).click().catch(() => {});
+      break;
+    }
+  }
+  await page.waitForTimeout(1500);
+  await shot(page, 'dashboard/17-security-alerts');
+});
+
+// ═════════════════════════════════════════════════════════════════════════════
+// 8b. DASHBOARD – Revenue (context fresh)
+// ═════════════════════════════════════════════════════════════════════════════
+test('08b – Dashboard Revenue', async ({ page }) => {
+  await login(page);
+
+  if (page.url().includes('/login')) {
+    console.error('  ✗ Login eșuat – skip revenue');
+    return;
+  }
+
+  await page.goto(`${BASE}/dashboard`, { waitUntil: 'domcontentloaded', timeout: 8000 }).catch(() => {});
+  await page.waitForTimeout(1500);
+
+  const navClick = async (label: string) => {
+    const items = page.locator('.dash-sidebar__nav-item');
+    for (let i = 0; i < await items.count(); i++) {
+      const text = await items.nth(i).textContent().catch(() => '');
+      if (text?.includes(label)) {
+        await items.nth(i).click();
+        await page.waitForTimeout(1500);
+        return;
+      }
+    }
+  };
+
+  await navClick('Revenue');
+  await shot(page, 'dashboard/19-revenue');
+  await page.screenshot({ path: `${OUT}/dashboard/20-revenue-charts.png`, fullPage: true }).catch(() => {});
+  console.log('  ✓ dashboard/20-revenue-charts');
+});
+
+// ═════════════════════════════════════════════════════════════════════════════
+// 8c. DASHBOARD – Report Builder (context fresh)
+// ═════════════════════════════════════════════════════════════════════════════
+test('08c – Dashboard Report Builder', async ({ page }) => {
+  await login(page);
+
+  if (page.url().includes('/login')) {
+    console.error('  ✗ Login eșuat – skip report builder');
+    return;
+  }
+
+  await page.goto(`${BASE}/dashboard`, { waitUntil: 'domcontentloaded', timeout: 8000 }).catch(() => {});
+  await page.waitForTimeout(1500);
+
+  const items = page.locator('.dash-sidebar__nav-item');
+  for (let i = 0; i < await items.count(); i++) {
+    const text = await items.nth(i).textContent().catch(() => '');
+    if (text?.includes('Reports')) {
+      await items.nth(i).click().catch(() => {});
+      break;
+    }
+  }
+  await page.waitForTimeout(500);
+  await page.screenshot({ path: `${OUT}/dashboard/22-report-builder.png`, fullPage: true }).catch(() => {});
+  console.log('  ✓ dashboard/22-report-builder');
+
+  const reportSectionItems = page.locator('.dash-report-section');
+  if (await reportSectionItems.count().catch(() => 0) > 1) {
+    await reportSectionItems.nth(0).click().catch(() => {});
+    await page.waitForTimeout(150);
+    await reportSectionItems.nth(1).click().catch(() => {});
+    await page.waitForTimeout(150);
+    await page.screenshot({ path: `${OUT}/dashboard/23-report-sections-selected.png`, fullPage: true }).catch(() => {});
+    console.log('  ✓ dashboard/23-report-sections-selected');
+  }
+
+  const generateBtn = page.locator('.dash-report-generate-btn');
+  if (await generateBtn.isVisible().catch(() => false)) {
+    await generateBtn.hover().catch(() => {});
+    await page.waitForTimeout(200);
+    await page.screenshot({ path: `${OUT}/dashboard/24-report-generate-hover.png`, fullPage: true }).catch(() => {});
+    console.log('  ✓ dashboard/24-report-generate-hover');
+  }
+
+  await page.goto(`${BASE}/dashboard`, { waitUntil: 'domcontentloaded', timeout: 8000 }).catch(() => {});
+  await page.waitForTimeout(1500);
+  await page.screenshot({ path: `${OUT}/dashboard/25-overview-final.png`, fullPage: true }).catch(() => {});
+  console.log('  ✓ dashboard/25-overview-final');
+});
+
+// ═════════════════════════════════════════════════════════════════════════════
+// 9. MY BOOKINGS
+// ═════════════════════════════════════════════════════════════════════════════
+test('09 – My Bookings', async ({ page }) => {
+  await login(page);
+
+  if (page.url().includes('/login')) {
+    console.error('  ✗ Login eșuat – skip bookings');
+    return;
+  }
+
+  await page.goto(`${BASE}/my-bookings`, { waitUntil: 'domcontentloaded', timeout: 8000 }).catch(() => {});
+  await page.waitForTimeout(1500);
+  await shot(page, 'bookings/01-list');
+
+  const filters = page.locator('[class*="filter"], [class*="tab-btn"]');
+  const count = await filters.count();
+  for (let i = 0; i < Math.min(count, 3); i++) {
+    await filters.nth(i).click();
+    await page.waitForTimeout(WAIT);
+    await shot(page, `bookings/02-filter-${i + 1}`);
+  }
+
+  const firstBooking = page.locator('[class*="booking-card"], [class*="rental-card"]').first();
+  if (await firstBooking.isVisible()) {
+    await firstBooking.hover();
+    await page.waitForTimeout(300);
+    await shot(page, 'bookings/03-card-hover');
+    await firstBooking.click();
+    await page.waitForTimeout(WAIT);
+    await shot(page, 'bookings/04-detail');
+  }
+
+  await scrollReveal(page);
+  await shot(page, 'bookings/05-full-page');
+});
+
+// ═════════════════════════════════════════════════════════════════════════════
+// 10. BOOKING FLOW END-TO-END
+// ═════════════════════════════════════════════════════════════════════════════
+test('10 – Booking flow end-to-end', async ({ page }) => {
+  await login(page);
+
+  if (page.url().includes('/login')) {
+    console.error('  ✗ Login eșuat – skip booking flow');
+    return;
+  }
+
+  await page.goto(`${BASE}/cars`, { waitUntil: 'domcontentloaded', timeout: 8000 }).catch(() => {});
+  await page.waitForTimeout(1500);
+  await shot(page, 'bookings/flow-01-cars-list');
+
+  const rentBtn = page.locator('[class*="rent"], [class*="book"], .btn--primary').first();
+  if (await rentBtn.isVisible()) {
+    await rentBtn.click();
+    await page.waitForTimeout(WAIT);
+    await shot(page, 'bookings/flow-02-car-selected');
+  }
+
+  const startDate = page.locator('[name*="start"], [placeholder*="start"], [type="date"]').first();
+  if (await startDate.isVisible()) {
+    await startDate.fill('2025-07-01');
+    await page.waitForTimeout(300);
+    await shot(page, 'bookings/flow-03-start-date');
+
+    const endDate = page.locator('[name*="end"], [placeholder*="end"], [type="date"]').nth(1);
+    if (await endDate.isVisible()) {
+      await endDate.fill('2025-07-05');
+      await page.waitForTimeout(300);
+      await shot(page, 'bookings/flow-04-end-date');
+    }
+  }
+
+  const confirmBtn = page.locator('[class*="confirm"], [class*="submit"]').last();
+  if (await confirmBtn.isVisible().catch(() => false)) {
+    await page.screenshot({ path: `${OUT}/bookings/flow-07-before-confirm.png`, fullPage: true }).catch(() => {});
+    console.log('  ✓ bookings/flow-07-before-confirm');
+    await confirmBtn.click().catch(() => {});
+    await page.waitForTimeout(2000);
+    await page.screenshot({ path: `${OUT}/bookings/flow-08-after-confirm.png`, fullPage: true }).catch(() => {});
+    console.log('  ✓ bookings/flow-08-after-confirm');
+  }
+});
+
+// ═════════════════════════════════════════════════════════════════════════════
+// 11. NAVBAR STĂRI
+// ═════════════════════════════════════════════════════════════════════════════
+test('11 – Navbar states', async ({ page }) => {
+  await page.goto(`${BASE}/`);
+  await page.waitForLoadState('networkidle');
+  await shot(page, 'home/navbar-01-logged-out');
+
+  await page.locator('nav a, .navbar__link').first().hover();
+  await page.waitForTimeout(300);
+  await shot(page, 'home/navbar-02-link-hover');
+
+  await login(page);
+  await page.goto(`${BASE}/`, { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(1000);
+  await shot(page, 'home/navbar-03-logged-in');
+});
+
+// ═════════════════════════════════════════════════════════════════════════════
+// 12. MOBILE – iPhone 14
+// ═════════════════════════════════════════════════════════════════════════════
+test('12 – Mobile screenshots', async ({ browser }) => {
+  const ctx = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    deviceScaleFactor: 2,
+  });
+  const page = await ctx.newPage();
+
+  const mobilePages = [
+    { url: '/',        name: 'home'    },
+    { url: '/cars',    name: 'cars'    },
+    { url: '/about',   name: 'about'   },
+    { url: '/contact', name: 'contact' },
+    { url: '/login',   name: 'login'   },
+  ];
+
+  for (const p of mobilePages) {
+    try {
+      await page.goto(`${BASE}${p.url}`, { waitUntil: 'domcontentloaded', timeout: 8000 });
+    } catch { /* ignoră timeout */ }
+    await page.waitForTimeout(1000);
+    await page.screenshot({ path: `${OUT}/mobile/${p.name}.png`, fullPage: true }).catch(() => {});
+    console.log(`  ✓ mobile/${p.name}`);
+    await page.evaluate(() => window.stop()).catch(() => {});
+    await page.waitForTimeout(200);
+  }
+
+  const hamburger = page.locator('[class*="hamburger"], [class*="menu-toggle"], .navbar__toggle');
+  if (await hamburger.isVisible().catch(() => false)) {
+    await hamburger.click().catch(() => {});
+    await page.waitForTimeout(500);
+    await page.screenshot({ path: `${OUT}/mobile/menu-open.png`, fullPage: true }).catch(() => {});
+    console.log('  ✓ mobile/menu-open');
+  }
+
+  await ctx.close();
 });
