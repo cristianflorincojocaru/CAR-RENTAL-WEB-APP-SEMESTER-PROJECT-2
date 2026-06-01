@@ -272,7 +272,6 @@ User ──< Client ──< Rental >── Vehicle >── Branch
                              PromoCode (applied at checkout)
 
 Branch ──< ContactMessage
-Branch ──< Vehicle
 ```
 
 ### MIGRATIONS
