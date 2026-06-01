@@ -1,8 +1,8 @@
-# WheelDeal - CAR RENTAL WEB APP
+# Semester Project No. 2 - CAR RENTAL COMPANY WEBSITE
 
 <div align="center">
 
-**🚗 WheelDeal — a full-stack car rental platform built with Angular + ASP.NET Core 10 + MS SQL Server**
+**🚗 WHEELDEAL — a full-stack car rental platform built with Angular + ASP.NET Core 10 + MS SQL Server**
 
 ![Angular](https://img.shields.io/badge/Angular-Standalone-DD0031?style=for-the-badge&logo=angular)
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-10-512BD4?style=for-the-badge&logo=dotnet)
