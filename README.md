@@ -103,18 +103,29 @@ car-rental-web-app.Server/
 ```
 car-rental-web-app.client/
 ├── angular.json
+├── package.json
 ├── playwright.config.ts
+├── wheeldeal.spec.ts
 ├── tsconfig.json
+├── .editorconfig
+├── .prettierrc
+│
+├── public/
+│   └── favicon.ico
 │
 └── src/
     ├── index.html
     ├── main.ts
     ├── styles.scss
     │
+    ├── environments/
+    │   ├── environment.ts
+    │   └── environment.prod.ts
+    │
     └── app/
         ├── app.config.ts
         ├── app.routes.ts
-        ├── app.ts
+        ├── app.ts / app.html / app.scss
         │
         ├── guards/
         │   └── auth.guard.ts
@@ -156,15 +167,15 @@ car-rental-web-app.client/
 
 ### FLEET ASSETS — `src/assets/cars/`
 
-The vehicle image library is organized by budget tier, with two color variants and three angles per vehicle:
+The vehicle image library is organized by budget tier. Each vehicle has 3 color variants × 2 angles = 6 images, stored under assets/cars/{tier}/{make_model}/updated/. The fleet covers 46 vehicles across 5 tiers.
 
 | TIER | VEHICLES |
 |---|---|
-| **Low Budget** | Dacia Logan, Dacia Sandero, Fiat 500, Hyundai i20, Kia Picanto, MG3, Mitsubishi Space Star, Renault Clio, Skoda Fabia, Suzuki Swift |
-| **Medium Budget** | Honda Civic, Hyundai Tucson, Kia Sportage, Mazda CX-5, Renault Austral, Skoda Octavia, Tesla Model 3, Toyota Corolla, Volkswagen Golf, Volvo XC40 |
-| **High Budget** | Alfa Romeo Stelvio, Audi Q7, BMW X5, Genesis GV80, Land Rover Defender 110, Lexus RX, Mercedes-Benz GLE, Porsche Macan, Tesla Model S, Volvo XC90 |
-| **Elite Budget** | Aston Martin DB12, Audi RS Q8, Bentley Continental GT, BMW XM, Ferrari Purosangue, Lamborghini Urus Performante, Mercedes-Benz G63 AMG, Porsche 911 Turbo S, Range Rover SV, Rolls-Royce Cullinan |
-| **Vans** | Hyundai Staria, Lexus LM, Mercedes-Benz V-Class, Toyota Alphard, Volkswagen Multivan T7, Volvo EM90 |
+| **LOW BUDGET** | Dacia Logan, Dacia Sandero, Fiat 500, Hyundai i20, Kia Picanto, MG3, Mitsubishi Space Star, Renault Clio, Skoda Fabia, Suzuki Swift |
+| **MEDIUM BUDGET** | Honda Civic, Hyundai Tucson, Kia Sportage, Mazda CX-5, Renault Austral, Skoda Octavia, Tesla Model 3, Toyota Corolla, Volkswagen Golf, Volvo XC40 |
+| **HIGH BUDGET** | Alfa Romeo Stelvio, Audi Q7, BMW X5, Genesis GV80, Land Rover Defender 110, Lexus RX, Mercedes-Benz GLE, Porsche Macan, Tesla Model S, Volvo XC90 |
+| **ELITE BUDGET** | Aston Martin DB12, Audi RS Q8, Bentley Continental GT, BMW XM, Ferrari Purosangue, Lamborghini Urus Performante, Mercedes-Benz G63 AMG, Porsche 911 Turbo S, Range Rover SV, Rolls-Royce Cullinan |
+| **VANS** | Hyundai Staria, Lexus LM, Mercedes-Benz V-Class, Toyota Alphard, Volkswagen Multivan T7, Volvo EM90 |
 
 
 ## TECH STACK
@@ -197,7 +208,7 @@ The vehicle image library is organized by budget tier, with two color variants a
 - Browse and filter the full vehicle fleet across five budget tiers
 - Category-based filtering with animated card transitions (`fadeInUp`)
 - Per-card `trackBy` optimization for Angular rendering
-- Two color variants and three angles per vehicle — 36 vehicles total
+- Three color variants and two angles per vehicle — 46 vehicles total
 - Vehicle image URLs stored and served from the database
 
 ### 📅 BOOKINGS
@@ -213,7 +224,7 @@ The vehicle image library is organized by budget tier, with two color variants a
 
 ### 📬 CONTACT
 - Full contact form with branch selector
-- Real-time open/closed branch status based on Europe/Bucharest timezone
+- Real-time open/closed branch status computed via `Europe/Bucharest` timezone
 - Four branch locations: Bucharest Central, Bucharest Otopeni, Cluj Airport, Timișoara Airport
 - 10-second post-submission cooldown with countdown
 - Social links block
@@ -231,9 +242,8 @@ The vehicle image library is organized by budget tier, with two color variants a
 - **Report Builder** — configurable report sections with generate action
 
 ### 🌍 BRANCHES
-- Branch entity with location, hours, and real-time open/closed status
-- Branch selector on contact page
-- Branch management in admin dashboard
+- Branch entity with location, hours, and real-time open/closed status computed via `Europe/Bucharest` timezone
+- Branch selector on the Contact page and in the admin Dashboard
 
 ### 📊 REPORTS
 - Report DTOs for rental and fleet analytics
@@ -259,7 +269,7 @@ The vehicle image library is organized by budget tier, with two color variants a
 ```
 User ──< Client ──< Rental >── Vehicle >── Branch
                                   │
-                             PromoCode (optional)
+                             PromoCode (applied at checkout)
 
 Branch ──< ContactMessage
 Branch ──< Vehicle
@@ -364,7 +374,7 @@ E2E tests are written with **Playwright** (`playwright.config.ts`, `wheeldeal.sp
 ### PREREQUISITES
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)
-- [Node.js 20+](https://nodejs.org) + Angular CLI (`npm i -g @angular/cli`)
+- [Node.js 20+](https://nodejs.org/) + Angular CLI (`npm i -g @angular/cli`)
 - [SQL Server](https://www.microsoft.com/en-us/sql-server)
 
 ### BACKEND SETUP
@@ -424,14 +434,13 @@ Playwright report available in `playwright-report/index.html`
 
 | NAME | ROLE |
 |---|---|
-| Cojocaru Florin-Cristian | Developer |
-| Nicoli Andrei-Claudiu | Developer |
-| Cherciu Adrian-Dumitru | Developer |
+| Cojocaru Florin - Cristian | Full-Stack Developer — responsible for Frontend, Backend & Database |
+| Nicoli Andrei - Claudiu | Full-Stack Developer — responsible for Frontend, Backend & Authentication |
 
 
 ## CONTRIBUTIONS
 
-Project created by **Cojocaru Florin-Cristian**, **Nicoli Andrei-Claudiu**, and **Cherciu Adrian-Dumitru** — **CSE.3**, University of Craiova / Faculty of Automatics, Computer Science and Electronics.
+Project created by **Cojocaru Florin - Cristian** and **Nicoli Andrei - Claudiu** — **CSE.3**, University of Craiova / Faculty of Automatics, Computer Science and Electronics.
 
 Contributions are welcome! If you have suggestions for improving the code or documentation, please submit a pull request.
 
