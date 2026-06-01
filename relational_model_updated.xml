@@ -1,0 +1,438 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="HVHd26YpgbuV0f3WA2Jc" name="Page-1">
+    <mxGraphModel dx="6367" dy="3646" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;" value="RELATIONAL MODEL — CAR RENTAL SYSTEM" vertex="1">
+          <mxGeometry height="40" width="700" x="477" y="-260" as="geometry" />
+        </mxCell>
+        <mxCell id="tbl_branches" parent="1" style="swimlane;fontStyle=1;align=center;startSize=30;fillColor=#f8cecc;strokeColor=#b85450;" value="Branches" vertex="1">
+          <mxGeometry height="310" width="280" x="1280" y="-165" as="geometry" />
+        </mxCell>
+        <mxCell id="b1" parent="tbl_branches" style="text;strokeColor=none;fillColor=#fff2cc;align=left;spacingLeft=8;fontStyle=1;" value="🔑 Id (PK)                     int" vertex="1">
+          <mxGeometry height="24" width="280" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="b2" parent="tbl_branches" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   Name                        nvarchar" vertex="1">
+          <mxGeometry height="24" width="280" y="54" as="geometry" />
+        </mxCell>
+        <mxCell id="b3" parent="tbl_branches" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   City                         nvarchar" vertex="1">
+          <mxGeometry height="24" width="280" y="78" as="geometry" />
+        </mxCell>
+        <mxCell id="b4" parent="tbl_branches" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   Address                      nvarchar" vertex="1">
+          <mxGeometry height="24" width="280" y="102" as="geometry" />
+        </mxCell>
+        <mxCell id="b5" parent="tbl_branches" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   Phone                        nvarchar" vertex="1">
+          <mxGeometry height="24" width="280" y="126" as="geometry" />
+        </mxCell>
+        <mxCell id="b6" parent="tbl_branches" style="text;strokeColor=none;fillColor=#ffe6cc;align=left;spacingLeft=8;" value="🔗 ManagerId (FK, nullable)    int?" vertex="1">
+          <mxGeometry height="24" width="280" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="b7" parent="tbl_branches" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   IsActive                     bit" vertex="1">
+          <mxGeometry height="24" width="280" y="174" as="geometry" />
+        </mxCell>
+        <mxCell id="b8" parent="tbl_branches" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   CreatedAt                    datetime2" vertex="1">
+          <mxGeometry height="24" width="280" y="198" as="geometry" />
+        </mxCell>
+        <mxCell id="b9" parent="tbl_branches" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   UpdatedAt                    datetime2" vertex="1">
+          <mxGeometry height="24" width="280" y="222" as="geometry" />
+        </mxCell>
+        <mxCell id="b_idx" parent="tbl_branches" style="text;strokeColor=none;fillColor=#f8cecc;align=left;spacingLeft=8;fontStyle=2;fontSize=10;" value="INDEX: Name, City" vertex="1">
+          <mxGeometry height="58" width="280" y="252" as="geometry" />
+        </mxCell>
+        <mxCell id="tbl_vehicles" parent="1" style="swimlane;fontStyle=1;align=center;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Vehicles" vertex="1">
+          <mxGeometry height="412" width="280" x="360" y="-165" as="geometry" />
+        </mxCell>
+        <mxCell id="v1" parent="tbl_vehicles" style="text;strokeColor=none;fillColor=#fff2cc;align=left;spacingLeft=8;fontStyle=1;" value="🔑 Id (PK)                     int" vertex="1">
+          <mxGeometry height="24" width="280" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="v2" parent="tbl_vehicles" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="⚡ RegistrationNumber (UK)    nvarchar" vertex="1">
+          <mxGeometry height="24" width="280" y="54" as="geometry" />
+        </mxCell>
+        <mxCell id="v_branchid" parent="tbl_vehicles" style="text;strokeColor=none;fillColor=#ffe6cc;align=left;spacingLeft=8;" value="🔗 BranchId (FK)               int" vertex="1">
+          <mxGeometry height="24" width="280" y="78" as="geometry" />
+        </mxCell>
+        <mxCell id="v_addedby" parent="tbl_vehicles" style="text;strokeColor=none;fillColor=#ffe6cc;align=left;spacingLeft=8;" value="🔗 AddedByUserId (FK)          int" vertex="1">
+          <mxGeometry height="24" width="280" y="102" as="geometry" />
+        </mxCell>
+        <mxCell id="v3" parent="tbl_vehicles" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   Brand                        nvarchar" vertex="1">
+          <mxGeometry height="24" width="280" y="126" as="geometry" />
+        </mxCell>
+        <mxCell id="v4" parent="tbl_vehicles" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   Model                        nvarchar" vertex="1">
+          <mxGeometry height="24" width="280" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="v5" parent="tbl_vehicles" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   Year                         int" vertex="1">
+          <mxGeometry height="24" width="280" y="174" as="geometry" />
+        </mxCell>
+        <mxCell id="v6" parent="tbl_vehicles" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   Category                     tinyint" vertex="1">
+          <mxGeometry height="24" width="280" y="198" as="geometry" />
+        </mxCell>
+        <mxCell id="v7" parent="tbl_vehicles" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   DailyRate                    decimal" vertex="1">
+          <mxGeometry height="24" width="280" y="222" as="geometry" />
+        </mxCell>
+        <mxCell id="v8" parent="tbl_vehicles" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   Status                       tinyint" vertex="1">
+          <mxGeometry height="24" width="280" y="246" as="geometry" />
+        </mxCell>
+        <mxCell id="v9" parent="tbl_vehicles" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   IsActive                     bit" vertex="1">
+          <mxGeometry height="24" width="280" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="v10" parent="tbl_vehicles" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   CreatedAt                    datetime2" vertex="1">
+          <mxGeometry height="24" width="280" y="294" as="geometry" />
+        </mxCell>
+        <mxCell id="v11" parent="tbl_vehicles" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   UpdatedAt                    datetime2" vertex="1">
+          <mxGeometry height="24" width="280" y="318" as="geometry" />
+        </mxCell>
+        <mxCell id="v_idx" parent="tbl_vehicles" style="text;strokeColor=none;fillColor=#dae8fc;align=left;spacingLeft=8;fontStyle=2;fontSize=10;" value="INDEX: RegistrationNumber, Category, BranchId" vertex="1">
+          <mxGeometry height="46" width="280" y="342" as="geometry" />
+        </mxCell>
+        <mxCell id="tbl_customers" parent="1" style="swimlane;fontStyle=1;align=center;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;" value="Clients" vertex="1">
+          <mxGeometry height="290" width="280" x="-150" y="134" as="geometry" />
+        </mxCell>
+        <mxCell id="c1" parent="tbl_customers" style="text;strokeColor=none;fillColor=#fff2cc;align=left;spacingLeft=8;fontStyle=1;" value="🔑 Id (PK)                     int" vertex="1">
+          <mxGeometry height="24" width="280" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="c2" parent="tbl_customers" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   FullName                     nvarchar" vertex="1">
+          <mxGeometry height="24" width="280" y="54" as="geometry" />
+        </mxCell>
+        <mxCell id="c3" parent="tbl_customers" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="⚡ Email (UK)                  nvarchar" vertex="1">
+          <mxGeometry height="24" width="280" y="78" as="geometry" />
+        </mxCell>
+        <mxCell id="c4" parent="tbl_customers" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="⚡ Phone (UK)                  nvarchar" vertex="1">
+          <mxGeometry height="24" width="280" y="102" as="geometry" />
+        </mxCell>
+        <mxCell id="c5" parent="tbl_customers" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   Address                      nvarchar" vertex="1">
+          <mxGeometry height="24" width="280" y="126" as="geometry" />
+        </mxCell>
+        <mxCell id="c6" parent="tbl_customers" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   IsFlagged                    bit" vertex="1">
+          <mxGeometry height="24" width="280" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="c7" parent="tbl_customers" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   IsActive                     bit" vertex="1">
+          <mxGeometry height="24" width="280" y="174" as="geometry" />
+        </mxCell>
+        <mxCell id="c8" parent="tbl_customers" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   CreatedAt                    datetime2" vertex="1">
+          <mxGeometry height="24" width="280" y="198" as="geometry" />
+        </mxCell>
+        <mxCell id="c9" parent="tbl_customers" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   UpdatedAt                    datetime2" vertex="1">
+          <mxGeometry height="24" width="280" y="222" as="geometry" />
+        </mxCell>
+        <mxCell id="c_idx" parent="tbl_customers" style="text;strokeColor=none;fillColor=#d5e8d4;align=left;spacingLeft=8;fontStyle=2;fontSize=10;" value="INDEX: Email, Phone, FullName" vertex="1">
+          <mxGeometry height="38" width="280" y="252" as="geometry" />
+        </mxCell>
+        <mxCell id="tbl_rentals" parent="1" style="swimlane;fontStyle=1;align=center;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;" value="Rentals" vertex="1">
+          <mxGeometry height="438" width="290" x="790" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="r1" parent="tbl_rentals" style="text;strokeColor=none;fillColor=#fff2cc;align=left;spacingLeft=8;fontStyle=1;" value="🔑 Id (PK)                     int" vertex="1">
+          <mxGeometry height="24" width="290" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="r2" parent="tbl_rentals" style="text;strokeColor=none;fillColor=#ffe6cc;align=left;spacingLeft=8;" value="🔗 VehicleId (FK)              int" vertex="1">
+          <mxGeometry height="24" width="290" y="54" as="geometry" />
+        </mxCell>
+        <mxCell id="r3" parent="tbl_rentals" style="text;strokeColor=none;fillColor=#ffe6cc;align=left;spacingLeft=8;" value="🔗 CustomerId (FK)             int" vertex="1">
+          <mxGeometry height="24" width="290" y="78" as="geometry" />
+        </mxCell>
+        <mxCell id="r4" parent="tbl_rentals" style="text;strokeColor=none;fillColor=#ffe6cc;align=left;spacingLeft=8;" value="🔗 BranchId (FK)               int" vertex="1">
+          <mxGeometry height="24" width="290" y="102" as="geometry" />
+        </mxCell>
+        <mxCell id="r_createdby" parent="tbl_rentals" style="text;strokeColor=none;fillColor=#ffe6cc;align=left;spacingLeft=8;" value="🔗 CreatedByUserId (FK)        int" vertex="1">
+          <mxGeometry height="24" width="290" y="126" as="geometry" />
+        </mxCell>
+        <mxCell id="r_completedby" parent="tbl_rentals" style="text;strokeColor=none;fillColor=#ffe6cc;align=left;spacingLeft=8;" value="🔗 CompletedByUserId (FK, null) int?" vertex="1">
+          <mxGeometry height="24" width="290" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="r5" parent="tbl_rentals" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   StartDate                    datetime2" vertex="1">
+          <mxGeometry height="24" width="290" y="174" as="geometry" />
+        </mxCell>
+        <mxCell id="r6" parent="tbl_rentals" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   EndDate                      datetime2" vertex="1">
+          <mxGeometry height="24" width="290" y="198" as="geometry" />
+        </mxCell>
+        <mxCell id="r7" parent="tbl_rentals" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   TotalCost                    decimal" vertex="1">
+          <mxGeometry height="24" width="290" y="222" as="geometry" />
+        </mxCell>
+        <mxCell id="r8" parent="tbl_rentals" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   Status                       tinyint" vertex="1">
+          <mxGeometry height="24" width="290" y="246" as="geometry" />
+        </mxCell>
+        <mxCell id="r9" parent="tbl_rentals" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   CancellationReason           nvarchar?" vertex="1">
+          <mxGeometry height="24" width="290" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="r10" parent="tbl_rentals" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   RowVersion                   rowversion" vertex="1">
+          <mxGeometry height="24" width="290" y="294" as="geometry" />
+        </mxCell>
+        <mxCell id="r11" parent="tbl_rentals" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   CreatedAt                    datetime2" vertex="1">
+          <mxGeometry height="24" width="290" y="318" as="geometry" />
+        </mxCell>
+        <mxCell id="r12" parent="tbl_rentals" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   UpdatedAt                    datetime2" vertex="1">
+          <mxGeometry height="24" width="290" y="342" as="geometry" />
+        </mxCell>
+        <mxCell id="r_idx" parent="tbl_rentals" style="text;strokeColor=none;fillColor=#fff2cc;align=left;spacingLeft=8;fontStyle=2;fontSize=10;" value="INDEX: VehicleId, CustomerId, BranchId, Status, StartDate+EndDate" vertex="1">
+          <mxGeometry height="48" width="290" y="366" as="geometry" />
+        </mxCell>
+        <mxCell id="tbl_users" parent="1" style="swimlane;fontStyle=1;align=center;startSize=30;fillColor=#e1d5e7;strokeColor=#9673a6;" value="Users" vertex="1">
+          <mxGeometry height="470" width="290" x="30" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="u1" parent="tbl_users" style="text;strokeColor=none;fillColor=#fff2cc;align=left;spacingLeft=8;fontStyle=1;" value="🔑 Id (PK)                     int" vertex="1">
+          <mxGeometry height="24" width="290" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="u2" parent="tbl_users" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="⚡ Username (UK)               nvarchar" vertex="1">
+          <mxGeometry height="24" width="290" y="54" as="geometry" />
+        </mxCell>
+        <mxCell id="u3" parent="tbl_users" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   PasswordHash                 nvarchar" vertex="1">
+          <mxGeometry height="24" width="290" y="78" as="geometry" />
+        </mxCell>
+        <mxCell id="u4" parent="tbl_users" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="⚡ Email (UK)                  nvarchar" vertex="1">
+          <mxGeometry height="24" width="290" y="102" as="geometry" />
+        </mxCell>
+        <mxCell id="u_fullname" parent="tbl_users" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   FullName                     nvarchar" vertex="1">
+          <mxGeometry height="24" width="290" y="126" as="geometry" />
+        </mxCell>
+        <mxCell id="u_phone" parent="tbl_users" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   Phone                        nvarchar?" vertex="1">
+          <mxGeometry height="24" width="290" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="u5" parent="tbl_users" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   Role                         tinyint" vertex="1">
+          <mxGeometry height="24" width="290" y="174" as="geometry" />
+        </mxCell>
+        <mxCell id="u_branchid" parent="tbl_users" style="text;strokeColor=none;fillColor=#ffe6cc;align=left;spacingLeft=8;" value="🔗 BranchId (FK, nullable)     int?" vertex="1">
+          <mxGeometry height="24" width="290" y="198" as="geometry" />
+        </mxCell>
+        <mxCell id="u_createdby" parent="tbl_users" style="text;strokeColor=none;fillColor=#ffe6cc;align=left;spacingLeft=8;" value="🔗 CreatedByUserId (FK, null)  int?" vertex="1">
+          <mxGeometry height="24" width="290" y="222" as="geometry" />
+        </mxCell>
+        <mxCell id="u6" parent="tbl_users" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   IsActive                     bit" vertex="1">
+          <mxGeometry height="24" width="290" y="246" as="geometry" />
+        </mxCell>
+        <mxCell id="u7" parent="tbl_users" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   IsLocked                     bit" vertex="1">
+          <mxGeometry height="24" width="290" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="u8" parent="tbl_users" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   FailedLoginAttempts           int" vertex="1">
+          <mxGeometry height="24" width="290" y="294" as="geometry" />
+        </mxCell>
+        <mxCell id="u9" parent="tbl_users" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   LockedUntil                  datetime2?" vertex="1">
+          <mxGeometry height="24" width="290" y="318" as="geometry" />
+        </mxCell>
+        <mxCell id="u10" parent="tbl_users" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   LastActivityAt               datetime2?" vertex="1">
+          <mxGeometry height="24" width="290" y="342" as="geometry" />
+        </mxCell>
+        <mxCell id="u11" parent="tbl_users" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   LastLoginAt                  datetime2?" vertex="1">
+          <mxGeometry height="24" width="290" y="366" as="geometry" />
+        </mxCell>
+        <mxCell id="u12" parent="tbl_users" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   CreatedAt                    datetime2" vertex="1">
+          <mxGeometry height="24" width="290" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="u_idx" parent="tbl_users" style="text;strokeColor=none;fillColor=#e1d5e7;align=left;spacingLeft=8;fontStyle=2;fontSize=10;" value="INDEX: Username, Email, Role, BranchId" vertex="1">
+          <mxGeometry height="40" width="290" y="414" as="geometry" />
+        </mxCell>
+        <mxCell id="tbl_rt" parent="1" style="swimlane;fontStyle=1;align=center;startSize=30;fillColor=#e1d5e7;strokeColor=#9673a6;" value="RefreshTokens" vertex="1">
+          <mxGeometry height="260" width="280" x="530" y="595" as="geometry" />
+        </mxCell>
+        <mxCell id="rt1" parent="tbl_rt" style="text;strokeColor=none;fillColor=#fff2cc;align=left;spacingLeft=8;fontStyle=1;" value="🔑 Id (PK)                     int" vertex="1">
+          <mxGeometry height="24" width="280" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rt2" parent="tbl_rt" style="text;strokeColor=none;fillColor=#ffe6cc;align=left;spacingLeft=8;" value="🔗 UserId (FK)                 int" vertex="1">
+          <mxGeometry height="24" width="280" y="54" as="geometry" />
+        </mxCell>
+        <mxCell id="rt3" parent="tbl_rt" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="⚡ Token (UK)                  nvarchar" vertex="1">
+          <mxGeometry height="24" width="280" y="78" as="geometry" />
+        </mxCell>
+        <mxCell id="rt4" parent="tbl_rt" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   ExpiresAt                    datetime2" vertex="1">
+          <mxGeometry height="24" width="280" y="102" as="geometry" />
+        </mxCell>
+        <mxCell id="rt5" parent="tbl_rt" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   IsRevoked                    bit" vertex="1">
+          <mxGeometry height="24" width="280" y="126" as="geometry" />
+        </mxCell>
+        <mxCell id="rt6" parent="tbl_rt" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   RevokedAt                    datetime2?" vertex="1">
+          <mxGeometry height="24" width="280" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="rt7" parent="tbl_rt" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   CreatedAt                    datetime2" vertex="1">
+          <mxGeometry height="24" width="280" y="174" as="geometry" />
+        </mxCell>
+        <mxCell id="rt_idx" parent="tbl_rt" style="text;strokeColor=none;fillColor=#e1d5e7;align=left;spacingLeft=8;fontStyle=2;fontSize=10;" value="INDEX: Token, UserId" vertex="1">
+          <mxGeometry height="56" width="280" y="204" as="geometry" />
+        </mxCell>
+        <mxCell id="tbl_audit" parent="1" style="swimlane;fontStyle=1;align=center;startSize=30;fillColor=#f5f5f5;strokeColor=#666666;" value="AuditLogs" vertex="1">
+          <mxGeometry height="260" width="290" x="1000" y="668" as="geometry" />
+        </mxCell>
+        <mxCell id="al1" parent="tbl_audit" style="text;strokeColor=none;fillColor=#fff2cc;align=left;spacingLeft=8;fontStyle=1;" value="🔑 Id (PK)                     int" vertex="1">
+          <mxGeometry height="24" width="290" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="al2" parent="tbl_audit" style="text;strokeColor=none;fillColor=#ffe6cc;align=left;spacingLeft=8;" value="🔗 UserId (FK, nullable)       int?" vertex="1">
+          <mxGeometry height="24" width="290" y="54" as="geometry" />
+        </mxCell>
+        <mxCell id="al3" parent="tbl_audit" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   EntityType                   nvarchar" vertex="1">
+          <mxGeometry height="24" width="290" y="78" as="geometry" />
+        </mxCell>
+        <mxCell id="al4" parent="tbl_audit" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   EntityId                     int" vertex="1">
+          <mxGeometry height="24" width="290" y="102" as="geometry" />
+        </mxCell>
+        <mxCell id="al5" parent="tbl_audit" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   Action                       nvarchar" vertex="1">
+          <mxGeometry height="24" width="290" y="126" as="geometry" />
+        </mxCell>
+        <mxCell id="al6" parent="tbl_audit" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   Details                      nvarchar" vertex="1">
+          <mxGeometry height="24" width="290" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="al7" parent="tbl_audit" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   Timestamp                    datetime2" vertex="1">
+          <mxGeometry height="24" width="290" y="174" as="geometry" />
+        </mxCell>
+        <mxCell id="al_idx" parent="tbl_audit" style="text;strokeColor=none;fillColor=#f5f5f5;align=left;spacingLeft=8;fontStyle=2;fontSize=10;" value="INDEX: EntityType+EntityId, Timestamp, UserId" vertex="1">
+          <mxGeometry height="56" width="290" y="204" as="geometry" />
+        </mxCell>
+        <mxCell id="tbl_sa" parent="1" style="swimlane;fontStyle=1;align=center;startSize=30;fillColor=#f8cecc;strokeColor=#b85450;" value="SecurityAlerts" vertex="1">
+          <mxGeometry height="220" width="280" x="410" y="928" as="geometry" />
+        </mxCell>
+        <mxCell id="sa1" parent="tbl_sa" style="text;strokeColor=none;fillColor=#fff2cc;align=left;spacingLeft=8;fontStyle=1;" value="🔑 Id (PK)                     int" vertex="1">
+          <mxGeometry height="24" width="280" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="sa2" parent="tbl_sa" style="text;strokeColor=none;fillColor=#ffe6cc;align=left;spacingLeft=8;" value="🔗 UserId (FK)                 int" vertex="1">
+          <mxGeometry height="24" width="280" y="54" as="geometry" />
+        </mxCell>
+        <mxCell id="sa3" parent="tbl_sa" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   AlertType                    tinyint" vertex="1">
+          <mxGeometry height="24" width="280" y="78" as="geometry" />
+        </mxCell>
+        <mxCell id="sa4" parent="tbl_sa" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   Description                  nvarchar" vertex="1">
+          <mxGeometry height="24" width="280" y="102" as="geometry" />
+        </mxCell>
+        <mxCell id="sa5" parent="tbl_sa" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   IsRead                       bit" vertex="1">
+          <mxGeometry height="24" width="280" y="126" as="geometry" />
+        </mxCell>
+        <mxCell id="sa6" parent="tbl_sa" style="text;strokeColor=none;fillColor=none;align=left;spacingLeft=8;" value="   CreatedAt                    datetime2" vertex="1">
+          <mxGeometry height="24" width="280" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="sa_idx" parent="tbl_sa" style="text;strokeColor=none;fillColor=#f8cecc;align=left;spacingLeft=8;fontStyle=2;fontSize=10;" value="INDEX: UserId, IsRead" vertex="1">
+          <mxGeometry height="40" width="280" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_title" parent="1" style="text;html=1;fontStyle=1;fontSize=13;" value="LEGEND" vertex="1">
+          <mxGeometry height="30" width="80" x="-105" y="-240" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_pk" parent="1" style="text;fillColor=#fff2cc;strokeColor=#d6b656;align=left;spacingLeft=8;rounded=1;" value="🔑  Primary Key (PK)" vertex="1">
+          <mxGeometry height="30" width="210" x="-115" y="-202" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_fk" parent="1" style="text;fillColor=#ffe6cc;strokeColor=#d6b656;align=left;spacingLeft=8;rounded=1;" value="🔗  Foreign Key (FK)" vertex="1">
+          <mxGeometry height="30" width="210" x="-115" y="-162" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_uk" parent="1" style="text;fillColor=#f5f5f5;strokeColor=#666666;align=left;spacingLeft=8;rounded=1;" value="⚡  Unique Constraint (UK)" vertex="1">
+          <mxGeometry height="30" width="210" x="-115" y="-122" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_idx" parent="1" style="text;fillColor=#f5f5f5;strokeColor=#666666;align=left;spacingLeft=8;fontStyle=2;rounded=1;" value="Italic footer = Indexes" vertex="1">
+          <mxGeometry height="30" width="210" x="-115" y="-82" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_new" parent="1" style="text;fillColor=#f8cecc;strokeColor=#b85450;align=left;spacingLeft=8;rounded=1;" value="  Red header = NEW table" vertex="1">
+          <mxGeometry height="30" width="210" x="-115" y="-42" as="geometry" />
+        </mxCell>
+        <mxCell id="rel1" edge="1" parent="1" source="tbl_vehicles" style="endArrow=ERmany;startArrow=ERone;exitX=1;exitY=0.35;entryX=0;entryY=0.2;html=1;" target="tbl_rentals" value="1                              *">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="720" y="-21" />
+              <mxPoint x="720" y="148" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel2" edge="1" parent="1" source="tbl_customers" style="endArrow=ERmany;startArrow=ERone;exitX=1;exitY=0.5;entryX=0;entryY=0.5;html=1;" target="tbl_rentals" value="1                              *">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="730" y="279" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_bv" edge="1" parent="1" source="tbl_branches" style="endArrow=ERmany;startArrow=ERone;exitX=0;exitY=0.5;entryX=1;entryY=0.75;html=1;entryDx=0;entryDy=0;" target="v_branchid" value="1                              *">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1050" y="-10" />
+              <mxPoint x="1050" y="-70" />
+              <mxPoint x="720" y="-70" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_br" edge="1" parent="1" source="tbl_branches" style="endArrow=ERmany;startArrow=ERone;exitX=0;exitY=0.8;entryX=1;entryY=0.2;html=1;" target="tbl_rentals" value="1                              *">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1170" y="83" />
+              <mxPoint x="1170" y="148" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_bu" edge="1" parent="1" source="tbl_branches" style="endArrow=ERmany;startArrow=ERone;exitX=0;exitY=1;entryX=1;entryY=0.5;html=1;entryDx=0;entryDy=0;" target="u3" value="1                              *">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1280" y="290" />
+              <mxPoint x="1280" y="580" />
+              <mxPoint x="380" y="580" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel3" edge="1" parent="1" source="u1" style="endArrow=ERmany;startArrow=ERone;exitX=1;exitY=0.5;entryX=0;entryY=0.65;html=1;exitDx=0;exitDy=0;" target="tbl_rentals" value="1                              *">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="660" y="532" />
+              <mxPoint x="730" y="532" />
+              <mxPoint x="730" y="345" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel4" edge="1" parent="1" source="u_createdby" style="endArrow=ERmany;startArrow=ERone;exitX=1;exitY=0;html=1;exitDx=0;exitDy=0;" value="1                              *">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="530" y="712" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel5" edge="1" parent="1" source="tbl_users" style="endArrow=ERmany;startArrow=ERzeroToOne;exitX=1;exitY=0.8;entryX=0;entryY=0.3;html=1;" target="tbl_audit" value="0..1                           *">
+          <mxGeometry relative="1" x="0.801" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="700" y="866" />
+              <mxPoint x="890" y="870" />
+              <mxPoint x="890" y="746" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel6" edge="1" parent="1" source="tbl_users" style="endArrow=ERmany;startArrow=ERone;exitX=0.5;exitY=1;entryX=0;entryY=0.5;html=1;" target="tbl_sa" value="1                              *">
+          <mxGeometry relative="1" x="0.36" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="175" y="990" />
+              <mxPoint x="175" y="1040" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_selfref" edge="1" parent="1" source="tbl_users" style="endArrow=ERmany;startArrow=ERzeroToOne;exitX=0;exitY=0.4;entryX=0;entryY=0.6;html=1;" target="tbl_users" value="creates">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-30" y="680" />
+              <mxPoint x="-30" y="772" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_uv" edge="1" parent="1" source="tbl_users" style="endArrow=ERmany;startArrow=ERone;exitX=0.7;exitY=0;entryX=0;entryY=0.9;html=1;dashed=1;" target="tbl_vehicles" value="adds">
+          <mxGeometry relative="1" x="0.6107" y="-4" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="233" y="480" />
+              <mxPoint x="233" y="206" />
+              <mxPoint x="290" y="206" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_bm" edge="1" parent="1" source="tbl_branches" style="endArrow=ERzeroToOne;startArrow=ERmany;exitX=0.25;exitY=1;entryX=1;entryY=0.5;html=1;dashed=1;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" target="u2" value="managed by">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1350" y="420" />
+              <mxPoint x="1350" y="556" />
+              <mxPoint x="860" y="556" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z13bFP9ze9NZkMN8oaF5-2" parent="1" style="text;whiteSpace=wrap;html=1;align=left;" value="&lt;h1 data-section-id=&quot;w1yzd2&quot; data-start=&quot;103&quot; data-end=&quot;126&quot; style=&quot;text-align: center;&quot;&gt;&lt;font style=&quot;font-size: 25px;&quot;&gt;&amp;nbsp;CORE BUSINESS AREA&lt;/font&gt;&lt;/h1&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 25px;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;&lt;h3 data-section-id=&quot;1643t2l&quot; data-start=&quot;128&quot; data-end=&quot;144&quot; style=&quot;text-align: justify;&quot;&gt;&lt;span role=&quot;text&quot;&gt;&lt;strong data-start=&quot;132&quot; data-end=&quot;144&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;- VEHICLES&lt;/font&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/h3&gt;&lt;h1 data-section-id=&quot;chhn&quot; data-start=&quot;145&quot; data-end=&quot;173&quot; style=&quot;&quot;&gt;&lt;p data-start=&quot;145&quot; data-end=&quot;421&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Stores all vehicles available for rental. Includes identification data (&lt;code data-start=&quot;217&quot; data-end=&quot;237&quot;&gt;RegistrationNumber&lt;/code&gt;), characteristics (&lt;code data-start=&quot;257&quot; data-end=&quot;264&quot;&gt;Brand&lt;/code&gt;, &lt;code data-start=&quot;266&quot; data-end=&quot;273&quot;&gt;Model&lt;/code&gt;, &lt;code data-start=&quot;275&quot; data-end=&quot;281&quot;&gt;Year&lt;/code&gt;, &lt;code data-start=&quot;283&quot; data-end=&quot;293&quot;&gt;Category&lt;/code&gt;), pricing (&lt;code data-start=&quot;305&quot; data-end=&quot;316&quot;&gt;DailyRate&lt;/code&gt;), and status (&lt;code data-start=&quot;331&quot; data-end=&quot;339&quot;&gt;Status&lt;/code&gt;, &lt;code data-start=&quot;341&quot; data-end=&quot;351&quot;&gt;IsActive&lt;/code&gt;). Each vehicle is associated with a branch and the user who added it.&lt;/font&gt;&lt;/p&gt;&lt;p data-start=&quot;423&quot; data-end=&quot;511&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Index on: &lt;code data-start=&quot;436&quot; data-end=&quot;456&quot;&gt;RegistrationNumber&lt;/code&gt;, &lt;code data-start=&quot;458&quot; data-end=&quot;468&quot;&gt;Category&lt;/code&gt;, &lt;code data-start=&quot;470&quot; data-end=&quot;480&quot;&gt;BranchId&lt;/code&gt; for fast filtering and lookup.&lt;/font&gt;&lt;/p&gt;&lt;font style=&quot;&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;/font&gt;&lt;hr data-start=&quot;513&quot; data-end=&quot;516&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;&quot;&gt;&lt;div style=&quot;text-align: justify; font-size: 18px;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/font&gt;&lt;/h1&gt;&lt;h3 data-section-id=&quot;nm494c&quot; data-start=&quot;518&quot; data-end=&quot;533&quot; style=&quot;text-align: justify;&quot;&gt;&lt;span role=&quot;text&quot;&gt;&lt;strong data-start=&quot;522&quot; data-end=&quot;533&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;- CLIENTS&lt;/font&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/h3&gt;&lt;h1 data-section-id=&quot;chhn&quot; data-start=&quot;145&quot; data-end=&quot;173&quot; style=&quot;&quot;&gt;&lt;p data-start=&quot;534&quot; data-end=&quot;681&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Represents customers who rent vehicles. Contains contact information and important flags such as &lt;code data-start=&quot;631&quot; data-end=&quot;642&quot;&gt;IsFlagged&lt;/code&gt; (problematic customer) and &lt;code data-start=&quot;670&quot; data-end=&quot;680&quot;&gt;IsActive&lt;/code&gt;.&lt;/font&gt;&lt;/p&gt;&lt;p data-start=&quot;683&quot; data-end=&quot;750&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Index on: &lt;code data-start=&quot;696&quot; data-end=&quot;703&quot;&gt;Email&lt;/code&gt;, &lt;code data-start=&quot;705&quot; data-end=&quot;712&quot;&gt;Phone&lt;/code&gt;, &lt;code data-start=&quot;714&quot; data-end=&quot;724&quot;&gt;FullName&lt;/code&gt; for quick identification.&lt;/font&gt;&lt;/p&gt;&lt;font style=&quot;&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;/font&gt;&lt;hr data-start=&quot;752&quot; data-end=&quot;755&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;&quot;&gt;&lt;div style=&quot;text-align: justify; font-size: 18px;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/font&gt;&lt;/h1&gt;&lt;h3 data-section-id=&quot;133smt&quot; data-start=&quot;757&quot; data-end=&quot;772&quot; style=&quot;text-align: justify;&quot;&gt;&lt;span role=&quot;text&quot;&gt;&lt;strong data-start=&quot;761&quot; data-end=&quot;772&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;- RENTALS&lt;/font&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/h3&gt;&lt;h1 data-section-id=&quot;chhn&quot; data-start=&quot;145&quot; data-end=&quot;173&quot; style=&quot;&quot;&gt;&lt;p data-start=&quot;773&quot; data-end=&quot;991&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;The central table — links a client to a vehicle. Stores rental period (&lt;code data-start=&quot;844&quot; data-end=&quot;855&quot;&gt;StartDate&lt;/code&gt;, &lt;code data-start=&quot;857&quot; data-end=&quot;866&quot;&gt;EndDate&lt;/code&gt;), total cost, rental status, and optional cancellation reason. Also includes the users who created and completed the rental.&lt;/font&gt;&lt;/p&gt;&lt;p data-start=&quot;993&quot; data-end=&quot;1050&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Think: &lt;strong data-start=&quot;1003&quot; data-end=&quot;1050&quot;&gt;who + what + when + where + handled by whom&lt;/strong&gt;&lt;/font&gt;&lt;/p&gt;&lt;p data-start=&quot;1052&quot; data-end=&quot;1137&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Index on: &lt;code data-start=&quot;1065&quot; data-end=&quot;1076&quot;&gt;VehicleId&lt;/code&gt;, &lt;code data-start=&quot;1078&quot; data-end=&quot;1090&quot;&gt;CustomerId&lt;/code&gt;, &lt;code data-start=&quot;1092&quot; data-end=&quot;1102&quot;&gt;BranchId&lt;/code&gt;, &lt;code data-start=&quot;1104&quot; data-end=&quot;1112&quot;&gt;Status&lt;/code&gt;, &lt;code data-start=&quot;1114&quot; data-end=&quot;1125&quot;&gt;StartDate&lt;/code&gt;, &lt;code data-start=&quot;1127&quot; data-end=&quot;1136&quot;&gt;EndDate&lt;/code&gt;.&lt;/font&gt;&lt;/p&gt;&lt;font style=&quot;&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;/font&gt;&lt;hr data-start=&quot;1139&quot; data-end=&quot;1142&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;&quot;&gt;&lt;div style=&quot;text-align: justify; font-size: 18px;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/font&gt;&lt;/h1&gt;&lt;h3 data-section-id=&quot;1on1pdw&quot; data-start=&quot;1144&quot; data-end=&quot;1160&quot; style=&quot;text-align: justify;&quot;&gt;&lt;span role=&quot;text&quot;&gt;&lt;strong data-start=&quot;1148&quot; data-end=&quot;1160&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;- BRANCHES&lt;/font&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/h3&gt;&lt;h1 data-section-id=&quot;chhn&quot; data-start=&quot;145&quot; data-end=&quot;173&quot; style=&quot;&quot;&gt;&lt;p data-start=&quot;1161&quot; data-end=&quot;1325&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Represents physical locations (offices) of the company. Stores details such as city, address, and phone number. Optionally linked to a manager (&lt;code data-start=&quot;1305&quot; data-end=&quot;1323&quot;&gt;ManagerId → User&lt;/code&gt;).&lt;/font&gt;&lt;/p&gt;&lt;p data-start=&quot;1327&quot; data-end=&quot;1381&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Role: central hub for vehicles, users, and rentals.&lt;/font&gt;&lt;/p&gt;&lt;p data-start=&quot;1383&quot; data-end=&quot;1411&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Index on: &lt;code data-start=&quot;1396&quot; data-end=&quot;1402&quot; style=&quot;&quot;&gt;Name&lt;/code&gt;, &lt;code data-start=&quot;1404&quot; data-end=&quot;1410&quot; style=&quot;&quot;&gt;City&lt;/code&gt;.&lt;/font&gt;&lt;/p&gt;&lt;/h1&gt;" vertex="1">
+          <mxGeometry height="1520" width="500" x="-1625" y="-1130" as="geometry" />
+        </mxCell>
+        <mxCell id="z13bFP9ze9NZkMN8oaF5-4" parent="1" style="text;whiteSpace=wrap;html=1;align=left;" value="&lt;h1 data-section-id=&quot;1fuva3n&quot; data-start=&quot;1418&quot; data-end=&quot;1445&quot; style=&quot;text-align: center;&quot;&gt;&lt;font style=&quot;font-size: 25px;&quot;&gt;USER / OPERATIONS AREA&lt;/font&gt;&lt;/h1&gt;&lt;h3 data-section-id=&quot;kylzvo&quot; data-start=&quot;1447&quot; data-end=&quot;1460&quot; style=&quot;text-align: justify;&quot;&gt;&lt;span role=&quot;text&quot;&gt;&lt;strong data-start=&quot;1451&quot; data-end=&quot;1460&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/h3&gt;&lt;h3 data-section-id=&quot;kylzvo&quot; data-start=&quot;1447&quot; data-end=&quot;1460&quot; style=&quot;text-align: justify;&quot;&gt;&lt;span role=&quot;text&quot;&gt;&lt;strong data-start=&quot;1451&quot; data-end=&quot;1460&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;- USERS&lt;/font&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/h3&gt;&lt;h1 data-section-id=&quot;nxwiqm&quot; data-start=&quot;1478&quot; data-end=&quot;1520&quot; style=&quot;&quot;&gt;&lt;p data-start=&quot;1461&quot; data-end=&quot;1716&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Represents employees or system administrators (separate from Clients). Includes authentication data (&lt;code data-start=&quot;1562&quot; data-end=&quot;1572&quot;&gt;Username&lt;/code&gt;, &lt;code data-start=&quot;1574&quot; data-end=&quot;1588&quot;&gt;PasswordHash&lt;/code&gt;), role (&lt;code data-start=&quot;1597&quot; data-end=&quot;1603&quot;&gt;Role&lt;/code&gt;), and security mechanisms (&lt;code data-start=&quot;1631&quot; data-end=&quot;1641&quot;&gt;IsLocked&lt;/code&gt;, &lt;code data-start=&quot;1643&quot; data-end=&quot;1664&quot;&gt;FailedLoginAttempts&lt;/code&gt;, &lt;code data-start=&quot;1666&quot; data-end=&quot;1679&quot;&gt;LockedUntil&lt;/code&gt;). Can optionally belong to a branch.&lt;/font&gt;&lt;/p&gt;&lt;p data-start=&quot;1718&quot; data-end=&quot;1730&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Used for:&lt;/font&gt;&lt;/p&gt;&lt;ul data-start=&quot;1731&quot; data-end=&quot;1814&quot;&gt;&lt;li data-section-id=&quot;12sww5e&quot; data-start=&quot;1731&quot; data-end=&quot;1750&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;adding vehicles&lt;br&gt;&lt;/font&gt;&lt;/li&gt;&lt;font style=&quot;&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;/font&gt;&lt;li data-section-id=&quot;1nedkd5&quot; data-start=&quot;1751&quot; data-end=&quot;1782&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;creating/completing rentals&lt;br&gt;&lt;/font&gt;&lt;/li&gt;&lt;font style=&quot;&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;/font&gt;&lt;li data-section-id=&quot;1vpcouv&quot; data-start=&quot;1783&quot; data-end=&quot;1814&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;audit and security tracking&lt;/font&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p data-start=&quot;1816&quot; data-end=&quot;1869&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Index on: &lt;code data-start=&quot;1829&quot; data-end=&quot;1839&quot;&gt;Username&lt;/code&gt;, &lt;code data-start=&quot;1841&quot; data-end=&quot;1848&quot;&gt;Email&lt;/code&gt;, &lt;code data-start=&quot;1850&quot; data-end=&quot;1856&quot;&gt;Role&lt;/code&gt;, &lt;code data-start=&quot;1858&quot; data-end=&quot;1868&quot;&gt;BranchId&lt;/code&gt;.&lt;/font&gt;&lt;/p&gt;&lt;/h1&gt;" vertex="1">
+          <mxGeometry height="560" width="610" x="-1050" y="-1130" as="geometry" />
+        </mxCell>
+        <mxCell id="z13bFP9ze9NZkMN8oaF5-5" parent="1" style="text;whiteSpace=wrap;html=1;" value="&lt;h1 data-section-id=&quot;1aewep7&quot; data-start=&quot;1876&quot; data-end=&quot;1911&quot; style=&quot;text-align: center;&quot;&gt;&lt;font style=&quot;font-size: 25px;&quot;&gt;&amp;nbsp;AUTHENTICATION &amp;amp; SECURITY AREA&lt;/font&gt;&lt;/h1&gt;&lt;h3 data-section-id=&quot;1yekcsz&quot; data-start=&quot;1913&quot; data-end=&quot;1934&quot; style=&quot;text-align: justify;&quot;&gt;&lt;span role=&quot;text&quot;&gt;&lt;strong data-start=&quot;1917&quot; data-end=&quot;1934&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/h3&gt;&lt;h3 data-section-id=&quot;1yekcsz&quot; data-start=&quot;1913&quot; data-end=&quot;1934&quot; style=&quot;text-align: justify;&quot;&gt;&lt;span role=&quot;text&quot;&gt;&lt;strong data-start=&quot;1917&quot; data-end=&quot;1934&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;- REFRESHTOKENS&lt;/font&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/h3&gt;&lt;h1 data-section-id=&quot;15qozuq&quot; data-start=&quot;1944&quot; data-end=&quot;1983&quot; style=&quot;text-align: center;&quot;&gt;&lt;p data-start=&quot;1935&quot; data-end=&quot;2061&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Manages user sessions (JWT refresh tokens). Each token belongs to a user and includes expiration and revocation (&lt;code data-start=&quot;2048&quot; data-end=&quot;2059&quot;&gt;IsRevoked&lt;/code&gt;).&lt;/font&gt;&lt;/p&gt;&lt;p data-start=&quot;2063&quot; data-end=&quot;2094&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Index on: &lt;code data-start=&quot;2076&quot; data-end=&quot;2083&quot;&gt;Token&lt;/code&gt;, &lt;code data-start=&quot;2085&quot; data-end=&quot;2093&quot;&gt;UserId&lt;/code&gt;.&lt;/font&gt;&lt;/p&gt;&lt;p data-start=&quot;2063&quot; data-end=&quot;2094&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/p&gt;&lt;/h1&gt;&lt;h3 data-section-id=&quot;1izy5l9&quot; data-start=&quot;2101&quot; data-end=&quot;2123&quot; style=&quot;text-align: justify;&quot;&gt;&lt;span role=&quot;text&quot;&gt;&lt;strong data-start=&quot;2105&quot; data-end=&quot;2123&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;- SECURITYALERTS&lt;/font&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/h3&gt;&lt;h1 data-section-id=&quot;15qozuq&quot; data-start=&quot;1944&quot; data-end=&quot;1983&quot; style=&quot;text-align: center;&quot;&gt;&lt;p data-start=&quot;2124&quot; data-end=&quot;2265&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Stores security alerts associated with users (e.g., suspicious login attempts). Includes alert type, description, and read status (&lt;code data-start=&quot;2255&quot; data-end=&quot;2263&quot;&gt;IsRead&lt;/code&gt;).&lt;/font&gt;&lt;/p&gt;&lt;p data-start=&quot;2267&quot; data-end=&quot;2312&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Used for monitoring and incident response.&lt;/font&gt;&lt;/p&gt;&lt;/h1&gt;" vertex="1">
+          <mxGeometry height="517" width="610" x="-1050" y="-498.5" as="geometry" />
+        </mxCell>
+        <mxCell id="z13bFP9ze9NZkMN8oaF5-6" parent="1" style="text;whiteSpace=wrap;html=1;" value="&lt;h1 data-section-id=&quot;800h6e&quot; data-start=&quot;2319&quot; data-end=&quot;2334&quot; style=&quot;text-align: center;&quot;&gt;&lt;font style=&quot;font-size: 25px;&quot;&gt;AUDIT AREA&lt;/font&gt;&lt;/h1&gt;&lt;div style=&quot;text-align: center;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;&lt;h3 data-section-id=&quot;1aa0vks&quot; data-start=&quot;2336&quot; data-end=&quot;2353&quot; style=&quot;text-align: justify;&quot;&gt;&lt;span role=&quot;text&quot;&gt;&lt;strong data-start=&quot;2340&quot; data-end=&quot;2353&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;- AUDITLOGS&lt;/font&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/h3&gt;&lt;h1 data-section-id=&quot;1ctd1iy&quot; data-start=&quot;2450&quot; data-end=&quot;2468&quot; style=&quot;text-align: center;&quot;&gt;&lt;p data-start=&quot;2354&quot; data-end=&quot;2548&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Records all important actions performed in the system. Tracks affected entity (&lt;code data-start=&quot;2433&quot; data-end=&quot;2445&quot;&gt;EntityType&lt;/code&gt;, &lt;code data-start=&quot;2447&quot; data-end=&quot;2457&quot;&gt;EntityId&lt;/code&gt;), action type, details, timestamp, and the responsible user (nullable for system actions).&lt;br&gt;&lt;br&gt;&lt;/font&gt;&lt;/p&gt;&lt;p data-start=&quot;2550&quot; data-end=&quot;2585&quot; style=&quot;text-align: justify;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Think: &lt;strong data-start=&quot;2560&quot; data-end=&quot;2585&quot;&gt;who did what and when&lt;/strong&gt;&lt;/font&gt;&lt;/p&gt;&lt;font style=&quot;&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;font-size: 18px; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); font-weight: normal;&quot;&gt;&amp;nbsp;Index on: &lt;/span&gt;&lt;code data-start=&quot;2600&quot; data-end=&quot;2623&quot; style=&quot;font-size: 18px; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); font-weight: normal;&quot;&gt;EntityType + EntityId&lt;/code&gt;&lt;span style=&quot;font-size: 18px; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); font-weight: normal;&quot;&gt;, &lt;/span&gt;&lt;code data-start=&quot;2625&quot; data-end=&quot;2636&quot; style=&quot;font-size: 18px; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); font-weight: normal;&quot;&gt;Timestamp&lt;/code&gt;&lt;span style=&quot;font-size: 18px; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); font-weight: normal;&quot;&gt;, &lt;/span&gt;&lt;code data-start=&quot;2638&quot; data-end=&quot;2646&quot; style=&quot;font-size: 18px; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); font-weight: normal;&quot;&gt;UserId&lt;/code&gt;&lt;span style=&quot;font-size: 18px; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); font-weight: normal;&quot;&gt;.&lt;/span&gt;&lt;/div&gt;&lt;/font&gt;&lt;/h1&gt;" vertex="1">
+          <mxGeometry height="392" width="610" x="-1050" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="z13bFP9ze9NZkMN8oaF5-7" parent="1" style="text;whiteSpace=wrap;html=1;" value="&lt;h1 data-section-id=&quot;15gllum&quot; data-start=&quot;2654&quot; data-end=&quot;2676&quot; style=&quot;text-align: center;&quot;&gt;&lt;font style=&quot;font-size: 25px;&quot;&gt;KEY RELATIONSHIPS&lt;/font&gt;&lt;/h1&gt;&lt;h1 data-section-id=&quot;15gllum&quot; data-start=&quot;2654&quot; data-end=&quot;2676&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div class=&quot;TyagGW_tableContainer&quot;&gt;&lt;div tabindex=&quot;-1&quot; class=&quot;group TyagGW_tableWrapper flex flex-col-reverse w-fit&quot;&gt;&lt;table data-start=&quot;2678&quot; data-end=&quot;3202&quot; class=&quot;w-fit min-w-(--thread-content-width)&quot; style=&quot;text-align: justify;&quot;&gt;&lt;thead data-start=&quot;2678&quot; data-end=&quot;2701&quot;&gt;&lt;tr data-start=&quot;2678&quot; data-end=&quot;2701&quot;&gt;&lt;th data-start=&quot;2678&quot; data-end=&quot;2693&quot; data-col-size=&quot;md&quot; class=&quot;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;RELATIONSHIP&lt;br&gt;&lt;br&gt;&lt;/font&gt;&lt;/th&gt;&lt;th data-start=&quot;2693&quot; data-end=&quot;2701&quot; data-col-size=&quot;sm&quot; class=&quot;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;TYPE&lt;br&gt;&lt;br&gt;&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody data-start=&quot;2725&quot; data-end=&quot;3202&quot;&gt;&lt;tr data-start=&quot;2725&quot; data-end=&quot;2761&quot;&gt;&lt;td data-start=&quot;2725&quot; data-end=&quot;2746&quot; data-col-size=&quot;md&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Rentals → Vehicles&lt;/font&gt;&lt;/td&gt;&lt;td data-col-size=&quot;sm&quot; data-start=&quot;2746&quot; data-end=&quot;2761&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Many-to-One&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr data-start=&quot;2762&quot; data-end=&quot;2797&quot;&gt;&lt;td data-start=&quot;2762&quot; data-end=&quot;2782&quot; data-col-size=&quot;md&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Rentals → Clients&lt;/font&gt;&lt;/td&gt;&lt;td data-start=&quot;2782&quot; data-end=&quot;2797&quot; data-col-size=&quot;sm&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Many-to-One&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr data-start=&quot;2798&quot; data-end=&quot;2834&quot;&gt;&lt;td data-start=&quot;2798&quot; data-end=&quot;2819&quot; data-col-size=&quot;md&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Rentals → Branches&lt;/font&gt;&lt;/td&gt;&lt;td data-col-size=&quot;sm&quot; data-start=&quot;2819&quot; data-end=&quot;2834&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Many-to-One&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr data-start=&quot;2835&quot; data-end=&quot;2894&quot;&gt;&lt;td data-start=&quot;2835&quot; data-end=&quot;2879&quot; data-col-size=&quot;md&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Rentals → Users (CreatedBy / CompletedBy)&lt;/font&gt;&lt;/td&gt;&lt;td data-col-size=&quot;sm&quot; data-start=&quot;2879&quot; data-end=&quot;2894&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Many-to-One&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr data-start=&quot;2895&quot; data-end=&quot;2932&quot;&gt;&lt;td data-start=&quot;2895&quot; data-end=&quot;2917&quot; data-col-size=&quot;md&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Vehicles → Branches&lt;/font&gt;&lt;/td&gt;&lt;td data-col-size=&quot;sm&quot; data-start=&quot;2917&quot; data-end=&quot;2932&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Many-to-One&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr data-start=&quot;2933&quot; data-end=&quot;2977&quot;&gt;&lt;td data-start=&quot;2933&quot; data-end=&quot;2962&quot; data-col-size=&quot;md&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Vehicles → Users (AddedBy)&lt;/font&gt;&lt;/td&gt;&lt;td data-col-size=&quot;sm&quot; data-start=&quot;2962&quot; data-end=&quot;2977&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Many-to-One&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr data-start=&quot;2978&quot; data-end=&quot;3023&quot;&gt;&lt;td data-start=&quot;2978&quot; data-end=&quot;2997&quot; data-col-size=&quot;md&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Users → Branches&lt;/font&gt;&lt;/td&gt;&lt;td data-col-size=&quot;sm&quot; data-start=&quot;2997&quot; data-end=&quot;3023&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Many-to-One (optional)&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr data-start=&quot;3024&quot; data-end=&quot;3078&quot;&gt;&lt;td data-start=&quot;3024&quot; data-end=&quot;3053&quot; data-col-size=&quot;md&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Branches → Users (Manager)&lt;/font&gt;&lt;/td&gt;&lt;td data-col-size=&quot;sm&quot; data-start=&quot;3053&quot; data-end=&quot;3078&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;One-to-One (optional)&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr data-start=&quot;3079&quot; data-end=&quot;3118&quot;&gt;&lt;td data-start=&quot;3079&quot; data-end=&quot;3103&quot; data-col-size=&quot;md&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Users → RefreshTokens&lt;/font&gt;&lt;/td&gt;&lt;td data-col-size=&quot;sm&quot; data-start=&quot;3103&quot; data-end=&quot;3118&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;One-to-Many&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr data-start=&quot;3119&quot; data-end=&quot;3159&quot;&gt;&lt;td data-start=&quot;3119&quot; data-end=&quot;3144&quot; data-col-size=&quot;md&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Users → SecurityAlerts&lt;/font&gt;&lt;/td&gt;&lt;td data-col-size=&quot;sm&quot; data-start=&quot;3144&quot; data-end=&quot;3159&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;One-to-Many&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr data-start=&quot;3160&quot; data-end=&quot;3202&quot;&gt;&lt;td data-start=&quot;3160&quot; data-end=&quot;3180&quot; data-col-size=&quot;md&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Users → AuditLogs&lt;/font&gt;&lt;/td&gt;&lt;td data-col-size=&quot;sm&quot; data-start=&quot;3180&quot; data-end=&quot;3202&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;One-to-Many (0..1)&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/div&gt;&lt;/h1&gt;&lt;h1 data-section-id=&quot;1hiq2qd&quot; data-start=&quot;2802&quot; data-end=&quot;2822&quot; style=&quot;text-align: center;&quot;&gt;&lt;div class=&quot;TyagGW_tableContainer&quot;&gt;&lt;div tabindex=&quot;-1&quot; class=&quot;group TyagGW_tableWrapper flex flex-col-reverse w-fit&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/h1&gt;&lt;div class=&quot;TyagGW_tableContainer&quot;&gt;&lt;div tabindex=&quot;-1&quot; class=&quot;group TyagGW_tableWrapper flex flex-col-reverse w-fit&quot;&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="530" width="630" x="-1350" y="533" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
