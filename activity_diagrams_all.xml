@@ -1,0 +1,657 @@
+<mxfile host="app.diagrams.net" pages="4">
+  <diagram id="op_page" name="Operator">
+    <mxGraphModel dx="1230" dy="646" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="op_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;" value="ACTIVITY DIAGRAM — CREATE RENTAL CONTRACT" vertex="1">
+          <mxGeometry height="40" width="700" x="150" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="op_lane_op" parent="1" style="swimlane;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontStyle=1;html=1;" value="OPERATOR" vertex="1">
+          <mxGeometry height="1490" width="280" x="20" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="op_dec_confirm" parent="op_lane_op" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Operator&#xa;confirms?" vertex="1">
+          <mxGeometry height="60" width="130" x="75" y="1010" as="geometry" />
+        </mxCell>
+        <mxCell id="op_review" parent="op_lane_op" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Review Details and Confirm" vertex="1">
+          <mxGeometry height="50" width="180" x="50" y="905" as="geometry" />
+        </mxCell>
+        <mxCell id="op_f16" edge="1" parent="op_lane_op" source="op_review" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="op_dec_confirm">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="op_enter_dates" parent="op_lane_op" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Enter Start Date and End Date" vertex="1">
+          <mxGeometry height="50" width="180" x="50" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="op_search_veh" parent="op_lane_op" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Search Vehicle by&#xa;Category / Registration" vertex="1">
+          <mxGeometry height="60" width="180" x="50" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="op_search_cust" parent="op_lane_op" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Search Customer by Name / Email" vertex="1">
+          <mxGeometry height="50" width="180" x="50" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="op_f17" edge="1" parent="op_lane_op" source="op_dec_confirm" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="op_search_cust" value="No">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="20" y="1040" />
+              <mxPoint x="20" y="235" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="op_open_form" parent="op_lane_op" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Open New Rental Form" vertex="1">
+          <mxGeometry height="50" width="180" x="50" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="op_f2" edge="1" parent="op_lane_op" source="op_open_form" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="op_search_cust">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="op_lane_sys" parent="1" style="swimlane;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;" value="SYSTEM (ASP.NET Core)" vertex="1">
+          <mxGeometry height="1490" width="300" x="310" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="op_validate_cust" parent="op_lane_sys" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Validate Customer&#xa;(exists, not flagged, not inactive)" vertex="1">
+          <mxGeometry height="60" width="220" x="20" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="op_dec_cust" parent="op_lane_sys" style="rhombus;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Customer&#xa;valid?" vertex="1">
+          <mxGeometry height="60" width="130" x="65" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="op_f4" edge="1" parent="op_lane_sys" source="op_validate_cust" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="op_dec_cust">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="op_dec_veh" parent="op_lane_sys" style="rhombus;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Vehicle&#xa;available?" vertex="1">
+          <mxGeometry height="60" width="130" x="65" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="op_calc_cost" parent="op_lane_sys" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Calculate Total Cost&#xa;(days x DailyRate)" vertex="1">
+          <mxGeometry height="50" width="220" x="40" y="905" as="geometry" />
+        </mxCell>
+        <mxCell id="op_check_overlap" parent="op_lane_sys" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Check Period Overlap for Vehicle" vertex="1">
+          <mxGeometry height="50" width="220" x="40" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="op_dec_overlap" parent="op_lane_sys" style="rhombus;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Overlap&#xa;detected?" vertex="1">
+          <mxGeometry height="60" width="130" x="85" y="785" as="geometry" />
+        </mxCell>
+        <mxCell id="op_f12" edge="1" parent="op_lane_sys" source="op_check_overlap" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="op_dec_overlap">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="op_f14" edge="1" parent="op_lane_sys" source="op_dec_overlap" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" target="op_calc_cost" value="No">
+          <mxGeometry relative="1" x="-0.2171" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="150" y="870" />
+              <mxPoint x="205" y="870" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="op_lane_db" parent="1" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;" value="DATABASE (SQL Server)" vertex="1">
+          <mxGeometry height="1490" width="230" x="620" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="op_err_cust" parent="op_lane_db" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Show Error: Customer&#xa;flagged or not found" vertex="1">
+          <mxGeometry height="50" width="200" x="15" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="op_err_veh" parent="op_lane_db" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Show Error:&#xa;Vehicle not available" vertex="1">
+          <mxGeometry height="50" width="200" x="15" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="op_err_overlap" parent="op_lane_db" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Show Warning: Period&#xa;overlaps existing booking" vertex="1">
+          <mxGeometry height="50" width="200" x="15" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="op_start" parent="1" style="ellipse;aspect=fixed;fillColor=#000000;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="150" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="op_validate_veh" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Validate Vehicle&#xa;(exists, Active, Available)" vertex="1">
+          <mxGeometry height="60" width="220" x="330" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="op_save_rental" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="INSERT INTO Rentals&#xa;(Status = Active)" vertex="1">
+          <mxGeometry height="50" width="185" x="645" y="1080" as="geometry" />
+        </mxCell>
+        <mxCell id="op_update_veh" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="UPDATE Vehicles&#xa;SET Status = Rented" vertex="1">
+          <mxGeometry height="50" width="185" x="645" y="1175" as="geometry" />
+        </mxCell>
+        <mxCell id="op_audit" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="INSERT INTO AuditLogs&#xa;(Action = RentalCreated)" vertex="1">
+          <mxGeometry height="50" width="185" x="645" y="1270" as="geometry" />
+        </mxCell>
+        <mxCell id="op_success" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Show Success:&#xa;Rental Contract Created" vertex="1">
+          <mxGeometry height="50" width="220" x="330" y="1380" as="geometry" />
+        </mxCell>
+        <mxCell id="op_end" parent="1" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#ffffff;strokeWidth=3;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="435" y="1480" as="geometry" />
+        </mxCell>
+        <mxCell id="op_f1" edge="1" parent="1" source="op_start" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="op_open_form">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="op_f3" edge="1" parent="1" source="op_search_cust" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="op_validate_cust">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="op_f5" edge="1" parent="1" source="op_dec_cust" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="op_err_cust" value="No">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="op_f5b" edge="1" parent="1" source="op_err_cust" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="op_search_cust" value="retry">
+          <mxGeometry relative="1" x="-0.0331" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="670" y="440" />
+              <mxPoint x="670" y="480" />
+              <mxPoint x="200" y="480" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="op_f6" edge="1" parent="1" source="op_dec_cust" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" value="Yes">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="260" y="400" />
+              <mxPoint x="260" y="450" />
+              <mxPoint x="160" y="450" />
+            </Array>
+            <mxPoint x="160" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="op_f7" edge="1" parent="1" source="op_search_veh" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="op_validate_veh">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="op_f8" edge="1" parent="1" source="op_validate_veh" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="op_dec_veh">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="op_f9" edge="1" parent="1" source="op_dec_veh" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="op_err_veh" value="No">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="op_f9b" edge="1" parent="1" source="op_err_veh" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="op_search_veh" value="retry">
+          <mxGeometry relative="1" x="-0.1226" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="735" y="720" />
+              <mxPoint x="270" y="720" />
+              <mxPoint x="270" y="600" />
+              <mxPoint x="160" y="600" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="op_f10" edge="1" parent="1" source="op_dec_veh" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="op_enter_dates" value="Yes">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="160" y="655" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="op_f11" edge="1" parent="1" source="op_enter_dates" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="op_check_overlap">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="op_f13" edge="1" parent="1" source="op_dec_overlap" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="op_err_overlap" value="Yes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="op_f13b" edge="1" parent="1" source="op_err_overlap" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="op_enter_dates" value="retry">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="735" y="950" />
+              <mxPoint x="205" y="950" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="op_f15" edge="1" parent="1" source="op_calc_cost" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="op_review">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="op_f18" edge="1" parent="1" source="op_dec_confirm" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="op_save_rental" value="Yes">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="225" y="1105" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="op_f19" edge="1" parent="1" source="op_save_rental" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="op_update_veh">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="op_f20" edge="1" parent="1" source="op_update_veh" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="op_audit">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="op_f21" edge="1" parent="1" source="op_audit" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="op_success">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="580" y="1295" />
+              <mxPoint x="580" y="1405" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="op_f22" edge="1" parent="1" source="op_success" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="op_end">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="adm_page" name="Admin">
+    <mxGraphModel dx="1347" dy="708" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="adm_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;" value="ACTIVITY DIAGRAM — ADD STAFF MEMBER (MANAGER / OPERATOR)" vertex="1">
+          <mxGeometry height="40" width="780" x="60" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_lane_adm" parent="1" style="swimlane;startSize=30;fillColor=#c9daf8;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;html=1;" value="ADMINISTRATOR" vertex="1">
+          <mxGeometry height="1190" width="280" x="20" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_lane_sys" parent="1" style="swimlane;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;" value="SYSTEM (ASP.NET Core)" vertex="1">
+          <mxGeometry height="1190" width="300" x="310" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_validate" parent="adm_lane_sys" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Validate Input&#xa;(Email unique, branch exists,&#xa;fields complete)" vertex="1">
+          <mxGeometry height="70" width="230" x="25" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_dec_valid" parent="adm_lane_sys" style="rhombus;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Input&#xa;valid?" vertex="1">
+          <mxGeometry height="60" width="120" x="80" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_e5" edge="1" parent="adm_lane_sys" source="adm_validate" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="adm_dec_valid">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_lane_db" parent="1" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;" value="DATABASE (SQL Server)" vertex="1">
+          <mxGeometry height="1190" width="230" x="620" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_err_input" parent="adm_lane_db" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Show Error:&#xa;Invalid data or duplicate email" vertex="1">
+          <mxGeometry height="55" width="200" x="25" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_start" parent="1" style="ellipse;aspect=fixed;fillColor=#000000;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="150" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_open" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c9daf8;strokeColor=#6c8ebf;" value="Open Staff Management Panel" vertex="1">
+          <mxGeometry height="50" width="180" x="65" y="185" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_select_role" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c9daf8;strokeColor=#6c8ebf;" value="Select Role&#xa;(Manager / Operator)" vertex="1">
+          <mxGeometry height="50" width="180" x="65" y="285" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_fill_form" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c9daf8;strokeColor=#6c8ebf;" value="Fill in Staff Details&#xa;(Name, Email, Branch, Phone)" vertex="1">
+          <mxGeometry height="60" width="180" x="65" y="385" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_create_acc" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Create Account &amp;&#xa;Generate Temporary Password" vertex="1">
+          <mxGeometry height="55" width="230" x="330" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_assign_branch" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Assign Staff to Branch&#xa;and Set Permissions" vertex="1">
+          <mxGeometry height="55" width="230" x="330" y="735" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_insert_user" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="INSERT INTO Users&#xa;(Role, BranchId, Status=Active)" vertex="1">
+          <mxGeometry height="55" width="185" x="645" y="735" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_insert_audit" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="INSERT INTO AuditLogs&#xa;(Action = StaffAdded)" vertex="1">
+          <mxGeometry height="55" width="185" x="645" y="840" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_send_email" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Send Welcome Email&#xa;with Login Credentials" vertex="1">
+          <mxGeometry height="55" width="230" x="330" y="960" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_success" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Show Success:&#xa;Staff Member Created" vertex="1">
+          <mxGeometry height="50" width="230" x="330" y="1070" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_end" parent="1" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#ffffff;strokeWidth=3;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="430" y="1175" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_e1" edge="1" parent="1" source="adm_start" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="adm_open">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_e2" edge="1" parent="1" source="adm_open" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="adm_select_role">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_e3" edge="1" parent="1" source="adm_select_role" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="adm_fill_form">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_e4" edge="1" parent="1" source="adm_fill_form" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="adm_validate">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_e6" edge="1" parent="1" source="adm_dec_valid" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="adm_err_input" value="No">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_e6b" edge="1" parent="1" source="adm_err_input" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="adm_fill_form" value="retry">
+          <mxGeometry relative="1" x="-0.2671" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="745" y="540" />
+              <mxPoint x="300" y="540" />
+              <mxPoint x="300" y="500" />
+              <mxPoint x="200" y="500" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="adm_e7" edge="1" parent="1" source="adm_dec_valid" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="adm_create_acc" value="Yes">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="445" y="590" />
+              <mxPoint x="445" y="630" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="adm_e8" edge="1" parent="1" source="adm_create_acc" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="adm_assign_branch">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_e9" edge="1" parent="1" source="adm_assign_branch" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="adm_insert_user">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_e10" edge="1" parent="1" source="adm_insert_user" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="adm_insert_audit">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_e11" edge="1" parent="1" source="adm_insert_audit" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="adm_send_email">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="868" />
+              <mxPoint x="600" y="988" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="adm_e12" edge="1" parent="1" source="adm_send_email" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="adm_success">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="adm_e13" edge="1" parent="1" source="adm_success" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="adm_end">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="mgr_page" name="Manager">
+    <mxGraphModel dx="1347" dy="708" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="mgr_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;" value="ACTIVITY DIAGRAM — ADD VEHICLE TO FLEET" vertex="1">
+          <mxGeometry height="40" width="700" x="150" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_lane_mgr" parent="1" style="swimlane;startSize=30;fillColor=#b6d7a8;strokeColor=#82b366;fontSize=13;fontStyle=1;html=1;" value="BRANCH MANAGER" vertex="1">
+          <mxGeometry height="1400" width="280" x="20" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_lane_sys" parent="1" style="swimlane;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;" value="SYSTEM (ASP.NET Core)" vertex="1">
+          <mxGeometry height="1400" width="300" x="310" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_validate" parent="mgr_lane_sys" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Validate Vehicle Data&#xa;(Plate unique, required&#xa;fields complete)" vertex="1">
+          <mxGeometry height="70" width="230" x="35" y="245" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_dec_valid" parent="mgr_lane_sys" style="rhombus;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Form&#xa;valid?" vertex="1">
+          <mxGeometry height="60" width="120" x="90" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_e5" edge="1" parent="mgr_lane_sys" source="mgr_validate" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="mgr_dec_valid">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_check_branch" parent="mgr_lane_sys" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Verify Manager Branch&lt;br&gt;and Assign Branch_ID" vertex="1">
+          <mxGeometry height="55" width="230" x="20" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_e7" edge="1" parent="mgr_lane_sys" source="mgr_dec_valid" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="mgr_check_branch" value="Yes">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="150" y="500" />
+              <mxPoint x="150" y="500" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mgr_prepare" parent="mgr_lane_sys" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Prepare Vehicle Record&#xa;(Status = Available)" vertex="1">
+          <mxGeometry height="55" width="230" x="20" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_e8" edge="1" parent="mgr_lane_sys" source="mgr_check_branch" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="mgr_prepare">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_success" parent="mgr_lane_sys" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Show Success:&#xa;Vehicle Added to Fleet" vertex="1">
+          <mxGeometry height="50" width="230" x="20" y="860" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_lane_db" parent="1" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;" value="DATABASE (SQL Server)" vertex="1">
+          <mxGeometry height="1400" width="230" x="620" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_err_plate" parent="mgr_lane_db" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Show Error:&#xa;Plate already registered&#xa;or missing fields" vertex="1">
+          <mxGeometry height="65" width="200" x="15" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_start" parent="1" style="ellipse;aspect=fixed;fillColor=#000000;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="150" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_open" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b6d7a8;strokeColor=#82b366;" value="Open Vehicle Management Panel" vertex="1">
+          <mxGeometry height="50" width="180" x="65" y="185" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_click_add" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b6d7a8;strokeColor=#82b366;" value="Click &#39;Add New Vehicle&#39;" vertex="1">
+          <mxGeometry height="50" width="180" x="65" y="285" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_fill_form" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b6d7a8;strokeColor=#82b366;" value="Fill Vehicle Form&#xa;(Plate, Brand, Model,&#xa;Category, Daily Rate)" vertex="1">
+          <mxGeometry height="70" width="180" x="65" y="385" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_insert_veh" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="INSERT INTO Vehicles&#xa;(Status=Available, BranchId)" vertex="1">
+          <mxGeometry height="55" width="185" x="645" y="745" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_insert_audit" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="INSERT INTO AuditLogs&#xa;(Action = VehicleAdded)" vertex="1">
+          <mxGeometry height="55" width="185" x="645" y="850" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_confirm_view" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b6d7a8;strokeColor=#82b366;" value="View Added Vehicle&#xa;in Fleet List" vertex="1">
+          <mxGeometry height="55" width="180" x="65" y="960" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_dec_another" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#b6d7a8;strokeColor=#82b366;" value="Add another&#xa;vehicle?" vertex="1">
+          <mxGeometry height="60" width="130" x="100" y="1075" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_end" parent="1" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#ffffff;strokeWidth=3;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="430" y="1200" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_e1" edge="1" parent="1" source="mgr_start" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="mgr_open">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_e2" edge="1" parent="1" source="mgr_open" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="mgr_click_add">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_e3" edge="1" parent="1" source="mgr_click_add" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="mgr_fill_form">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_e4" edge="1" parent="1" source="mgr_fill_form" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="mgr_validate">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_e6" edge="1" parent="1" source="mgr_dec_valid" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="mgr_err_plate" value="No">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_e6b" edge="1" parent="1" source="mgr_err_plate" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="mgr_fill_form" value="retry">
+          <mxGeometry relative="1" x="-0.3475" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="735" y="570" />
+              <mxPoint x="200" y="570" />
+            </Array>
+            <mxPoint x="200" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mgr_e9" edge="1" parent="1" source="mgr_prepare" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="mgr_insert_veh">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_e10" edge="1" parent="1" source="mgr_insert_veh" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="mgr_insert_audit">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_e11" edge="1" parent="1" source="mgr_insert_audit" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="mgr_success">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="878" />
+              <mxPoint x="600" y="955" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mgr_e12" edge="1" parent="1" source="mgr_success" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="mgr_confirm_view">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_e13" edge="1" parent="1" source="mgr_confirm_view" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="mgr_dec_another">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr_e14" edge="1" parent="1" source="mgr_dec_another" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="mgr_click_add" value="Yes">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="40" y="1105" />
+              <mxPoint x="40" y="310" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mgr_e15" edge="1" parent="1" source="mgr_dec_another" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="mgr_end" value="No">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="560" y="1105" />
+              <mxPoint x="560" y="1215" />
+              <mxPoint x="445" y="1215" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="cli_page" name="Client">
+    <mxGraphModel dx="2828" dy="1486" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="cli_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;" value="ACTIVITY DIAGRAM — VIEW AVAILABLE VEHICLES &amp; RENTAL HISTORY" vertex="1">
+          <mxGeometry height="40" width="820" x="50" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_lane_cli" parent="1" style="swimlane;startSize=30;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;fontStyle=1;html=1;" value="CLIENT" vertex="1">
+          <mxGeometry height="1350" width="280" x="20" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_lane_sys" parent="1" style="swimlane;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;" value="SYSTEM (ASP.NET Core)" vertex="1">
+          <mxGeometry height="1350" width="300" x="310" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_auth" parent="cli_lane_sys" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Authenticate Client&#xa;(Check credentials)" vertex="1">
+          <mxGeometry height="55" width="230" x="20" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_dec_auth" parent="cli_lane_sys" style="rhombus;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Credentials&#xa;valid?" vertex="1">
+          <mxGeometry height="60" width="120" x="75" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_e3" edge="1" parent="cli_lane_sys" source="cli_auth" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="cli_dec_auth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_display_list" parent="cli_lane_sys" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Display Available Vehicles&#xa;with Details and Rates" vertex="1">
+          <mxGeometry height="55" width="230" x="30" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_lane_db" parent="1" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;" value="DATABASE (SQL Server)" vertex="1">
+          <mxGeometry height="1350" width="230" x="620" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_err_auth" parent="cli_lane_db" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Show Error:&#xa;Invalid credentials" vertex="1">
+          <mxGeometry height="50" width="200" x="17.5" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_query_veh" parent="cli_lane_db" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="SELECT Vehicles&#xa;WHERE Status=Available&#xa;AND no date overlap" vertex="1">
+          <mxGeometry height="65" width="185" x="25" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_no_results" parent="cli_lane_db" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Show: No Vehicles Available&#xa;for Selected Criteria" vertex="1">
+          <mxGeometry height="50" width="200" x="17.5" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_query_hist" parent="cli_lane_db" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="SELECT FROM Rentals&#xa;WHERE CustomerId = X&#xa;ORDER BY StartDate DESC" vertex="1">
+          <mxGeometry height="65" width="185" x="25" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_start" parent="1" style="ellipse;aspect=fixed;fillColor=#000000;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="150" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_access" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="Access Client Portal&#xa;(Login with Credentials)" vertex="1">
+          <mxGeometry height="55" width="180" x="65" y="185" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_select_filter" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="Select Filters&#xa;(Category, Location, Dates)" vertex="1">
+          <mxGeometry height="55" width="180" x="65" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_fetch_veh" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Request Available Vehicles&#xa;for Selected Period" vertex="1">
+          <mxGeometry height="55" width="230" x="330" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_dec_found" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Results&#xa;found?" vertex="1">
+          <mxGeometry height="60" width="120" x="385" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_browse" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="Browse Vehicle List&#xa;and View Details" vertex="1">
+          <mxGeometry height="55" width="180" x="65" y="685" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_select_history" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="Select &#39;My Rental History&#39;" vertex="1">
+          <mxGeometry height="50" width="180" x="65" y="815" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_fetch_hist" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Fetch Client Rental History" vertex="1">
+          <mxGeometry height="50" width="230" x="330" y="815" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_display_hist" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Display Rental History&#xa;with Status and Details" vertex="1">
+          <mxGeometry height="55" width="230" x="330" y="945" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_review" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="Review Past and&#xa;Active Rentals" vertex="1">
+          <mxGeometry height="55" width="180" x="65" y="945" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_logout" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="Logout from Portal" vertex="1">
+          <mxGeometry height="50" width="180" x="65" y="1065" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_end" parent="1" style="ellipse;aspect=fixed;fillColor=#000000;strokeColor=#ffffff;strokeWidth=3;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="430" y="1165" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_e1" edge="1" parent="1" source="cli_start" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="cli_access">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_e2" edge="1" parent="1" source="cli_access" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="cli_auth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_e4" edge="1" parent="1" source="cli_dec_auth" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="cli_err_auth" value="No">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_e4b" edge="1" parent="1" source="cli_err_auth" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="cli_access" value="retry">
+          <mxGeometry relative="1" x="-0.3378" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="737" y="370" />
+              <mxPoint x="250" y="370" />
+              <mxPoint x="250" y="280" />
+              <mxPoint x="200" y="280" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cli_e5" edge="1" parent="1" source="cli_dec_auth" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" value="Yes">
+          <mxGeometry relative="1" x="0.3248" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="270" y="310" />
+              <mxPoint x="270" y="340" />
+              <mxPoint x="120" y="340" />
+            </Array>
+            <mxPoint x="120" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cli_e6" edge="1" parent="1" source="cli_select_filter" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="cli_fetch_veh">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_e7" edge="1" parent="1" source="cli_fetch_veh" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="cli_query_veh">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_e8" edge="1" parent="1" source="cli_query_veh" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="cli_dec_found">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="691" y="530" />
+              <mxPoint x="445" y="530" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cli_e9" edge="1" parent="1" source="cli_dec_found" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="cli_no_results" value="No">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_e9b" edge="1" parent="1" source="cli_no_results" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="cli_select_filter" value="retry">
+          <mxGeometry relative="1" x="-0.4114" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="737" y="640" />
+              <mxPoint x="200" y="640" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cli_e10" edge="1" parent="1" source="cli_dec_found" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="cli_display_list" value="Yes">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="445" y="640" />
+              <mxPoint x="445" y="685" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cli_e11" edge="1" parent="1" source="cli_display_list" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="cli_browse">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_e12" edge="1" parent="1" source="cli_browse" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="cli_select_history">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_e13" edge="1" parent="1" source="cli_select_history" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="cli_fetch_hist">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_e14" edge="1" parent="1" source="cli_fetch_hist" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="cli_query_hist">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_e15" edge="1" parent="1" source="cli_query_hist" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="cli_display_hist">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="691" y="973" />
+              <mxPoint x="650" y="973" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cli_e16" edge="1" parent="1" source="cli_display_hist" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="cli_review">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_e17" edge="1" parent="1" source="cli_review" style="edgeStyle=orthogonalEdgeStyle;html=1;" target="cli_logout">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cli_e18" edge="1" parent="1" source="cli_logout" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="cli_end">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="560" y="1090" />
+              <mxPoint x="560" y="1180" />
+              <mxPoint x="460" y="1180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

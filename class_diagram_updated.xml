@@ -1,0 +1,324 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="V7clAcJ5PEGD8TfEjBEC" name="Page-1">
+    <mxGraphModel dx="6367" dy="3646" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;" value="CLASS DIAGRAM — CAR RENTAL SYSTEM" vertex="1">
+          <mxGeometry height="40" width="700" x="110" y="-330" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_branch" parent="1" style="swimlane;fontStyle=1;align=center;startSize=30;fillColor=#f8cecc;strokeColor=#b85450;" value="Branch" vertex="1">
+          <mxGeometry height="523" width="300" x="-90" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_branch_a" parent="cls_branch" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="- id: int&#xa;- name: string&#xa;- city: string&#xa;- address: string&#xa;- phone: string&#xa;- managerId: int?&#xa;- isActive: bool&#xa;- createdAt: DateTime&#xa;- updatedAt: DateTime" vertex="1">
+          <mxGeometry height="152" width="300" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_branch_sep" parent="cls_branch" style="line;strokeColor=#b85450;" value="" vertex="1">
+          <mxGeometry height="5" width="300" y="182" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_branch_m" parent="cls_branch" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="+ GetId(): int&#xa;+ GetName(): string&#xa;+ GetCity(): string&#xa;+ GetAddress(): string&#xa;+ GetPhone(): string&#xa;+ GetManagerId(): int?&#xa;+ GetIsActive(): bool&#xa;+ GetCreatedAt(): DateTime&#xa;+ GetUpdatedAt(): DateTime&#xa;+ SetName(value: string): void&#xa;+ SetCity(value: string): void&#xa;+ SetAddress(value: string): void&#xa;+ SetPhone(value: string): void&#xa;+ SetManagerId(value: int?): void&#xa;+ SetIsActive(value: bool): void&#xa;  ─────────────────────&#xa;+ AddBranch(): void&#xa;+ EditBranch(): void&#xa;+ Deactivate(): void&#xa;+ AssignManager(userId: int): void" vertex="1">
+          <mxGeometry height="328" width="300" y="187" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_vehicle" parent="1" style="swimlane;fontStyle=1;align=center;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Vehicle" vertex="1">
+          <mxGeometry height="683" width="320" x="350" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_vehicle_a" parent="cls_vehicle" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="- id: int&#xa;- registrationNumber: string&#xa;- branchId: int&#xa;- addedByUserId: int&#xa;- brand: string&#xa;- model: string&#xa;- year: int&#xa;- category: VehicleCategory&#xa;- dailyRate: decimal&#xa;- status: VehicleStatus&#xa;- isActive: bool&#xa;- createdAt: DateTime&#xa;- updatedAt: DateTime" vertex="1">
+          <mxGeometry height="216" width="320" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_vehicle_sep" parent="cls_vehicle" style="line;strokeColor=#6c8ebf;" value="" vertex="1">
+          <mxGeometry height="5" width="320" y="246" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_vehicle_m" parent="cls_vehicle" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="+ GetId(): int&#xa;+ GetRegistrationNumber(): string&#xa;+ GetBranchId(): int&#xa;+ GetAddedByUserId(): int&#xa;+ GetBrand(): string&#xa;+ GetModel(): string&#xa;+ GetYear(): int&#xa;+ GetCategory(): VehicleCategory&#xa;+ GetDailyRate(): decimal&#xa;+ GetStatus(): VehicleStatus&#xa;+ GetIsActive(): bool&#xa;+ GetCreatedAt(): DateTime&#xa;+ GetUpdatedAt(): DateTime&#xa;+ SetRegistrationNumber(value: string): void&#xa;+ SetBranchId(value: int): void&#xa;+ SetAddedByUserId(value: int): void&#xa;+ SetBrand(value: string): void&#xa;+ SetModel(value: string): void&#xa;+ SetYear(value: int): void&#xa;+ SetCategory(value: VehicleCategory): void&#xa;+ SetDailyRate(value: decimal): void&#xa;+ SetStatus(value: VehicleStatus): void&#xa;+ SetIsActive(value: bool): void&#xa;  ─────────────────────&#xa;+ Deactivate(): void&#xa;+ ChangeStatus(status: VehicleStatus): void" vertex="1">
+          <mxGeometry height="424" width="320" y="251" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_rental" parent="1" style="swimlane;fontStyle=1;align=center;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;" value="Rental" vertex="1">
+          <mxGeometry height="763" width="320" x="730" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_rental_a" parent="cls_rental" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="- id: int&#xa;- vehicleId: int&#xa;- clientId: int&#xa;- branchId: int&#xa;- createdByUserId: int&#xa;- completedByUserId: int?&#xa;- startDate: DateTime&#xa;- endDate: DateTime&#xa;- totalCost: decimal&#xa;- status: RentalStatus&#xa;- cancellationReason: string?&#xa;- rowVersion: byte[]&#xa;- createdAt: DateTime&#xa;- updatedAt: DateTime" vertex="1">
+          <mxGeometry height="232" width="320" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_rental_sep" parent="cls_rental" style="line;strokeColor=#d6b656;" value="" vertex="1">
+          <mxGeometry height="5" width="320" y="262" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_rental_m" parent="cls_rental" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="+ GetId(): int&#xa;+ GetVehicleId(): int&#xa;+ GetClientId(): int&#xa;+ GetBranchId(): int&#xa;+ GetCreatedByUserId(): int&#xa;+ GetCompletedByUserId(): int?&#xa;+ GetStartDate(): DateTime&#xa;+ GetEndDate(): DateTime&#xa;+ GetTotalCost(): decimal&#xa;+ GetStatus(): RentalStatus&#xa;+ GetCancellationReason(): string?&#xa;+ GetRowVersion(): byte[]&#xa;+ GetCreatedAt(): DateTime&#xa;+ GetUpdatedAt(): DateTime&#xa;+ SetVehicleId(value: int): void&#xa;+ SetClientId(value: int): void&#xa;+ SetBranchId(value: int): void&#xa;+ SetCreatedByUserId(value: int): void&#xa;+ SetCompletedByUserId(value: int?): void&#xa;+ SetStartDate(value: DateTime): void&#xa;+ SetEndDate(value: DateTime): void&#xa;+ SetTotalCost(value: decimal): void&#xa;+ SetStatus(value: RentalStatus): void&#xa;+ SetCancellationReason(value: string?): void&#xa;  ─────────────────────&#xa;+ CreateRental(): void&#xa;+ CompleteRental(): void&#xa;+ CancelRental(reason: string): void&#xa;+ CalculateCost(): decimal&#xa;+ CheckOverlap(): bool" vertex="1">
+          <mxGeometry height="488" width="320" y="267" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_rt" parent="1" style="swimlane;fontStyle=1;align=center;startSize=30;fillColor=#e1d5e7;strokeColor=#9673a6;" value="RefreshToken" vertex="1">
+          <mxGeometry height="395" width="290" x="1100" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_rt_a" parent="cls_rt" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="- id: int&#xa;- userId: int&#xa;- token: string&#xa;- expiresAt: DateTime&#xa;- isRevoked: bool&#xa;- revokedAt: DateTime?&#xa;- createdAt: DateTime" vertex="1">
+          <mxGeometry height="120" width="290" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_rt_sep" parent="cls_rt" style="line;strokeColor=#9673a6;" value="" vertex="1">
+          <mxGeometry height="5" width="290" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_rt_m" parent="cls_rt" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="+ GetId(): int&#xa;+ GetUserId(): int&#xa;+ GetToken(): string&#xa;+ GetExpiresAt(): DateTime&#xa;+ GetIsRevoked(): bool&#xa;+ GetRevokedAt(): DateTime?&#xa;+ GetCreatedAt(): DateTime&#xa;+ SetUserId(value: int): void&#xa;+ SetExpiresAt(value: DateTime): void&#xa;+ SetIsRevoked(value: bool): void&#xa;+ SetRevokedAt(value: DateTime?): void&#xa;  ─────────────────────&#xa;+ Revoke(): void&#xa;+ IsExpired(): bool" vertex="1">
+          <mxGeometry height="232" width="290" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_client" parent="1" style="swimlane;fontStyle=1;align=center;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;" value="Client" vertex="1">
+          <mxGeometry height="507" width="300" x="-40" y="893" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_client_a" parent="cls_client" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="- id: int&#xa;- fullName: string&#xa;- email: string&#xa;- phone: string&#xa;- address: string&#xa;- isFlagged: bool&#xa;- isActive: bool&#xa;- createdAt: DateTime&#xa;- updatedAt: DateTime" vertex="1">
+          <mxGeometry height="152" width="300" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_client_sep" parent="cls_client" style="line;strokeColor=#82b366;" value="" vertex="1">
+          <mxGeometry height="5" width="300" y="182" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_client_m" parent="cls_client" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="+ GetId(): int&#xa;+ GetFullName(): string&#xa;+ GetEmail(): string&#xa;+ GetPhone(): string&#xa;+ GetAddress(): string&#xa;+ GetIsFlagged(): bool&#xa;+ GetIsActive(): bool&#xa;+ GetCreatedAt(): DateTime&#xa;+ GetUpdatedAt(): DateTime&#xa;+ SetFullName(value: string): void&#xa;+ SetEmail(value: string): void&#xa;+ SetPhone(value: string): void&#xa;+ SetAddress(value: string): void&#xa;+ SetIsFlagged(value: bool): void&#xa;+ SetIsActive(value: bool): void&#xa;  ─────────────────────&#xa;+ GetRentalHistory(): List&lt;Rental&gt;&#xa;+ Flag(): void&#xa;+ ExportData(): byte[]" vertex="1">
+          <mxGeometry height="312" width="300" y="187" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_user" parent="1" style="swimlane;fontStyle=1;align=center;startSize=50;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;&lt;abstract&gt;&gt;&#xa;User" vertex="1">
+          <mxGeometry height="831" width="320" x="360" y="893" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_user_a" parent="cls_user" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="- id: int&#xa;- username: string&#xa;- passwordHash: string&#xa;- email: string&#xa;- fullName: string&#xa;- phone: string&#xa;- role: UserRole&#xa;- isActive: bool&#xa;- isLocked: bool&#xa;- failedLoginAttempts: int&#xa;- lockedUntil: DateTime?&#xa;- lastActivityAt: DateTime?&#xa;- lastLoginAt: DateTime?&#xa;- createdAt: DateTime" vertex="1">
+          <mxGeometry height="232" width="320" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_user_sep" parent="cls_user" style="line;strokeColor=#9673a6;" value="" vertex="1">
+          <mxGeometry height="5" width="320" y="282" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_user_m" parent="cls_user" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="+ GetId(): int&#xa;+ GetUsername(): string&#xa;+ GetPasswordHash(): string&#xa;+ GetEmail(): string&#xa;+ GetFullName(): string&#xa;+ GetPhone(): string&#xa;+ GetRole(): UserRole&#xa;+ GetIsActive(): bool&#xa;+ GetIsLocked(): bool&#xa;+ GetFailedLoginAttempts(): int&#xa;+ GetLockedUntil(): DateTime?&#xa;+ GetLastActivityAt(): DateTime?&#xa;+ GetLastLoginAt(): DateTime?&#xa;+ GetCreatedAt(): DateTime&#xa;+ SetUsername(value: string): void&#xa;+ SetEmail(value: string): void&#xa;+ SetFullName(value: string): void&#xa;+ SetPhone(value: string): void&#xa;+ SetRole(value: UserRole): void&#xa;+ SetIsActive(value: bool): void&#xa;+ SetIsLocked(value: bool): void&#xa;+ SetFailedLoginAttempts(value: int): void&#xa;+ SetLockedUntil(value: DateTime?): void&#xa;+ SetLastActivityAt(value: DateTime?): void&#xa;+ SetLastLoginAt(value: DateTime?): void&#xa;  ─────────────────────&#xa;+ Login(): bool&#xa;+ Logout(): void&#xa;+ ChangePassword(old: string, new: string): bool&#xa;+ ResetPassword(): void&#xa;+ UpdateLastActivity(): void&#xa;+ LockAccount(): void&#xa;+ UnlockAccount(): void" vertex="1">
+          <mxGeometry height="536" width="320" y="287" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_admin" parent="1" style="swimlane;fontStyle=1;align=center;startSize=30;fillColor=#f8cecc;strokeColor=#b85450;" value="Administrator" vertex="1">
+          <mxGeometry height="215" width="300" x="20" y="1840" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_admin_a" parent="cls_admin" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value=" " vertex="1">
+          <mxGeometry height="20" width="300" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_admin_sep" parent="cls_admin" style="line;strokeColor=#b85450;" value="" vertex="1">
+          <mxGeometry height="5" width="300" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_admin_m" parent="cls_admin" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="&#xa;  ─────────────────────&#xa;+ AddManager(user: User): void&#xa;+ AddOperator(user: User): void&#xa;+ AddBranch(branch: Branch): void&#xa;+ DeleteBranch(id: int): void&#xa;+ ManageUsers(): List&lt;User&gt;&#xa;+ ViewSecurityAlerts(): List&lt;SecurityAlert&gt;&#xa;+ UnlockUserAccount(userId: int): void&#xa;+ GetGlobalRevenueSummary(): object" vertex="1">
+          <mxGeometry height="152" width="300" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_manager" parent="1" style="swimlane;fontStyle=1;align=center;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;" value="Manager" vertex="1">
+          <mxGeometry height="267" width="310" x="360" y="1870" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_manager_a" parent="cls_manager" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="- branchId: int" vertex="1">
+          <mxGeometry height="24" width="310" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_manager_sep" parent="cls_manager" style="line;strokeColor=#82b366;" value="" vertex="1">
+          <mxGeometry height="5" width="310" y="54" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_manager_m" parent="cls_manager" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="+ GetBranchId(): int&#xa;+ SetBranchId(value: int): void&#xa;  ─────────────────────&#xa;+ AddVehicle(vehicle: Vehicle): void&#xa;+ EditVehicle(vehicle: Vehicle): void&#xa;+ DeactivateVehicle(id: int): void&#xa;+ AddClient(client: Client): void&#xa;+ EditClient(client: Client): void&#xa;+ FlagClient(id: int): void&#xa;+ CancelRental(id: int): void&#xa;+ GetBranchRevenueSummary(): object&#xa;+ ViewBranchReports(): List&lt;object&gt;" vertex="1">
+          <mxGeometry height="200" width="310" y="59" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_operator" parent="1" style="swimlane;fontStyle=1;align=center;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;" value="Operator" vertex="1">
+          <mxGeometry height="203" width="310" x="720" y="1840" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_operator_a" parent="cls_operator" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="- branchId: int" vertex="1">
+          <mxGeometry height="24" width="310" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_operator_sep" parent="cls_operator" style="line;strokeColor=#d6b656;" value="" vertex="1">
+          <mxGeometry height="5" width="310" y="54" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_operator_m" parent="cls_operator" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="+ GetBranchId(): int&#xa;+ SetBranchId(value: int): void&#xa;  ─────────────────────&#xa;+ CreateRental(rental: Rental): void&#xa;+ CompleteRental(id: int): void&#xa;+ SearchVehicle(criteria: string): List&lt;Vehicle&gt;&#xa;+ SearchClient(criteria: string): List&lt;Client&gt;&#xa;+ ViewRentalHistory(clientId: int): List&lt;Rental&gt;" vertex="1">
+          <mxGeometry height="136" width="310" y="59" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_audit" parent="1" style="swimlane;fontStyle=1;align=center;startSize=30;fillColor=#f5f5f5;strokeColor=#666666;" value="AuditLog" vertex="1">
+          <mxGeometry height="315" width="290" x="1150" y="843" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_audit_a" parent="cls_audit" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="- id: int&#xa;- userId: int?&#xa;- entityType: string&#xa;- entityId: int&#xa;- action: string&#xa;- details: string&#xa;- timestamp: DateTime" vertex="1">
+          <mxGeometry height="120" width="290" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_audit_sep" parent="cls_audit" style="line;strokeColor=#666666;" value="" vertex="1">
+          <mxGeometry height="5" width="290" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_audit_m" parent="cls_audit" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="+ GetId(): int&#xa;+ GetUserId(): int?&#xa;+ GetEntityType(): string&#xa;+ GetEntityId(): int&#xa;+ GetAction(): string&#xa;+ GetDetails(): string&#xa;+ GetTimestamp(): DateTime&#xa;  ─────────────────────&#xa;+ Log(): void" vertex="1">
+          <mxGeometry height="152" width="290" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_sa" parent="1" style="swimlane;fontStyle=1;align=center;startSize=30;fillColor=#f8cecc;strokeColor=#b85450;" value="SecurityAlert" vertex="1">
+          <mxGeometry height="331" width="290" x="1100" y="1198" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_sa_a" parent="cls_sa" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="- id: int&#xa;- userId: int&#xa;- alertType: AlertType&#xa;- description: string&#xa;- isRead: bool&#xa;- createdAt: DateTime" vertex="1">
+          <mxGeometry height="104" width="290" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_sa_sep" parent="cls_sa" style="line;strokeColor=#b85450;" value="" vertex="1">
+          <mxGeometry height="5" width="290" y="134" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_sa_m" parent="cls_sa" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="+ GetId(): int&#xa;+ GetUserId(): int&#xa;+ GetAlertType(): AlertType&#xa;+ GetDescription(): string&#xa;+ GetIsRead(): bool&#xa;+ GetCreatedAt(): DateTime&#xa;+ SetAlertType(value: AlertType): void&#xa;+ SetDescription(value: string): void&#xa;+ SetIsRead(value: bool): void&#xa;  ─────────────────────&#xa;+ MarkAsRead(): void" vertex="1">
+          <mxGeometry height="184" width="290" y="139" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_report" parent="1" style="swimlane;fontStyle=1;align=center;startSize=50;fillColor=#f5f5f5;strokeColor=#666666;" value="&lt;&lt;service&gt;&gt;&#xa;ReportService" vertex="1">
+          <mxGeometry height="267" width="290" x="-380" y="-250" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_report_a" parent="cls_report" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value=" " vertex="1">
+          <mxGeometry height="20" width="290" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_report_sep" parent="cls_report" style="line;strokeColor=#666666;" value="" vertex="1">
+          <mxGeometry height="5" width="290" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_report_m" parent="cls_report" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;" value="&#xa;  ─────────────────────&#xa;+ GenerateAvailableVehicles(): List&lt;Vehicle&gt;&#xa;+ GenerateActiveRentals(): List&lt;Rental&gt;&#xa;+ GenerateCompletedRentals(): List&lt;Rental&gt;&#xa;+ FilterByDate(from: DateTime, to: DateTime): List&lt;Rental&gt;&#xa;+ FilterByCategory(cat: VehicleCategory): List&lt;Vehicle&gt;&#xa;+ FilterByStatus(status: RentalStatus): List&lt;Rental&gt;&#xa;+ ExportToPDF(): byte[]&#xa;+ ExportToCSV(): byte[]&#xa;+ GetRevenueSummary(): object&#xa;+ ExportClients(): byte[]" vertex="1">
+          <mxGeometry height="184" width="290" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="enum_vc" parent="1" style="swimlane;fontStyle=1;align=center;startSize=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;&lt;enumeration&gt;&gt;&#xa;VehicleCategory" vertex="1">
+          <mxGeometry height="117" width="180" x="530" y="-140" as="geometry" />
+        </mxCell>
+        <mxCell id="enum_vc_v" parent="enum_vc" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;spacingLeft=8;" value="Economy&#xa;SUV&#xa;Premium&#xa;Van" vertex="1">
+          <mxGeometry height="72" width="180" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="enum_vs" parent="1" style="swimlane;fontStyle=1;align=center;startSize=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;&lt;enumeration&gt;&gt;&#xa;VehicleStatus" vertex="1">
+          <mxGeometry height="101" width="180" x="210" y="-70" as="geometry" />
+        </mxCell>
+        <mxCell id="enum_vs_v" parent="enum_vs" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;spacingLeft=8;" value="Available&#xa;Rented&#xa;Maintenance" vertex="1">
+          <mxGeometry height="56" width="180" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="enum_rs" parent="1" style="swimlane;fontStyle=1;align=center;startSize=40;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;&lt;enumeration&gt;&gt;&#xa;RentalStatus" vertex="1">
+          <mxGeometry height="101" width="180" x="1270" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="enum_rs_v" parent="enum_rs" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;spacingLeft=8;" value="Active&#xa;Completed&#xa;Cancelled" vertex="1">
+          <mxGeometry height="56" width="180" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="enum_ur" parent="1" style="swimlane;fontStyle=1;align=center;startSize=40;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;&lt;enumeration&gt;&gt;&#xa;UserRole" vertex="1">
+          <mxGeometry height="101" width="180" x="70" y="1510" as="geometry" />
+        </mxCell>
+        <mxCell id="enum_ur_v" parent="enum_ur" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;spacingLeft=8;" value="Administrator&#xa;Manager&#xa;Operator" vertex="1">
+          <mxGeometry height="56" width="180" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="enum_at" parent="1" style="swimlane;fontStyle=1;align=center;startSize=40;fillColor=#f8cecc;strokeColor=#b85450;" value="&lt;&lt;enumeration&gt;&gt;&#xa;AlertType" vertex="1">
+          <mxGeometry height="101" width="200" x="1140" y="1611" as="geometry" />
+        </mxCell>
+        <mxCell id="enum_at_v" parent="enum_at" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;spacingLeft=8;" value="FailedLoginThreshold&#xa;AccountLocked&#xa;UnauthorizedAccess" vertex="1">
+          <mxGeometry height="56" width="200" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="inh_adm" edge="1" parent="1" source="cls_admin" style="endArrow=block;endFill=0;startArrow=none;edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" target="cls_user" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="170" y="1780" />
+              <mxPoint x="440" y="1780" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="inh_mgr" edge="1" parent="1" source="cls_manager" style="endArrow=block;endFill=0;startArrow=none;edgeStyle=orthogonalEdgeStyle;html=1;" target="cls_user" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="515" y="1810" />
+              <mxPoint x="530" y="1810" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="inh_opr" edge="1" parent="1" source="cls_operator" style="endArrow=block;endFill=0;startArrow=none;edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="cls_user" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="875" y="1780" />
+              <mxPoint x="600" y="1780" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_vr" edge="1" parent="1" source="cls_vehicle" style="endArrow=ERmany;startArrow=ERone;html=1;edgeStyle=orthogonalEdgeStyle;" target="cls_rental" value="1          0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_cr" edge="1" parent="1" source="cls_client" style="endArrow=ERmany;startArrow=ERone;html=1;edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.3;entryX=0;entryY=0.7;" target="cls_rental" value="1          0..*">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="300" y="1045" />
+              <mxPoint x="300" y="800" />
+              <mxPoint x="710" y="800" />
+              <mxPoint x="710" y="614" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_ur" edge="1" parent="1" source="cls_user" style="endArrow=ERmany;startArrow=ERone;html=1;edgeStyle=orthogonalEdgeStyle;exitX=0.998;exitY=0.025;entryX=0.5;entryY=1;exitDx=0;exitDy=0;exitPerimeter=0;" target="cls_rental" value="1          0..*">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="710" y="914" />
+              <mxPoint x="710" y="890" />
+              <mxPoint x="890" y="890" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_bv" edge="1" parent="1" source="cls_branch" style="endArrow=ERmany;startArrow=ERone;html=1;edgeStyle=orthogonalEdgeStyle;" target="cls_vehicle" value="1          0..*">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="170" y="80" />
+              <mxPoint x="360" y="80" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_bc" edge="1" parent="1" source="cls_branch" style="endArrow=ERmany;startArrow=ERone;html=1;dashed=1;exitX=0.5;exitY=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="cls_client" value="manages">
+          <mxGeometry relative="1" x="-0.3939" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="60" y="760" />
+              <mxPoint x="35" y="760" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_bu" edge="1" parent="1" source="cls_branch_m" style="endArrow=ERmany;startArrow=ERone;html=1;exitX=1;exitY=0.75;entryX=0;entryY=0.1;exitDx=0;exitDy=0;" target="cls_user" value="1          0..*">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="280" y="513" />
+              <mxPoint x="330" y="513" />
+              <mxPoint x="330" y="950" />
+              <mxPoint x="330" y="976" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_urt" edge="1" parent="1" source="cls_user" style="endArrow=ERmany;startArrow=ERone;html=1;edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.1;entryX=0;entryY=0.5;" target="cls_rt" value="1          0..*">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="680" y="943" />
+              <mxPoint x="1100" y="277" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_ual" edge="1" parent="1" source="cls_user_a" style="endArrow=ERmany;startArrow=ERzeroToOne;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitDx=0;exitDy=0;" target="cls_audit" value="0..1          0..*">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="830" y="1060" />
+              <mxPoint x="830" y="1001" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_usa" edge="1" parent="1" source="cls_user" style="endArrow=ERmany;startArrow=ERone;html=1;edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.7;entryX=0;entryY=0.3;" target="cls_sa" value="1          0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rp_r" edge="1" parent="1" source="cls_report_a" style="endArrow=open;endFill=0;dashed=1;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="cls_rental" value="&lt;&lt;queries&gt;&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="810" y="-200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rp_v" edge="1" parent="1" source="cls_report" style="endArrow=open;endFill=0;dashed=1;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="cls_vehicle" value="&lt;&lt;queries&gt;&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="430" y="-116" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rp_c" edge="1" parent="1" source="cls_report" style="endArrow=open;endFill=0;dashed=1;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="cls_client_a" value="&lt;&lt;queries&gt;&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-240" y="961" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dep_vc" edge="1" parent="1" source="cls_vehicle" style="endArrow=open;endFill=0;dashed=1;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;" value="category">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="590" y="-20" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dep_vs" edge="1" parent="1" source="cls_vehicle_a" style="endArrow=open;endFill=0;dashed=1;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;" target="enum_vs" value="status">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="300" y="164" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dep_rs" edge="1" parent="1" source="cls_rental_m" style="endArrow=open;endFill=0;dashed=1;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" target="enum_rs_v" value="status">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dep_ur" edge="1" parent="1" source="cls_user_m" style="endArrow=open;endFill=0;dashed=1;html=1;exitX=0.007;exitY=0.705;exitDx=0;exitDy=0;exitPerimeter=0;" target="enum_ur" value="role">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dep_at" edge="1" parent="1" source="cls_sa" style="endArrow=open;endFill=0;dashed=1;html=1;" target="enum_at" value="alertType">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MmhAgLXxzY5puPKHOLI7-3" parent="1" style="text;whiteSpace=wrap;html=1;" value="&lt;h1 data-section-id=&quot;7l3p8z&quot; data-start=&quot;95&quot; data-end=&quot;135&quot; style=&quot;text-align: justify;&quot;&gt;TABLE RELATIONSHIPS AND DESCRIPTION&lt;/h1&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;h2 data-section-id=&quot;1lb48r7&quot; data-start=&quot;137&quot; data-end=&quot;161&quot; style=&quot;text-align: justify;&quot;&gt;- MAIN RELATIONSHIPS&lt;/h2&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;ul data-start=&quot;163&quot; data-end=&quot;736&quot;&gt;&lt;li data-section-id=&quot;11epvro&quot; data-start=&quot;163&quot; data-end=&quot;251&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;165&quot; data-end=&quot;185&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Branch – Vehicle&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;: 1:N&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;A branch can have multiple vehicles (&lt;/span&gt;&lt;code data-start=&quot;232&quot; data-end=&quot;250&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Vehicle.branchId&lt;/code&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;)&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;/ul&gt;&lt;ul data-start=&quot;163&quot; data-end=&quot;736&quot;&gt;&lt;li data-section-id=&quot;1b77v0j&quot; data-start=&quot;253&quot; data-end=&quot;347&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;255&quot; data-end=&quot;275&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Vehicle – Rental&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;: 1:N&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;A vehicle can be part of multiple rentals (&lt;/span&gt;&lt;code data-start=&quot;328&quot; data-end=&quot;346&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Rental.vehicleId&lt;/code&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;)&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;li data-section-id=&quot;wwtkwx&quot; data-start=&quot;349&quot; data-end=&quot;434&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;351&quot; data-end=&quot;370&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Client – Rental&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;: 1:N&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;A client can have multiple rentals (&lt;/span&gt;&lt;code data-start=&quot;416&quot; data-end=&quot;433&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Rental.clientId&lt;/code&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;)&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;li data-section-id=&quot;1d29zpk&quot; data-start=&quot;436&quot; data-end=&quot;520&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;438&quot; data-end=&quot;457&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Branch – Rental&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;: 1:N&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;A branch manages multiple rentals (&lt;/span&gt;&lt;code data-start=&quot;502&quot; data-end=&quot;519&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Rental.branchId&lt;/code&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;)&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;li data-section-id=&quot;5tvwte&quot; data-start=&quot;522&quot; data-end=&quot;629&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;524&quot; data-end=&quot;541&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;User – Rental&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;: 1:N&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Users create and complete rentals&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;(&lt;/span&gt;&lt;code data-start=&quot;590&quot; data-end=&quot;607&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;createdByUserId&lt;/code&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;, &lt;/span&gt;&lt;code data-start=&quot;609&quot; data-end=&quot;628&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;completedByUserId&lt;/code&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;)&lt;br&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;li data-section-id=&quot;rt3ywg&quot; data-start=&quot;631&quot; data-end=&quot;736&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;633&quot; data-end=&quot;683&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;User – RefreshToken / AuditLog / SecurityAlert&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;: 1:N&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;A user can have multiple associated records&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/ul&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;hr data-start=&quot;738&quot; data-end=&quot;741&quot; style=&quot;text-align: justify;&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;h2 data-section-id=&quot;1acbryi&quot; data-start=&quot;743&quot; data-end=&quot;772&quot; style=&quot;text-align: justify;&quot;&gt;- MAIN TABLES DESCRIPTION&lt;/h2&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;ul data-start=&quot;774&quot; data-end=&quot;1000&quot;&gt;&lt;li data-section-id=&quot;xgbr6x&quot; data-start=&quot;774&quot; data-end=&quot;819&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;776&quot; data-end=&quot;786&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Branch&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt; – represents company locations&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;li data-section-id=&quot;10x8pgb&quot; data-start=&quot;820&quot; data-end=&quot;864&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;822&quot; data-end=&quot;833&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Vehicle&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt; – stores vehicle information&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;li data-section-id=&quot;1wokomq&quot; data-start=&quot;865&quot; data-end=&quot;909&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;867&quot; data-end=&quot;877&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Rental&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt; – records rental transactions&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;li data-section-id=&quot;kmwxa2&quot; data-start=&quot;910&quot; data-end=&quot;947&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;912&quot; data-end=&quot;922&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Client&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt; – stores customer data&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;li data-section-id=&quot;heyo6o&quot; data-start=&quot;948&quot; data-end=&quot;1000&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;950&quot; data-end=&quot;958&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;User&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt; – system users (admin, manager, operator)&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/ul&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;hr data-start=&quot;1002&quot; data-end=&quot;1005&quot; style=&quot;text-align: justify;&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;h2 data-section-id=&quot;udn94a&quot; data-start=&quot;1007&quot; data-end=&quot;1023&quot; style=&quot;text-align: justify;&quot;&gt;- USER ROLES&lt;/h2&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;ul data-start=&quot;1025&quot; data-end=&quot;1163&quot;&gt;&lt;li data-section-id=&quot;1r62ej3&quot; data-start=&quot;1025&quot; data-end=&quot;1074&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;1027&quot; data-end=&quot;1044&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Administrator&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt; – manages the entire system&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;li data-section-id=&quot;17brpfz&quot; data-start=&quot;1075&quot; data-end=&quot;1118&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;1077&quot; data-end=&quot;1088&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Manager&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt; – manages a specific branch&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;li data-section-id=&quot;u6oedg&quot; data-start=&quot;1119&quot; data-end=&quot;1163&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;1121&quot; data-end=&quot;1133&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Operator&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt; – handles rental operations&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/ul&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;hr data-start=&quot;1165&quot; data-end=&quot;1168&quot; style=&quot;text-align: justify;&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;h2 data-section-id=&quot;y2c9yx&quot; data-start=&quot;1170&quot; data-end=&quot;1189&quot; style=&quot;text-align: justify;&quot;&gt;- HELPER TABLES&lt;/h2&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;ul data-start=&quot;1191&quot; data-end=&quot;1325&quot;&gt;&lt;li data-section-id=&quot;qm44ld&quot; data-start=&quot;1191&quot; data-end=&quot;1237&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;1193&quot; data-end=&quot;1209&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;RefreshToken&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt; – used for authentication&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;li data-section-id=&quot;aj7qrm&quot; data-start=&quot;1238&quot; data-end=&quot;1278&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;1240&quot; data-end=&quot;1252&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;AuditLog&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt; – stores action history&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;li data-section-id=&quot;1lj2lok&quot; data-start=&quot;1279&quot; data-end=&quot;1325&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;1281&quot; data-end=&quot;1298&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;SecurityAlert&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt; – stores security alerts&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/ul&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;hr data-start=&quot;1327&quot; data-end=&quot;1330&quot; style=&quot;text-align: justify;&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;h2 data-section-id=&quot;7s97x4&quot; data-start=&quot;1332&quot; data-end=&quot;1350&quot; style=&quot;text-align: justify;&quot;&gt;- ENUMERATIONS&lt;/h2&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;ul data-start=&quot;1352&quot; data-end=&quot;1529&quot;&gt;&lt;li data-section-id=&quot;evncm8&quot; data-start=&quot;1352&quot; data-end=&quot;1391&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;1354&quot; data-end=&quot;1373&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;VehicleCategory&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt; – vehicle types&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;li data-section-id=&quot;1hzfjqj&quot; data-start=&quot;1392&quot; data-end=&quot;1430&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;1394&quot; data-end=&quot;1411&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;VehicleStatus&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt; – vehicle states&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;li data-section-id=&quot;1xbryff&quot; data-start=&quot;1431&quot; data-end=&quot;1467&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;1433&quot; data-end=&quot;1449&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;RentalStatus&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt; – rental states&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;li data-section-id=&quot;16jw1yg&quot; data-start=&quot;1468&quot; data-end=&quot;1497&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;1470&quot; data-end=&quot;1482&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;UserRole&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt; – user roles&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;li data-section-id=&quot;1saaco&quot; data-start=&quot;1498&quot; data-end=&quot;1529&quot;&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;strong data-start=&quot;1500&quot; data-end=&quot;1513&quot; style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;AlertType&lt;/strong&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt; – alert types&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/ul&gt;" vertex="1">
+          <mxGeometry height="1430" width="530" x="-1100" y="181" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
