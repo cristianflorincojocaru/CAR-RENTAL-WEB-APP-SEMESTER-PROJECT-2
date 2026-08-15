@@ -439,7 +439,7 @@ Playwright report available in `playwright-report/index.html`
 
 ## CONTRIBUTIONS
 
-Project created by **Cojocaru Florin - Cristian** and **Nicoli Andrei - Claudiu** — **CSE.3**, University of Craiova / Faculty of Automatics, Computer Science and Electronics.
+Project created by **Cristian - Florin Cojocaru** and **Andrei - Claudiu Nicoli** — **CSE.3**, University of Craiova / Faculty of Automation, Computers and Electronics.
 
 Contributions are welcome! If you have suggestions for improving the code or documentation, please submit a pull request.
 
